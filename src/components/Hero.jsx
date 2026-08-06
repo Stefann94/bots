@@ -113,7 +113,7 @@ export default function Hero() {
               </motion.div>
 
               {/* Right 3D Interactive Container */}
-              <div className="lg:col-span-6 relative z-10 w-full">
+              <div className="lg:col-span-6 relative z-[110] w-full">
                   {/* Floating ambient blur (Background behind the card) */}
                   <motion.div 
                     animate={{ 
@@ -130,7 +130,7 @@ export default function Hero() {
                     className="absolute -bottom-20 -right-10 w-64 h-64 sm:w-96 sm:h-96 bg-blue-500/15 blur-[80px] rounded-full pointer-events-none -z-10"
                   />
                   
-                  <div className="glass-card rounded-2xl p-2 relative overflow-hidden border border-cyber-cyan/30 shadow-[0_0_40px_rgba(0,240,255,0.15)]">
+                  <div className="glass-card rounded-2xl p-2 relative overflow-hidden border border-cyber-cyan/30 shadow-[0_0_40px_rgba(0,240,255,0.15)] z-[110]">
                       
                       <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-center pointer-events-none">
                           <div className="flex items-center gap-2 px-3 py-1 bg-navy-950/80 rounded border border-cyber-cyan/30 text-[11px] font-mono text-cyber-cyan">
@@ -166,7 +166,7 @@ export default function Hero() {
                           </div>
                       </div>
 
-                      <div className="w-full h-[450px] sm:h-[500px] rounded-xl relative cursor-grab active:cursor-grabbing bg-navy-900">
+                      <div className="w-full h-[450px] sm:h-[500px] rounded-xl relative cursor-grab active:cursor-grabbing bg-[#07132a]">
                           <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-cyber-cyan"><i className="fa-solid fa-spinner fa-spin text-3xl"></i></div>}>
                             <RobotCanvas robotColor={robotColor} />
                           </Suspense>
