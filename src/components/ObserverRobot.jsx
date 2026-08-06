@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -14,9 +14,27 @@ export default function ObserverRobot() {
   const { viewport } = useThree()
 
   const isMobile = viewport.width < 5
-  const posX = (viewport.width / 2) - 1.5
-  const posY = -(viewport.height / 2) + 1.2
-  const scale = isMobile ? 0 : 1.2
+  
+  // Calculăm un scale dinamic: mic pe laptopuri (0.45), puțin mai mare pe ecrane ultrawide (max 0.75)
+  const scale = isMobile ? 0 : Math.min(0.75, Math.max(0.45, viewport.width * 0.06))
+  
+  // Îl poziționăm dinamic, păstrând o margine ("padding") proporțională cu mărimea lui
+  const posX = (viewport.width / 2) - (scale * 1.8)
+  const posY = -(viewport.height / 2) + (scale * 1.6)
+
+  // Folosim un listener nativ pe window pentru a garanta tracking-ul,
+  // indiferent de pointerEvents="none" pe Canvas.
+  const pointer = useRef({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const handlePointerMove = (e) => {
+      // Normalizăm coordonatele la -1 -> 1
+      pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1
+      pointer.current.y = -(e.clientY / window.innerHeight) * 2 + 1
+    }
+    window.addEventListener('pointermove', handlePointerMove)
+    return () => window.removeEventListener('pointermove', handlePointerMove)
+  }, [])
 
   useFrame((state) => {
     if (isMobile) return
@@ -45,25 +63,32 @@ export default function ObserverRobot() {
       rightArmRef.current.rotation.x = Math.sin(t * 1.25) * 0.1
     }
 
-    // 4. Tracking Cursor pentru Cap
-    const x = (state.pointer.x * state.viewport.width) / 2
-    const y = (state.pointer.y * state.viewport.height) / 2
-    target.set(x, y, 4)
+    // 4. Tracking Cursor pentru Cap (Sistem geometric precis - Intersecție Raycast)
+    // Calculăm vectorul de direcție de la cameră prin poziția mouse-ului
+    const mousePos = new THREE.Vector3(pointer.current.x, pointer.current.y, 0.5)
+    mousePos.unproject(state.camera)
+    const dir = mousePos.sub(state.camera.position).normalize()
+
+    // Găsim intersecția razei cu un plan virtual aflat la Z = 3.5 
+    // (Acesta reprezintă "geamul" ecranului la care se uită robotul)
+    const targetZ = 3.5
+    const distance = (targetZ - state.camera.position.z) / dir.z
+    target.copy(state.camera.position).add(dir.multiplyScalar(distance))
 
     if (headRef.current) {
       const currentQuat = headRef.current.quaternion.clone()
       headRef.current.lookAt(target)
       const targetQuat = headRef.current.quaternion.clone()
       headRef.current.quaternion.copy(currentQuat)
-      headRef.current.quaternion.slerp(targetQuat, 0.08)
+      headRef.current.quaternion.slerp(targetQuat, 0.2) // Viteză mare de reacție
     }
 
     if (neckRef.current) {
-       const currentQuat = neckRef.current.quaternion.clone()
-       neckRef.current.lookAt(target)
-       const targetQuat = neckRef.current.quaternion.clone()
-       neckRef.current.quaternion.copy(currentQuat)
-       neckRef.current.quaternion.slerp(targetQuat, 0.04)
+      const currentQuat = neckRef.current.quaternion.clone()
+      neckRef.current.lookAt(target)
+      const targetQuat = neckRef.current.quaternion.clone()
+      neckRef.current.quaternion.copy(currentQuat)
+      neckRef.current.quaternion.slerp(targetQuat, 0.1)
     }
   })
 

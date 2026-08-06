@@ -6,8 +6,12 @@ import ObserverRobot from './ObserverRobot'
 
 export default function GlobalCanvas() {
   return (
-    <div className="fixed inset-0 pointer-events-none z-[-1] bg-navy-950">
-      <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+    <div className="fixed inset-0 pointer-events-none z-[100]">
+      <Canvas 
+        style={{ pointerEvents: 'none' }}
+        eventSource={document.body}
+        camera={{ position: [0, 0, 5], fov: 50 }}
+      >
         {/* Iluminare de bază */}
         <ambientLight intensity={0.4} />
         
