@@ -1,3 +1,4 @@
+import GlobalCanvas from './components/GlobalCanvas'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import RobotSeries from './components/RobotSeries'
@@ -11,6 +12,7 @@ import Footer from './components/Footer'
 function App() {
   return (
     <>
+      <GlobalCanvas />
       <Navbar />
       <Hero />
       <RobotSeries />

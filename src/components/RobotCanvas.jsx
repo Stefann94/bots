@@ -1,83 +1,61 @@
-import { useRef } from 'react'
+import { Suspense, useRef, useEffect, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, useGLTF, Environment, Grid, Html } from '@react-three/drei'
+import * as THREE from 'three'
 
-function RobotModel({ wireframe }) {
+useGLTF.preload('/robot.glb')
+
+function RealRobotModel({ wireframe }) {
   const groupRef = useRef()
+  const { scene } = useGLTF('/robot.glb')
 
   useFrame(() => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += 0.005
+      groupRef.current.rotation.y += 0.003
     }
   })
 
-  const bodyMaterial = { color: '#111e3f', metalness: 0.8, roughness: 0.2, wireframe }
-  const cyanGlowMaterial = { color: '#00f0ff', wireframe: false }
-  const jointMaterial = { color: '#334155', metalness: 0.9, roughness: 0.1, wireframe }
+  // Aliniem tălpile DEASUPRA grid-ului înainte de primul frame
+  useMemo(() => {
+    if (scene) {
+      scene.position.set(0, 0, 0)
+      scene.updateMatrixWorld(true)
+      
+      const box = new THREE.Box3().setFromObject(scene)
+      
+      // Centrăm pe X/Z
+      const center = new THREE.Vector3()
+      box.getCenter(center)
+      scene.position.x = -center.x
+      scene.position.z = -center.z
+      
+      // Tălpile (box.min.y) ridicate fix la Y=0
+      scene.position.y = -box.min.y
+    }
+  }, [scene])
+
+  useEffect(() => {
+    if (scene) {
+      scene.traverse((child) => {
+        if (child.isMesh && child.material) {
+          if (wireframe) {
+            child.material.wireframe = true
+          } else {
+            child.material.wireframe = false
+            child.material.metalness = 0.9
+            child.material.roughness = 0.1
+            child.material.envMapIntensity = 2.0
+          }
+          child.material.needsUpdate = true
+        }
+      })
+    }
+  }, [scene, wireframe])
 
   return (
-    <group ref={groupRef}>
-      {/* Torso */}
-      <mesh position={[0, 0.9, 0]}>
-        <boxGeometry args={[0.5, 0.7, 0.3]} />
-        <meshStandardMaterial {...bodyMaterial} />
-      </mesh>
-      
-      {/* Chest Reactor */}
-      <mesh position={[0, 1.0, 0.16]}>
-        <circleGeometry args={[0.08, 32]} />
-        <meshBasicMaterial {...cyanGlowMaterial} />
-      </mesh>
-
-      {/* Head */}
-      <mesh position={[0, 1.4, 0]}>
-        <boxGeometry args={[0.3, 0.25, 0.3]} />
-        <meshStandardMaterial {...bodyMaterial} />
-      </mesh>
-
-      {/* Visor */}
-      <mesh position={[0, 1.42, 0.16]}>
-        <planeGeometry args={[0.2, 0.08]} />
-        <meshBasicMaterial {...cyanGlowMaterial} />
-      </mesh>
-
-      {/* Shoulders & Arms */}
-      <mesh position={[-0.35, 1.15, 0]}>
-        <sphereGeometry args={[0.1, 16, 16]} />
-        <meshStandardMaterial {...jointMaterial} />
-      </mesh>
-      <mesh position={[0.35, 1.15, 0]}>
-        <sphereGeometry args={[0.1, 16, 16]} />
-        <meshStandardMaterial {...jointMaterial} />
-      </mesh>
-
-      <mesh position={[-0.35, 0.8, 0]}>
-        <boxGeometry args={[0.12, 0.5, 0.12]} />
-        <meshStandardMaterial {...bodyMaterial} />
-      </mesh>
-      <mesh position={[0.35, 0.8, 0]}>
-        <boxGeometry args={[0.12, 0.5, 0.12]} />
-        <meshStandardMaterial {...bodyMaterial} />
-      </mesh>
-
-      {/* Hips & Legs */}
-      <mesh position={[-0.15, 0.45, 0]}>
-        <sphereGeometry args={[0.1, 16, 16]} />
-        <meshStandardMaterial {...jointMaterial} />
-      </mesh>
-      <mesh position={[0.15, 0.45, 0]}>
-        <sphereGeometry args={[0.1, 16, 16]} />
-        <meshStandardMaterial {...jointMaterial} />
-      </mesh>
-
-      <mesh position={[-0.15, 0.15, 0]}>
-        <boxGeometry args={[0.15, 0.5, 0.15]} />
-        <meshStandardMaterial {...bodyMaterial} />
-      </mesh>
-      <mesh position={[0.15, 0.15, 0]}>
-        <boxGeometry args={[0.15, 0.5, 0.15]} />
-        <meshStandardMaterial {...bodyMaterial} />
-      </mesh>
+    // Robotul stă cu tălpile la Y=0.15 (ușor deasupra grid-ului care e la Y=0)
+    <group ref={groupRef} position={[0, 0.15, 0]}>
+      <primitive object={scene} scale={2.2} />
     </group>
   )
 }
@@ -85,23 +63,52 @@ function RobotModel({ wireframe }) {
 export default function RobotCanvas({ wireframe }) {
   return (
     <Canvas
-      camera={{ position: [0, 1.2, 3.8], fov: 45 }}
+      camera={{ 
+        position: [0, 2.2, 7],
+        fov: 35,
+        near: 0.1,
+        far: 100
+      }}
       dpr={[1, 2]}
     >
-      <ambientLight intensity={2} color="#0b1329" />
-      <pointLight position={[2, 3, 2]} intensity={3} color="#00f0ff" distance={10} />
-      <pointLight position={[-2, 1, -2]} intensity={2} color="#38bdf8" distance={10} />
-      
-      <RobotModel wireframe={wireframe} />
-      
-      <OrbitControls
-        enableDamping
-        dampingFactor={0.05}
-        maxPolarAngle={Math.PI / 2 + 0.1}
-        minDistance={2}
-        maxDistance={6}
-        target={[0, 0.5, 0]}
-      />
+      <Suspense fallback={
+        <Html center>
+          <div className="text-cyber-cyan text-sm tracking-widest animate-pulse">ÎNCĂRCARE MODEL 3D...</div>
+        </Html>
+      }>
+        <ambientLight intensity={1.2} color="#ffffff" />
+        <directionalLight position={[5, 8, 5]} intensity={2.5} color="#ffffff" />
+        <pointLight position={[-3, 2, -3]} intensity={2} color="#00f0ff" distance={15} />
+        
+        <Environment preset="city" />
+        
+        {/* Grid-ul subtil original – renderOrder negativ forțează randarea înainte de robot */}
+        <Grid 
+          renderOrder={-1}
+          position={[0, 0, 0]} 
+          args={[20, 20]} 
+          cellSize={0.25} 
+          cellThickness={0.5} 
+          cellColor="#00f0ff" 
+          sectionSize={1.25} 
+          sectionThickness={1} 
+          sectionColor="#1a2b56" 
+          fadeDistance={8}
+          fadeStrength={1.5}
+          material-depthWrite={true}
+        />
+
+        <RealRobotModel wireframe={wireframe} />
+        
+        <OrbitControls
+          enableDamping
+          dampingFactor={0.05}
+          maxPolarAngle={Math.PI / 2 - 0.05}
+          minDistance={3}
+          maxDistance={12}
+          target={[0, 1.8, 0]}
+        />
+      </Suspense>
     </Canvas>
   )
 }
