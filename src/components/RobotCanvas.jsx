@@ -5,7 +5,7 @@ import * as THREE from 'three'
 
 useGLTF.preload('/robot.glb')
 
-function RealRobotModel({ wireframe }) {
+function RealRobotModel({ robotColor }) {
   const groupRef = useRef()
   const { scene } = useGLTF('/robot.glb')
 
@@ -38,19 +38,20 @@ function RealRobotModel({ wireframe }) {
     if (scene) {
       scene.traverse((child) => {
         if (child.isMesh && child.material) {
-          if (wireframe) {
-            child.material.wireframe = true
-          } else {
-            child.material.wireframe = false
-            child.material.metalness = 0.9
-            child.material.roughness = 0.1
-            child.material.envMapIntensity = 2.0
+          // Schimbăm culoarea modelului
+          if (child.material.color) {
+            child.material.color.set(robotColor)
           }
+          
+          child.material.wireframe = false
+          child.material.metalness = 0.9
+          child.material.roughness = 0.1
+          child.material.envMapIntensity = 2.0
           child.material.needsUpdate = true
         }
       })
     }
-  }, [scene, wireframe])
+  }, [scene, robotColor])
 
   return (
     // Robotul stă cu tălpile la Y=0.15 (ușor deasupra grid-ului care e la Y=0)
@@ -60,7 +61,7 @@ function RealRobotModel({ wireframe }) {
   )
 }
 
-export default function RobotCanvas({ wireframe }) {
+export default function RobotCanvas({ robotColor }) {
   return (
     <Canvas
       camera={{ 
@@ -98,7 +99,7 @@ export default function RobotCanvas({ wireframe }) {
           material-depthWrite={true}
         />
 
-        <RealRobotModel wireframe={wireframe} />
+        <RealRobotModel robotColor={robotColor} />
         
         <OrbitControls
           enableDamping

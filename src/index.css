@@ -10,7 +10,8 @@
   --color-cyber-ice: #7dd3fc;
   --color-cyber-glow: rgba(0, 240, 255, 0.25);
   
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
+  --font-heading: "Outfit", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
   
   --animate-pulse-glow: pulseGlow 3s infinite ease-in-out;
@@ -36,6 +37,11 @@
     background-color: var(--color-navy-950);
     color: var(--color-slate-100);
     overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
   }
 }
 
