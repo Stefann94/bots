@@ -34,18 +34,26 @@ export default function Hero() {
   const words = infoText.split(" ")
 
   const infoContainerVariants = {
-    hidden: { height: 0, opacity: 0, marginTop: 0 },
+    hidden: { opacity: 0, maxWidth: 0, marginTop: -120 },
     visible: { 
-      height: "auto", 
       opacity: 1,
-      marginTop: 48, // mt-12
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], staggerChildren: 0.04, delayChildren: 0.4 }
+      maxWidth: "56rem", // 896px (max-w-4xl)
+      marginTop: -120, 
+      transition: { 
+        maxWidth: { duration: 0.7, ease: "easeInOut" },
+        opacity: { duration: 0.5, delay: 0.7, ease: "easeOut" },
+        staggerChildren: 0.04, 
+        delayChildren: 1.0 
+      }
     },
     exit: { 
-      height: 0, 
       opacity: 0, 
-      marginTop: 0,
-      transition: { duration: 0.4, ease: "easeInOut" } 
+      maxWidth: 0, 
+      marginTop: -120,
+      transition: { 
+        opacity: { duration: 0.3, ease: "easeOut" },
+        maxWidth: { duration: 0.7, ease: "easeInOut", delay: 0.1 } 
+      } 
     }
   }
 
@@ -69,12 +77,16 @@ export default function Hero() {
 
   return (
     <>
-      <section className="relative min-h-screen pt-28 pb-16 flex items-center justify-center overflow-hidden bg-grid-pattern radial-glow-top">
+      <section className="relative min-h-screen pt-28 pb-16 flex items-center justify-center gap-8 lg:gap-16 overflow-hidden bg-grid-pattern radial-glow-top">
           {/* Background Ambient Glow Orbs */}
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyber-cyan/10 rounded-full filter blur-[120px] pointer-events-none animate-pulse-glow"></div>
           <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-blue-600/15 rounded-full filter blur-[100px] pointer-events-none"></div>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <motion.div 
+            layout 
+            transition={{ duration: 0.7, ease: "easeInOut" }}
+            className="max-w-7xl px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+          >
               
               {/* Left Hero Content */}
                 <motion.div 
@@ -219,7 +231,7 @@ export default function Hero() {
                       </button>
                   </div>
               </div>
-          </div>
+          </motion.div>
 
           {/* Animated Info Section Below Hero */}
           <AnimatePresence>
@@ -229,9 +241,9 @@ export default function Hero() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="w-full max-w-4xl mx-auto px-4 overflow-hidden"
+                className="overflow-visible relative z-[120]"
               >
-                <div className="glass-card rounded-2xl p-8 md:p-12 border border-cyber-cyan/30 shadow-[0_0_50px_rgba(0,240,255,0.1)] relative">
+                <div className="glass-card w-[90vw] md:w-[896px] max-w-[896px] rounded-2xl p-8 md:p-12 bg-[#020617]/40 backdrop-blur-md border border-cyber-cyan/30 shadow-[0_0_50px_rgba(0,240,255,0.1)] relative">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-[1px] bg-gradient-to-r from-transparent via-cyber-cyan to-transparent"></div>
                   
                   <div className="flex items-center gap-3 mb-6">
