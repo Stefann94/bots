@@ -1,15 +1,19 @@
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function HologramHero() {
-  // state to track which hologram is hovered
   const [activeHolo, setActiveHolo] = useState(null)
+  const [isFlashing, setIsFlashing] = useState(false)
+  const [flashColor, setFlashColor] = useState('bg-white')
+  const navigate = useNavigate()
 
-  const scrollTo = (id) => {
-    const el = document.getElementById(id)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
-    }
+  const handleSelect = (category, path, colorClass) => {
+    setFlashColor(colorClass)
+    setIsFlashing(true)
+    setTimeout(() => {
+      navigate(path)
+    }, 400) // navigate after flash peaks
   }
 
   // background color mapping based on active hologram
@@ -23,26 +27,38 @@ export default function HologramHero() {
   }
 
   return (
-    <section className="relative w-full pt-32 pb-12 overflow-hidden bg-black">
+    <section className="relative w-full max-w-7xl mx-auto rounded-[40px] flex flex-col pt-20 pb-16 overflow-hidden bg-black/80 border border-white/5 shadow-2xl backdrop-blur-sm">
       
+      {/* The Flash Overlay */}
+      <AnimatePresence>
+        {isFlashing && (
+           <motion.div 
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             transition={{ duration: 0.3 }}
+             className={`fixed inset-0 z-[100] ${flashColor}`}
+           />
+        )}
+      </AnimatePresence>
+
       {/* Ambient reactive background */}
       <div className={`absolute inset-0 bg-gradient-to-b ${getBgColor()} transition-colors duration-1000 ease-in-out`}></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex-grow flex flex-col justify-center">
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12 md:mb-16"
+            className="text-center mb-16 md:mb-24 mt-auto"
           >
               <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase mb-4">
                   Alege <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-400 to-white">Viitorul</span>
               </h1>
-              <p className="text-slate-400 text-xs md:text-sm max-w-xl mx-auto font-mono px-4">Selectează un avatar holografic pentru a iniția scanarea sistemului.</p>
+              <p className="text-slate-400 text-xs md:text-sm max-w-xl mx-auto font-mono px-4">Selectează un avatar holografic pentru a lansa protocolul de inițiere.</p>
           </motion.div>
 
           {/* The 3 Holographic Pillars */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto w-full mb-auto">
               
               {/* Biped Pillar */}
               <motion.div 
@@ -51,8 +67,8 @@ export default function HologramHero() {
                 transition={{ delay: 0.1 }}
                 onMouseEnter={() => setActiveHolo('biped')}
                 onMouseLeave={() => setActiveHolo(null)}
-                onClick={() => scrollTo('bipeds')}
-                className="relative h-[16rem] md:h-[20rem] group cursor-pointer flex flex-col items-center justify-end"
+                onClick={() => handleSelect('biped', '/robots/humanoids', 'bg-cyber-cyan')}
+                className="relative h-[20rem] md:h-[24rem] group cursor-pointer flex flex-col items-center justify-end"
               >
                   {/* The Hologram Box */}
                   <div className={`absolute bottom-20 w-full aspect-square flex flex-col items-center justify-center transition-all duration-700 ease-out ${activeHolo === 'biped' ? 'scale-125 -translate-y-6 md:-translate-y-8' : 'scale-100 opacity-50 blur-[1px]'}`}>
@@ -79,8 +95,8 @@ export default function HologramHero() {
                 transition={{ delay: 0.2 }}
                 onMouseEnter={() => setActiveHolo('quadruped')}
                 onMouseLeave={() => setActiveHolo(null)}
-                onClick={() => scrollTo('quadrupeds')}
-                className="relative h-[16rem] md:h-[20rem] group cursor-pointer flex flex-col items-center justify-end"
+                onClick={() => handleSelect('quadruped', '/robots/quadrupeds', 'bg-emerald-500')}
+                className="relative h-[20rem] md:h-[24rem] group cursor-pointer flex flex-col items-center justify-end"
               >
                   {/* The Hologram Box */}
                   <div className={`absolute bottom-20 w-full aspect-square flex flex-col items-center justify-center transition-all duration-700 ease-out ${activeHolo === 'quadruped' ? 'scale-125 -translate-y-6 md:-translate-y-8' : 'scale-100 opacity-50 blur-[1px]'}`}>
@@ -107,8 +123,8 @@ export default function HologramHero() {
                 transition={{ delay: 0.3 }}
                 onMouseEnter={() => setActiveHolo('ai')}
                 onMouseLeave={() => setActiveHolo(null)}
-                onClick={() => scrollTo('ai')}
-                className="relative h-[16rem] md:h-[20rem] group cursor-pointer flex flex-col items-center justify-end"
+                onClick={() => handleSelect('ai', '/robots/ai', 'bg-purple-600')}
+                className="relative h-[20rem] md:h-[24rem] group cursor-pointer flex flex-col items-center justify-end"
               >
                   {/* The Hologram Box */}
                   <div className={`absolute bottom-20 w-full aspect-square flex flex-col items-center justify-center transition-all duration-700 ease-out ${activeHolo === 'ai' ? 'scale-125 -translate-y-6 md:-translate-y-8' : 'scale-100 opacity-50 blur-[1px]'}`}>

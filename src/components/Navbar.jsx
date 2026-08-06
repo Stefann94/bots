@@ -19,6 +19,8 @@ export default function Navbar() {
           const el = document.getElementById(hashId)
           if (el) el.scrollIntoView({ behavior: 'smooth' })
         }, 300)
+      } else {
+        window.scrollTo(0, 0)
       }
     } else if (hashId) {
       const el = document.getElementById(hashId)
@@ -54,16 +56,16 @@ export default function Navbar() {
 
             <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
                 <button onClick={() => handleNav('/', null)} className={`hover:text-cyber-cyan transition-colors ${location.pathname === '/' ? 'text-cyber-cyan' : ''}`}>Acasă</button>
-                <Link to="/umanoizi" className={`hover:text-cyber-cyan transition-colors ${location.pathname === '/umanoizi' ? 'text-cyber-cyan' : ''}`}>Modele 3D</Link>
+                <button onClick={() => handleNav('/modele-3d', null)} className={`hover:text-cyber-cyan transition-colors ${location.pathname === '/modele-3d' ? 'text-cyber-cyan' : ''}`}>Modele 3D</button>
                 <button onClick={() => handleNav('/', 'technology')} className="hover:text-cyber-cyan transition-colors">Inovație</button>
                 <button onClick={() => handleNav('/', 'applications')} className="hover:text-cyber-cyan transition-colors">Aplicații</button>
                 <button onClick={() => handleNav('/', 'contact')} className="hover:text-cyber-cyan transition-colors">Contact</button>
             </nav>
 
             <div className="hidden sm:flex items-center gap-4">
-                <Link to="/umanoizi" className="relative inline-flex items-center justify-center px-6 py-2.5 text-xs font-bold tracking-widest text-navy-950 uppercase transition-all duration-300 bg-cyber-cyan rounded-lg hover:bg-cyan-300 hover:shadow-[0_0_20px_rgba(0,240,255,0.6)] focus:outline-none font-mono">
+                <button onClick={() => handleNav('/modele-3d', null)} className="relative inline-flex items-center justify-center px-6 py-2.5 text-xs font-bold tracking-widest text-navy-950 uppercase transition-all duration-300 bg-cyber-cyan rounded-lg hover:bg-cyan-300 hover:shadow-[0_0_20px_rgba(0,240,255,0.6)] focus:outline-none font-mono">
                     <i className="fa-solid fa-rocket mr-2"></i> EXPLOREAZĂ UMANOIZII
-                </Link>
+                </button>
             </div>
 
             <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-slate-300 hover:text-cyber-cyan p-2" aria-label="Menu">
