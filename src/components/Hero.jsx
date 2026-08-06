@@ -1,5 +1,5 @@
 import { useState, Suspense } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import RobotCanvas from './RobotCanvas'
 
 export default function Hero() {
@@ -34,26 +34,20 @@ export default function Hero() {
   const words = infoText.split(" ")
 
   const infoContainerVariants = {
-    hidden: { opacity: 0, maxWidth: 0, marginTop: -120 },
+    hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
-      maxWidth: "56rem", // 896px (max-w-4xl)
-      marginTop: -120, 
       transition: { 
-        maxWidth: { duration: 0.7, ease: "easeInOut" },
-        opacity: { duration: 0.5, delay: 0.7, ease: "easeOut" },
+        duration: 0.5, 
+        delay: 0.5, 
+        ease: "easeOut",
         staggerChildren: 0.04, 
-        delayChildren: 1.0 
+        delayChildren: 0.6 
       }
     },
     exit: { 
       opacity: 0, 
-      maxWidth: 0, 
-      marginTop: -120,
-      transition: { 
-        opacity: { duration: 0.3, ease: "easeOut" },
-        maxWidth: { duration: 0.7, ease: "easeInOut", delay: 0.1 } 
-      } 
+      transition: { duration: 0.3, ease: "easeOut" } 
     }
   }
 
@@ -78,6 +72,7 @@ export default function Hero() {
   return (
     <>
       <section className="relative min-h-screen pt-28 pb-16 flex items-center justify-center gap-8 lg:gap-16 overflow-hidden bg-grid-pattern radial-glow-top">
+        <LayoutGroup>
           {/* Background Ambient Glow Orbs */}
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyber-cyan/10 rounded-full filter blur-[120px] pointer-events-none animate-pulse-glow"></div>
           <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-blue-600/15 rounded-full filter blur-[100px] pointer-events-none"></div>
@@ -241,7 +236,7 @@ export default function Hero() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="overflow-visible relative z-[120]"
+                className="overflow-visible relative z-[120] -mt-[120px]"
               >
                 <div className="glass-card w-[90vw] md:w-[896px] max-w-[896px] rounded-2xl p-8 md:p-12 bg-[#020617]/40 backdrop-blur-md border border-cyber-cyan/30 shadow-[0_0_50px_rgba(0,240,255,0.1)] relative">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-[1px] bg-gradient-to-r from-transparent via-cyber-cyan to-transparent"></div>
@@ -281,6 +276,7 @@ export default function Hero() {
               </motion.div>
             )}
           </AnimatePresence>
+        </LayoutGroup>
       </section>
 
       {/* Video Modal */}
