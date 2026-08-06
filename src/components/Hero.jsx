@@ -1,6 +1,7 @@
 import { useState, Suspense } from 'react'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import RobotCanvas from './RobotCanvas'
+import CustomVideoPlayer from './CustomVideoPlayer'
 
 export default function Hero() {
   const [robotColor, setRobotColor] = useState('#ffffff')
@@ -281,19 +282,16 @@ export default function Hero() {
 
       {/* Video Modal */}
       {isVideoModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
           <div className="relative w-full max-w-5xl aspect-video glass-card rounded-2xl overflow-hidden ring-1 ring-cyber-cyan/30 shadow-[0_0_50px_rgba(0,240,255,0.2)]">
             <button 
               onClick={() => setIsVideoModalOpen(false)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 bg-navy-950/80 rounded-full flex items-center justify-center text-slate-300 hover:text-cyber-cyan hover:bg-slate-800 transition-colors border border-slate-700 hover:border-cyber-cyan"
+              className="absolute top-4 right-4 z-[100] w-10 h-10 bg-navy-950/80 rounded-full flex items-center justify-center text-slate-300 hover:text-cyber-cyan hover:bg-slate-800 transition-colors border border-slate-700 hover:border-cyber-cyan"
             >
               <i className="fa-solid fa-xmark text-lg"></i>
             </button>
             
-            <div className="w-full h-full flex flex-col items-center justify-center bg-navy-900">
-              <i className="fa-solid fa-robot text-6xl text-cyber-cyan/30 mb-4 animate-pulse"></i>
-              <p className="text-cyber-cyan font-mono text-sm tracking-widest">VIDEO FEED STREAMING OFFLINE</p>
-            </div>
+            <CustomVideoPlayer src="/unitree-g1.mp4" />
           </div>
         </div>
       )}
