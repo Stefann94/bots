@@ -2,184 +2,217 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
 
+// Variabile de animație generale (pentru a fi folosite la scroll)
+const fadeUpVariant = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+}
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+}
+
 export default function HumanoidsPage() {
   const containerRef = useRef(null)
   
-  // Track scroll over a huge 600vh container
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  })
-
-  // The scroll indicator will only appear when there's nothing on the screen (the "dark" gaps)
-  const scrollIndicatorOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.02, 0.48, 0.5, 0.52, 0.98, 1],
-    [1, 0,    0,    1,   0,    0,    1]
-  )
-
-  // =====================================
-  // G1 MODEL ANIMATIONS (0% - 50% scroll)
-  // =====================================
-  const g1SpotlightOpacity = useTransform(scrollYProgress, [0, 0.05, 0.45, 0.5], [0, 1, 1, 0])
-  const g1SpotlightScale = useTransform(scrollYProgress, [0, 0.1], [0.5, 1])
-  
-  const g1RobotOpacity = useTransform(scrollYProgress, [0.02, 0.08, 0.45, 0.5], [0, 1, 1, 0])
-  const g1RobotY = useTransform(scrollYProgress, [0, 0.08], [100, 0])
-
-  // F1: Head (10% - 22%)
-  const f1Opacity = useTransform(scrollYProgress, [0.1, 0.12, 0.2, 0.22], [0, 1, 1, 0])
-  const f1X = useTransform(scrollYProgress, [0.1, 0.12], [-50, 0])
-  const f1LineWidth = useTransform(scrollYProgress, [0.1, 0.12], ["0px", "100px"])
-
-  // F2: Hands (22% - 34%)
-  const f2Opacity = useTransform(scrollYProgress, [0.22, 0.24, 0.32, 0.34], [0, 1, 1, 0])
-  const f2X = useTransform(scrollYProgress, [0.22, 0.24], [50, 0])
-  const f2LineWidth = useTransform(scrollYProgress, [0.22, 0.24], ["0px", "100px"])
-
-  // F3: Legs (34% - 46%)
-  const f3Opacity = useTransform(scrollYProgress, [0.34, 0.36, 0.44, 0.46], [0, 1, 1, 0])
-  const f3X = useTransform(scrollYProgress, [0.34, 0.36], [-50, 0])
-  const f3LineWidth = useTransform(scrollYProgress, [0.34, 0.36], ["0px", "100px"])
-
-
-  // =====================================
-  // H1 MODEL ANIMATIONS (50% - 100% scroll)
-  // =====================================
-  const h1SpotlightOpacity = useTransform(scrollYProgress, [0.5, 0.55, 0.95, 1], [0, 1, 1, 0])
-  const h1RobotOpacity = useTransform(scrollYProgress, [0.52, 0.58, 0.95, 1], [0, 1, 1, 0])
-  const h1RobotY = useTransform(scrollYProgress, [0.5, 0.58], [100, 0])
-
-  // H1 F1: Core (60% - 75%)
-  const h1f1Opacity = useTransform(scrollYProgress, [0.6, 0.62, 0.73, 0.75], [0, 1, 1, 0])
-  const h1f1X = useTransform(scrollYProgress, [0.6, 0.62], [50, 0])
-  const h1f1LineWidth = useTransform(scrollYProgress, [0.6, 0.62], ["0px", "120px"])
-
-  // H1 F2: Legs (75% - 90%)
-  const h1f2Opacity = useTransform(scrollYProgress, [0.75, 0.77, 0.88, 0.9], [0, 1, 1, 0])
-  const h1f2X = useTransform(scrollYProgress, [0.75, 0.77], [-50, 0])
-  const h1f2LineWidth = useTransform(scrollYProgress, [0.75, 0.77], ["0px", "120px"])
-
   return (
-    <div ref={containerRef} className="relative h-[600vh] bg-black">
+    <main ref={containerRef} className="bg-black text-white min-h-screen overflow-hidden selection:bg-cyber-cyan/30">
       
-      {/* Fixed UI Layer */}
-      <div className="fixed top-24 left-4 z-50">
-        <Link to="/modele-3d" className="text-slate-400 hover:text-white transition-colors flex items-center gap-2 font-mono text-sm bg-black/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
-          <i className="fa-solid fa-arrow-left"></i> Înapoi la Hub
-        </Link>
-      </div>
-
-      {/* Sticky Container (The "Dark Room") */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+      {/* ------------------------------------------------------------- */}
+      {/* 1. HERO SECTION (Grand Entrance) */}
+      {/* ------------------------------------------------------------- */}
+      <section className="relative w-full h-screen flex flex-col items-center justify-center pt-20">
         
-        {/* ======================================================== */}
-        {/* G1 SPOTLIGHT & ROBOT */}
-        {/* ======================================================== */}
-        <motion.div style={{ opacity: g1SpotlightOpacity, scale: g1SpotlightScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none">
-           {/* The actual light beam */}
-           <div className="w-[800px] h-[800px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyber-cyan/30 via-cyber-cyan/5 to-transparent rounded-full opacity-60 mix-blend-screen"></div>
-        </motion.div>
+        {/* Buton Înapoi */}
+        <div className="absolute top-24 left-4 z-50">
+          <Link to="/modele-3d" className="text-slate-400 hover:text-white transition-colors flex items-center gap-2 font-mono text-sm bg-black/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
+            <i className="fa-solid fa-arrow-left"></i> Hub
+          </Link>
+        </div>
 
-        <motion.div style={{ opacity: g1RobotOpacity, y: g1RobotY }} className="absolute inset-0 flex items-center justify-center">
-            {/* Robot Placeholder Silhouette */}
-            <div className="w-[200px] h-[500px] md:w-[250px] md:h-[600px] bg-gradient-to-b from-slate-800 to-black border border-white/5 shadow-2xl rounded-[100px] flex items-center justify-center relative backdrop-blur-sm z-10">
-                <i className="fa-solid fa-user-astronaut text-6xl text-cyber-cyan/30"></i>
-                <div className="absolute -bottom-10 text-cyber-cyan font-black text-4xl tracking-widest uppercase">G1</div>
-            </div>
-
-            {/* F1: Head / Sensors */}
-            <motion.div style={{ opacity: f1Opacity, x: f1X }} className="absolute top-[20%] right-[55%] md:right-[60%] flex flex-col items-end z-20">
-                <div className="text-right mb-2">
-                    <h3 className="text-cyber-cyan font-bold text-xl uppercase">LiDAR 360°</h3>
-                    <p className="text-slate-400 font-mono text-xs w-48">Senzor ultra-wide pentru mapare spațială 3D în timp real.</p>
-                </div>
-                <div className="flex items-center gap-4">
-                    <motion.div style={{ width: f1LineWidth }} className="h-[1px] bg-cyber-cyan origin-right"></motion.div>
-                    <div className="w-2 h-2 rounded-full bg-cyber-cyan shadow-[0_0_10px_#00f0ff]"></div>
-                </div>
-            </motion.div>
-
-            {/* F2: Dexterous Hands */}
-            <motion.div style={{ opacity: f2Opacity, x: f2X }} className="absolute top-[40%] left-[55%] md:left-[60%] flex flex-col items-start z-20">
-                <div className="text-left mb-2">
-                    <h3 className="text-cyber-cyan font-bold text-xl uppercase">Mâini Dextere</h3>
-                    <p className="text-slate-400 font-mono text-xs w-48">Control precis al forței, capabile să spargă nuci sau să manipuleze ace.</p>
-                </div>
-                <div className="flex items-center gap-4 flex-row-reverse">
-                    <motion.div style={{ width: f2LineWidth }} className="h-[1px] bg-cyber-cyan origin-left"></motion.div>
-                    <div className="w-2 h-2 rounded-full bg-cyber-cyan shadow-[0_0_10px_#00f0ff]"></div>
-                </div>
-            </motion.div>
-
-            {/* F3: Legs */}
-            <motion.div style={{ opacity: f3Opacity, x: f3X }} className="absolute top-[70%] right-[55%] md:right-[60%] flex flex-col items-end z-20">
-                <div className="text-right mb-2">
-                    <h3 className="text-cyber-cyan font-bold text-xl uppercase">Articulații Bionice</h3>
-                    <p className="text-slate-400 font-mono text-xs w-48">Cuplu de până la 140 N.m per articulație pentru alergare viteză.</p>
-                </div>
-                <div className="flex items-center gap-4">
-                    <motion.div style={{ width: f3LineWidth }} className="h-[1px] bg-cyber-cyan origin-right"></motion.div>
-                    <div className="w-2 h-2 rounded-full bg-cyber-cyan shadow-[0_0_10px_#00f0ff]"></div>
-                </div>
-            </motion.div>
-        </motion.div>
-
-        {/* ======================================================== */}
-        {/* H1 SPOTLIGHT & ROBOT */}
-        {/* ======================================================== */}
-        <motion.div style={{ opacity: h1SpotlightOpacity }} className="absolute inset-0 flex items-center justify-center pointer-events-none">
-           <div className="w-[1000px] h-[1000px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-600/20 via-red-900/5 to-transparent rounded-full opacity-60 mix-blend-screen"></div>
-        </motion.div>
-
-        <motion.div style={{ opacity: h1RobotOpacity, y: h1RobotY }} className="absolute inset-0 flex items-center justify-center">
-            {/* Robot Placeholder Silhouette (Bigger) */}
-            <div className="w-[280px] h-[650px] md:w-[320px] md:h-[750px] bg-gradient-to-b from-slate-900 to-black border border-white/5 shadow-2xl rounded-[40px] flex items-center justify-center relative backdrop-blur-sm z-10">
-                <i className="fa-solid fa-robot text-7xl text-red-500/30"></i>
-                <div className="absolute -bottom-10 text-red-500 font-black text-5xl tracking-widest uppercase">H1</div>
-            </div>
-
-            {/* H1 F1: Core Power */}
-            <motion.div style={{ opacity: h1f1Opacity, x: h1f1X }} className="absolute top-[30%] left-[55%] md:left-[60%] flex flex-col items-start z-20">
-                <div className="text-left mb-2">
-                    <h3 className="text-red-400 font-bold text-2xl uppercase">Forță Brută</h3>
-                    <p className="text-slate-400 font-mono text-sm w-64">Construit pentru medii industriale dure. Ridică și manipulează greutăți extreme fără efort.</p>
-                </div>
-                <div className="flex items-center gap-4 flex-row-reverse">
-                    <motion.div style={{ width: h1f1LineWidth }} className="h-[1px] bg-red-500 origin-left"></motion.div>
-                    <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_15px_#ef4444]"></div>
-                </div>
-            </motion.div>
-
-            {/* H1 F2: Legs */}
-            <motion.div style={{ opacity: h1f2Opacity, x: h1f2X }} className="absolute top-[65%] right-[55%] md:right-[60%] flex flex-col items-end z-20">
-                <div className="text-right mb-2">
-                    <h3 className="text-red-400 font-bold text-2xl uppercase">Stabilitate Absolută</h3>
-                    <p className="text-slate-400 font-mono text-sm w-64">Algoritmi AI de ultimă generație asigură echilibrul chiar și când este lovit puternic.</p>
-                </div>
-                <div className="flex items-center gap-4">
-                    <motion.div style={{ width: h1f2LineWidth }} className="h-[1px] bg-red-500 origin-right"></motion.div>
-                    <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_15px_#ef4444]"></div>
-                </div>
-            </motion.div>
-        </motion.div>
-
-        {/* Animated Mouse Scroll Indicator */}
         <motion.div 
-            style={{ opacity: scrollIndicatorOpacity }}
-            className="absolute top-[65%] left-1/2 -translate-x-1/2 flex flex-col items-center z-50 pointer-events-none"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+          className="relative z-20 text-center flex flex-col items-center"
         >
-            <div className="w-8 h-12 border-2 border-white/20 rounded-full flex justify-center p-2 mb-3 backdrop-blur-sm">
-                <motion.div 
-                    animate={{ y: [0, 16, 0] }} 
-                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                    className="w-1.5 h-3 bg-cyber-cyan rounded-full shadow-[0_0_10px_#00f0ff]"
-                />
-            </div>
-            <span className="text-white/50 font-mono text-xs uppercase tracking-widest">Scroll pentru a descoperi</span>
+          <motion.h2 variants={fadeUpVariant} className="text-cyber-cyan font-mono text-sm md:text-base tracking-[0.3em] uppercase mb-4">
+            Unitree G1
+          </motion.h2>
+          <motion.h1 variants={fadeUpVariant} className="text-6xl md:text-8xl font-black tracking-tight mb-6">
+            Viitorul este <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-300 to-slate-500">Biped.</span>
+          </motion.h1>
+          <motion.p variants={fadeUpVariant} className="text-slate-400 max-w-lg text-lg md:text-xl font-light">
+            O capodoperă a ingineriei robotice. Construit pentru a trăi și munci alături de noi.
+          </motion.p>
         </motion.div>
 
-      </div>
-    </div>
+        {/* 2D Image Placeholder (Hero Image) */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9, y: 100 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute bottom-0 w-[400px] md:w-[600px] h-[500px] md:h-[700px] flex items-end justify-center"
+        >
+          {/* Aici va veni imaginea 2D (.png transparent) */}
+          <div className="w-full h-[80%] bg-gradient-to-t from-cyber-cyan/20 to-transparent rounded-t-full relative flex items-center justify-center overflow-hidden border-t border-cyber-cyan/10">
+             <i className="fa-solid fa-robot text-9xl text-cyber-cyan/20"></i>
+             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyber-cyan/10 via-transparent to-transparent"></div>
+          </div>
+        </motion.div>
+        
+        {/* Glow din spate */}
+        <div className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-cyber-cyan/10 rounded-full blur-[150px] pointer-events-none"></div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 2. BENTO GRID SECTION (Specs) */}
+      {/* ------------------------------------------------------------- */}
+      <section className="relative w-full py-32 px-6 md:px-12 max-w-7xl mx-auto z-10">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          
+          {/* Card 1: Viteză (Col-span-2) */}
+          <motion.div variants={fadeUpVariant} className="md:col-span-2 bg-white/[0.02] border border-white/10 rounded-[32px] p-10 hover:bg-white/[0.04] transition-colors relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+               <i className="fa-solid fa-bolt text-8xl text-cyber-cyan"></i>
+            </div>
+            <h3 className="text-5xl font-black mb-2">3.3 m/s</h3>
+            <p className="text-slate-400 font-mono text-sm tracking-widest uppercase mb-6">Viteză de deplasare</p>
+            <p className="text-slate-300 font-light max-w-md">Echipat cu actuatoare ultra-performante ce permit alergare, sărituri și recuperare instantanee a echilibrului în orice condiții.</p>
+          </motion.div>
+
+          {/* Card 2: Baterie */}
+          <motion.div variants={fadeUpVariant} className="bg-white/[0.02] border border-white/10 rounded-[32px] p-10 hover:bg-white/[0.04] transition-colors flex flex-col justify-between">
+            <div>
+              <i className="fa-solid fa-battery-full text-cyber-cyan text-3xl mb-4"></i>
+              <h3 className="text-3xl font-bold mb-2">Schimbare Rapidă</h3>
+            </div>
+            <p className="text-slate-400 text-sm font-light">Sistem modular de baterii (9000mAh) interschimbabile on-the-fly pentru o funcționare non-stop.</p>
+          </motion.div>
+
+          {/* Card 3: LiDAR */}
+          <motion.div variants={fadeUpVariant} className="bg-white/[0.02] border border-white/10 rounded-[32px] p-10 hover:bg-white/[0.04] transition-colors">
+             <i className="fa-solid fa-radar text-cyber-cyan text-3xl mb-4"></i>
+             <h3 className="text-2xl font-bold mb-2">LiDAR 360°</h3>
+             <p className="text-slate-400 text-sm font-light">Cartografierea precisă a spațiului cu senzori Mid-360 integrați direct în craniu.</p>
+          </motion.div>
+
+          {/* Card 4: Maini Dextere (Col-span-2) */}
+          <motion.div variants={fadeUpVariant} className="md:col-span-2 bg-gradient-to-br from-cyber-cyan/10 to-transparent border border-cyber-cyan/20 rounded-[32px] p-10 relative overflow-hidden">
+             <h3 className="text-4xl font-black mb-2 text-cyber-cyan">Dexteritate Extremă</h3>
+             <p className="text-slate-300 font-light max-w-sm">Mâini capabile să manevreze un ou fără să-l spargă, sau să spargă o nucă cu precizie chirurgicală.</p>
+             
+             {/* Abstract Hand Placeholder */}
+             <div className="absolute right-[-20%] bottom-[-20%] w-64 h-64 border border-cyber-cyan/30 rounded-full flex items-center justify-center opacity-50">
+                <i className="fa-solid fa-hand-sparkles text-6xl text-cyber-cyan"></i>
+             </div>
+          </motion.div>
+
+        </motion.div>
+      </section>
+
+
+      {/* ------------------------------------------------------------- */}
+      {/* 3. STICKY SCROLL SECTION (Deep Dive) */}
+      {/* ------------------------------------------------------------- */}
+      <section className="relative w-full">
+         <div className="max-w-7xl mx-auto flex flex-col md:flex-row relative">
+            
+            {/* Partea stângă: Imaginea Sticky */}
+            <div className="w-full md:w-1/2 h-screen sticky top-0 flex items-center justify-center p-12">
+               <div className="w-full h-full max-h-[600px] bg-white/[0.03] border border-white/5 rounded-3xl overflow-hidden relative flex items-center justify-center">
+                  <span className="text-white/20 font-mono text-sm uppercase tracking-widest absolute top-4 left-4">Sistem Central</span>
+                  <i className="fa-solid fa-microchip text-9xl text-slate-700"></i>
+                  {/* Poți pune imagine cu robotul aici */}
+               </div>
+            </div>
+
+            {/* Partea dreaptă: Text care curge (Paragrafe) */}
+            <div className="w-full md:w-1/2 py-[50vh] px-6 md:px-12 flex flex-col gap-[50vh]">
+               
+               <motion.div initial={{ opacity: 0.2 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.5 }} viewport={{ margin: "-40%" }}>
+                 <h2 className="text-4xl font-bold mb-4">Învățare prin Inteligență Artificială</h2>
+                 <p className="text-xl text-slate-400 font-light leading-relaxed">Unitree G1 nu este doar programat. Este antrenat în medii de simulare masive, folosind Reinforcement Learning. Învață să meargă, să se ridice și să reacționeze la mediul înconjurător prin mii de ore de simulare comprimată.</p>
+               </motion.div>
+
+               <motion.div initial={{ opacity: 0.2 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.5 }} viewport={{ margin: "-40%" }}>
+                 <h2 className="text-4xl font-bold mb-4">Construit să reziste</h2>
+                 <p className="text-xl text-slate-400 font-light leading-relaxed">Cablajul este ascuns pe interior, protejat complet de mediul extern. Articulațiile au un cuplu uimitor care absoarbe șocurile și impacturile severe fără a afecta integritatea sistemului.</p>
+               </motion.div>
+
+               <motion.div initial={{ opacity: 0.2 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.5 }} viewport={{ margin: "-40%" }}>
+                 <h2 className="text-4xl font-bold mb-4">Open Source Ready</h2>
+                 <p className="text-xl text-slate-400 font-light leading-relaxed">Oferă suport complet pentru medii de cercetare și dezvoltare secundară, facilitând integrarea cu algoritmii tăi personalizați prin API-uri robuste.</p>
+               </motion.div>
+
+            </div>
+         </div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 4. GALERIE PARALLAX */}
+      {/* ------------------------------------------------------------- */}
+      <section className="relative w-full py-32 overflow-hidden">
+         <div className="max-w-7xl mx-auto px-6 mb-16">
+           <h2 className="text-4xl font-black">Proiectat pentru Perfecțiune.</h2>
+         </div>
+         
+         <div className="flex gap-6 px-6 overflow-x-auto pb-8 snap-x hide-scrollbar">
+            {/* Imagine 1 */}
+            <div className="min-w-[80vw] md:min-w-[60vw] h-[500px] bg-slate-900 rounded-3xl snap-center relative overflow-hidden group">
+               <div className="absolute inset-0 bg-white/5 group-hover:scale-105 transition-transform duration-1000 flex items-center justify-center">
+                  <span className="text-white/20 font-mono">Imagine Detaliu 1</span>
+               </div>
+            </div>
+            {/* Imagine 2 */}
+            <div className="min-w-[80vw] md:min-w-[60vw] h-[500px] bg-slate-900 rounded-3xl snap-center relative overflow-hidden group">
+               <div className="absolute inset-0 bg-white/5 group-hover:scale-105 transition-transform duration-1000 flex items-center justify-center">
+                  <span className="text-white/20 font-mono">Imagine Detaliu 2</span>
+               </div>
+            </div>
+         </div>
+      </section>
+
+
+      {/* ------------------------------------------------------------- */}
+      {/* 5. H1 REVEAL SECTION */}
+      {/* ------------------------------------------------------------- */}
+      <section className="relative w-full min-h-screen flex items-center justify-center py-32 bg-gradient-to-b from-black to-red-950">
+         <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-200px" }}
+            variants={staggerContainer}
+            className="text-center z-10 px-6"
+         >
+            <motion.p variants={fadeUpVariant} className="text-red-500 font-mono text-sm tracking-[0.3em] uppercase mb-4">Forță Industrială</motion.p>
+            <motion.h2 variants={fadeUpVariant} className="text-6xl md:text-8xl font-black mb-6">Unitree H1</motion.h2>
+            <motion.p variants={fadeUpVariant} className="text-red-200/60 max-w-xl mx-auto text-lg mb-10">
+               Fratele mai mare. Conceput pentru cele mai dure medii industriale, oferind stabilitate absolută și putere masivă.
+            </motion.p>
+            
+            <motion.div variants={fadeUpVariant}>
+               <button className="bg-red-600 hover:bg-red-500 text-white px-8 py-4 rounded-full font-bold transition-colors">
+                 Descoperă H1
+               </button>
+            </motion.div>
+         </motion.div>
+
+         {/* Abstract H1 Background Element */}
+         <div className="absolute inset-0 flex flex-col items-center justify-end pointer-events-none opacity-20">
+            <div className="w-[400px] h-[600px] border-t border-x border-red-500/30 rounded-t-[100px] flex items-center justify-center bg-red-500/5 backdrop-blur-3xl">
+               <i className="fa-solid fa-robot text-9xl text-red-500/20"></i>
+            </div>
+         </div>
+      </section>
+
+    </main>
   )
 }

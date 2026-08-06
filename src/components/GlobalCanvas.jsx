@@ -1,10 +1,18 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
+import { useLocation } from 'react-router-dom'
 import ParticleSystem from './ParticleSystem'
 import ObserverRobot from './ObserverRobot'
 
 export default function GlobalCanvas() {
+  const location = useLocation()
+  const isModelsPage = location.pathname === '/modele-3d'
+
+  // Dacă suntem pe pagina de modele, nu afișăm stelele globale și robotul,
+  // pentru că acolo avem propriul fundal și propriul design.
+  if (isModelsPage) return null;
+
   return (
     <div className="fixed inset-0 pointer-events-none z-[100]">
       <Canvas 
