@@ -1,28 +1,21 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import GlobalCanvas from './components/GlobalCanvas'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import RobotSeries from './components/RobotSeries'
-import AgiBotSeries from './components/AgiBotSeries'
-import Features from './components/Features'
-import Applications from './components/Applications'
-import Specs from './components/Specs'
-import Contact from './components/Contact'
 import Footer from './components/Footer'
+import Home from './pages/Home'
+import RobotsPage from './pages/RobotsPage'
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <GlobalCanvas />
       <Navbar />
-      <Hero />
-      <RobotSeries />
-      <AgiBotSeries />
-      <Features />
-      <Applications />
-      <Specs />
-      <Contact />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/umanoizi" element={<RobotsPage />} />
+      </Routes>
       <Footer />
-    </>
+    </BrowserRouter>
   )
 }
 

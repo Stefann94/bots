@@ -2,6 +2,7 @@ import { useState, Suspense } from 'react'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import RobotCanvas from './RobotCanvas'
 import CustomVideoPlayer from './CustomVideoPlayer'
+import { Link } from 'react-router-dom'
 
 export default function Hero() {
   const [robotColor, setRobotColor] = useState('#ffffff')
@@ -126,12 +127,12 @@ export default function Hero() {
                   </motion.p>
 
                   <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-                      <button className="group relative w-full sm:w-auto px-8 py-3.5 bg-cyber-cyan text-navy-950 text-sm font-bold tracking-widest uppercase rounded-md overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(0,240,255,0.4)]">
+                      <Link to="/umanoizi" className="group relative w-full sm:w-auto px-8 py-3.5 bg-cyber-cyan text-navy-950 text-sm font-bold tracking-widest uppercase rounded-md overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(0,240,255,0.4)]">
                           <span className="relative z-10 flex items-center justify-center gap-2">
                               Explorează Umanoizii <i className="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
                           </span>
                           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
-                      </button>
+                      </Link>
                       
                       <button 
                         onClick={() => setIsVideoModalOpen(true)}
