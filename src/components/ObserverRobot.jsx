@@ -69,18 +69,26 @@ export default function ObserverRobot() {
     mousePos.unproject(state.camera)
     const dir = mousePos.sub(state.camera.position).normalize()
 
-    // Găsim intersecția razei cu un plan virtual aflat la Z = 3.5 
-    // (Acesta reprezintă "geamul" ecranului la care se uită robotul)
-    const targetZ = 3.5
+    // Găsim intersecția razei cu un plan virtual foarte apropiat de el (Z = 1.0)
+    // Aducând planul mai aproape, unghiurile devin mult mai abrupte/sensibile
+    const targetZ = 1.0
     const distance = (targetZ - state.camera.position.z) / dir.z
     target.copy(state.camera.position).add(dir.multiplyScalar(distance))
+
+    // Amplificăm mișcarea stânga/dreapta pentru o "sensibilitate" ridicată
+    // Deoarece în dreapta ecranul se termină repede, exagerăm intenția utilizatorului!
+    if (target.x > posX) {
+      target.x = posX + (target.x - posX) * 3.5 // Hiper-sensibil în dreapta
+    } else {
+      target.x = posX + (target.x - posX) * 1.5 // Foarte sensibil în stânga
+    }
 
     if (headRef.current) {
       const currentQuat = headRef.current.quaternion.clone()
       headRef.current.lookAt(target)
       const targetQuat = headRef.current.quaternion.clone()
       headRef.current.quaternion.copy(currentQuat)
-      headRef.current.quaternion.slerp(targetQuat, 0.2) // Viteză mare de reacție
+      headRef.current.quaternion.slerp(targetQuat, 0.4) // Reflexe fulgerătoare
     }
 
     if (neckRef.current) {
@@ -88,7 +96,7 @@ export default function ObserverRobot() {
       neckRef.current.lookAt(target)
       const targetQuat = neckRef.current.quaternion.clone()
       neckRef.current.quaternion.copy(currentQuat)
-      neckRef.current.quaternion.slerp(targetQuat, 0.1)
+      neckRef.current.quaternion.slerp(targetQuat, 0.2) // Reflexe fulgerătoare
     }
   })
 
