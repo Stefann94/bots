@@ -1,11 +1,12 @@
 import { useState, Suspense } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import RobotCanvas from './RobotCanvas'
 
 export default function Hero() {
   const [robotColor, setRobotColor] = useState('#ffffff')
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
   const [isColorMenuOpen, setIsColorMenuOpen] = useState(false)
+  const [isInfoExpanded, setIsInfoExpanded] = useState(false)
 
   const colors = [
     { name: 'Glossy White', value: '#ffffff' },
@@ -27,6 +28,30 @@ export default function Hero() {
         delayChildren: 0.2,
       }
     }
+  }
+
+  const infoText = "Unitree G1 Industrial represents the pinnacle of autonomous robotics. Equipped with advanced neural processing, 3D LiDAR, and unparalleled agility, it is designed to seamlessly integrate into high-risk industrial environments, research facilities, and complex automation workflows."
+  const words = infoText.split(" ")
+
+  const infoContainerVariants = {
+    hidden: { height: 0, opacity: 0, marginTop: 0 },
+    visible: { 
+      height: "auto", 
+      opacity: 1,
+      marginTop: 48, // mt-12
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], staggerChildren: 0.04, delayChildren: 0.4 }
+    },
+    exit: { 
+      height: 0, 
+      opacity: 0, 
+      marginTop: 0,
+      transition: { duration: 0.4, ease: "easeInOut" } 
+    }
+  }
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 15, filter: "blur(4px)" },
+    visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.4 } }
   }
 
   const itemVariants = {
@@ -52,13 +77,13 @@ export default function Hero() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               
               {/* Left Hero Content */}
-              <motion.div 
-                className="relative w-full lg:col-span-6 flex flex-col justify-center gap-6 lg:gap-8 text-center lg:text-left z-10 pt-6 lg:pt-0"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.2 }}
-              >
+                <motion.div 
+                  className="relative w-full lg:col-span-6 flex flex-col justify-center gap-6 lg:gap-8 text-center lg:text-left z-10 pt-6 lg:pt-0"
+                  variants={containerVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.2 }}
+                >
                   {/* Floating ambient blur OVER the text (Top Left constrained) */}
                   <motion.div 
                     animate={{ 
@@ -112,8 +137,8 @@ export default function Hero() {
                   </motion.div>
               </motion.div>
 
-              {/* Right 3D Interactive Container */}
-              <div className="lg:col-span-6 relative z-[110] w-full">
+                {/* Right 3D Interactive Container */}
+                <div className="lg:col-span-6 relative z-[110] w-full">
                   {/* Floating ambient blur (Background behind the card) */}
                   <motion.div 
                     animate={{ 
@@ -180,8 +205,70 @@ export default function Hero() {
                           <div>POWER: <span className="text-cyber-cyan">98%</span></div>
                       </div>
                   </div>
+
+                  {/* Buton "View More About Unitree" adăugat sub chenar */}
+                  <div className="mt-6 w-full flex justify-start">
+                      <button 
+                        onClick={() => setIsInfoExpanded(!isInfoExpanded)}
+                        className={`group relative px-6 py-3 bg-navy-950/50 backdrop-blur-sm border ${isInfoExpanded ? 'border-cyber-cyan shadow-[0_0_20px_rgba(0,240,255,0.2)]' : 'border-cyber-cyan/40'} text-cyber-cyan text-xs font-mono font-bold tracking-widest uppercase rounded-lg overflow-hidden transition-all hover:bg-cyber-cyan/10 hover:border-cyber-cyan hover:shadow-[0_0_25px_rgba(0,240,255,0.3)]`}
+                      >
+                          <div className="flex items-center gap-3">
+                              <span>VIEW MORE ABOUT UNITREE</span>
+                              <i className="fa-solid fa-arrow-right text-[10px] transition-transform group-hover:translate-x-1"></i>
+                          </div>
+                      </button>
+                  </div>
               </div>
           </div>
+
+          {/* Animated Info Section Below Hero */}
+          <AnimatePresence>
+            {isInfoExpanded && (
+              <motion.div
+                variants={infoContainerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="w-full max-w-4xl mx-auto px-4 overflow-hidden"
+              >
+                <div className="glass-card rounded-2xl p-8 md:p-12 border border-cyber-cyan/30 shadow-[0_0_50px_rgba(0,240,255,0.1)] relative">
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-[1px] bg-gradient-to-r from-transparent via-cyber-cyan to-transparent"></div>
+                  
+                  <div className="flex items-center gap-3 mb-6">
+                    <i className="fa-solid fa-microchip text-cyber-cyan animate-pulse"></i>
+                    <h3 className="text-white font-mono text-lg tracking-widest uppercase">System Specifications</h3>
+                  </div>
+                  
+                  <div className="flex flex-wrap text-slate-300 font-light leading-relaxed text-lg md:text-xl">
+                    {words.map((word, i) => (
+                      <motion.span key={i} variants={wordVariants} className="mr-2 mb-2 inline-block">
+                        {word}
+                      </motion.span>
+                    ))}
+                  </div>
+
+                  <motion.div 
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    animate={{ scaleX: 1, opacity: 1 }}
+                    transition={{ delay: 2.5, duration: 1 }}
+                    className="mt-8 pt-6 border-t border-slate-700/50 grid grid-cols-2 md:grid-cols-4 gap-4"
+                  >
+                    {[
+                      { label: "TORQUE", val: "120 Nm" },
+                      { label: "PAYLOAD", val: "35 KG" },
+                      { label: "LATENCY", val: "< 5ms" },
+                      { label: "UPTIME", val: "24/7" }
+                    ].map((stat, i) => (
+                      <div key={i} className="text-center">
+                        <div className="text-cyber-cyan font-mono text-xs mb-1">{stat.label}</div>
+                        <div className="text-white font-bold tracking-wider">{stat.val}</div>
+                      </div>
+                    ))}
+                  </motion.div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
       </section>
 
       {/* Video Modal */}
