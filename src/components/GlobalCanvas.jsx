@@ -28,8 +28,8 @@ export default function GlobalCanvas() {
         <pointLight position={[-10, -10, -5]} intensity={1.5} color="#00f0ff" />
 
         <Suspense fallback={null}>
-          {/* Environment-ul HDRI oferă reflexiile ultra-realiste pentru materialele lucioase (metalness) */}
-          <Environment preset="city" />
+          {/* Environment-ul HDRI încărcat local pentru viteză maximă */}
+          <Environment files="/city.hdr" />
           
           {/* Particulele pe tot fundalul */}
           <ParticleSystem />

@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, useGLTF, Environment, Grid, Html } from '@react-three/drei'
 import * as THREE from 'three'
 
-useGLTF.preload('/models/quadruped.glb')
+
 
 function RealQuadrupedModel({ robotColor }) {
   const groupRef = useRef()
@@ -82,7 +82,7 @@ export default function QuadrupedCanvas({ robotColor }) {
         <directionalLight position={[5, 8, 5]} intensity={2.5} color="#ffffff" />
         <pointLight position={[-3, 2, -3]} intensity={2} color="#00f0ff" distance={15} />
         
-        <Environment preset="city" />
+        <Environment files="/city.hdr" />
         
         {/* Grid-ul subtil original – renderOrder negativ forțează randarea înainte de robot */}
         <Grid 

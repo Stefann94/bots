@@ -8,6 +8,12 @@ import HumanoidsPage from './pages/HumanoidsPage'
 import QuadrupedsPage from './pages/QuadrupedsPage'
 import AIPage from './pages/AIPage'
 
+import { useGLTF } from '@react-three/drei'
+
+// Preload globale pentru viteza de încărcare: browserul le va descărca imediat
+useGLTF.preload('/robot.glb')
+useGLTF.preload('/models/quadruped.glb')
+
 function App() {
   return (
     <BrowserRouter>
