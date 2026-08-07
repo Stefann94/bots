@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import ModelsHumanoidSection from '../components/ModelsHumanoidSection'
 import ModelsQuadrupedSection from '../components/ModelsQuadrupedSection'
 import ModelsQuadrupedDeepDive from '../components/ModelsQuadrupedDeepDive'
+import ModelsQuadruped3D from '../components/ModelsQuadruped3D'
 // --- Variabile de Animație ---
 const fadeUpVariant = {
   hidden: { opacity: 0, y: 50 },
@@ -192,6 +193,9 @@ export default function RobotsPage() {
 
           {/* DEEP DIVE PATRUPEDE (STICKY SCROLL) */}
           <ModelsQuadrupedDeepDive />
+
+          {/* SHOWCASE 3D INTERACTIV */}
+          <ModelsQuadruped3D />
       </div>
 
     </main>
