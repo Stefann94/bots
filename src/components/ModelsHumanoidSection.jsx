@@ -73,7 +73,6 @@ const OrbitalRings = () => (
   </motion.div>
 )
 
-// Card individual pentru Anatomia Holografică
 const BlueprintCard = ({ title, text, align = 'left', delay = 0 }) => (
   <motion.div 
     initial={{ opacity: 0, x: align === 'left' ? -50 : 50 }}
@@ -82,24 +81,30 @@ const BlueprintCard = ({ title, text, align = 'left', delay = 0 }) => (
     transition={{ duration: 0.8, delay }}
     className={`relative z-20 flex flex-col ${align === 'left' ? 'md:items-end md:text-right text-left items-start' : 'items-start text-left'}`}
   >
-    {/* Data Line (Laser) conectat la robot */}
-    <div className={`absolute top-1/2 -translate-y-1/2 ${align === 'left' ? '-right-12' : '-left-12'} w-3 h-3 bg-cyber-cyan rounded-full shadow-[0_0_15px_rgba(0,240,255,1)] hidden md:block`}>
-        <div className="absolute inset-0 bg-cyber-cyan rounded-full animate-ping opacity-50"></div>
-        {/* Animated Beam */}
-        <div className={`absolute top-1/2 -translate-y-1/2 h-[1px] ${align === 'left' ? 'bg-gradient-to-r from-cyber-cyan to-transparent left-full' : 'bg-gradient-to-l from-cyber-cyan to-transparent right-full'} w-32 lg:w-48 opacity-40 overflow-hidden`}>
-             <motion.div 
-                className="h-full w-full bg-white shadow-[0_0_10px_rgba(255,255,255,1)]"
-                animate={{ x: align === 'left' ? ['-100%', '200%'] : ['100%', '-200%'] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
-             />
-        </div>
-    </div>
+    <motion.div
+      animate={{ y: [-8, 8, -8] }}
+      transition={{ duration: 5 + delay, repeat: Infinity, ease: "easeInOut" }}
+      className={`relative flex flex-col w-full ${align === 'left' ? 'md:items-end md:text-right text-left items-start' : 'items-start text-left'}`}
+    >
+      {/* Data Line (Laser) conectat la robot */}
+      <div className={`absolute top-1/2 -translate-y-1/2 ${align === 'left' ? '-right-12' : '-left-12'} w-3 h-3 bg-cyber-cyan rounded-full shadow-[0_0_15px_rgba(0,240,255,1)] hidden md:block`}>
+          <div className="absolute inset-0 bg-cyber-cyan rounded-full animate-ping opacity-50"></div>
+          {/* Animated Beam */}
+          <div className={`absolute top-1/2 -translate-y-1/2 h-[1px] ${align === 'left' ? 'bg-gradient-to-r from-cyber-cyan to-transparent left-full' : 'bg-gradient-to-l from-cyber-cyan to-transparent right-full'} w-32 lg:w-48 opacity-40 overflow-hidden`}>
+               <motion.div 
+                  className="h-full w-full bg-white shadow-[0_0_10px_rgba(255,255,255,1)]"
+                  animate={{ x: align === 'left' ? ['-100%', '200%'] : ['100%', '-200%'] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+               />
+          </div>
+      </div>
 
-    {/* Caseta de text */}
-    <div className="bg-[#060D1F]/80 backdrop-blur-md p-6 rounded-2xl border border-cyber-cyan/20 shadow-[0_0_30px_rgba(0,240,255,0.05)] max-w-sm hover:border-cyber-cyan/50 hover:shadow-[0_0_40px_rgba(0,240,255,0.15)] transition-all duration-500 group">
-        <h4 className="text-xl font-bold text-white mb-2 group-hover:text-cyber-cyan transition-colors">{title}</h4>
-        <p className="text-slate-400 text-sm leading-relaxed">{text}</p>
-    </div>
+      {/* Caseta de text */}
+      <div className="bg-[#060D1F]/80 backdrop-blur-md p-6 rounded-2xl border border-cyber-cyan/20 shadow-[0_0_30px_rgba(0,240,255,0.05)] max-w-sm hover:border-cyber-cyan/50 hover:shadow-[0_0_40px_rgba(0,240,255,0.15)] transition-all duration-500 group">
+          <h4 className="text-xl font-bold text-white mb-2 group-hover:text-cyber-cyan transition-colors">{title}</h4>
+          <p className="text-slate-400 text-sm leading-relaxed">{text}</p>
+      </div>
+    </motion.div>
   </motion.div>
 )
 
@@ -273,7 +278,7 @@ export default function ModelsHumanoidSection() {
                  initial={{ opacity: 0, y: 30 }}
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
-                 className="text-center mb-24 relative z-20"
+                 className="text-center mb-8 relative z-20"
                >
                    <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase mb-4">
                        Anatomie <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan to-blue-500 drop-shadow-[0_0_20px_rgba(0,240,255,0.5)]">Digitală</span>
