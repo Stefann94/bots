@@ -80,19 +80,61 @@ export default function Applications() {
     }
   }
 
+  const sectionVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.25
+      }
+    }
+  }
+
+  // Scanner Wipe Effect for Title
+  const titleScanner = {
+    hidden: { opacity: 0, clipPath: "inset(0% 50% 0% 50%)", scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      clipPath: "inset(0% 0% 0% 0%)",
+      scale: 1,
+      transition: { duration: 1.2, ease: [0.25, 1, 0.5, 1] } 
+    }
+  }
+
+  const tabsFade = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  }
+
+  // Vertical Laser Scanner Wipe for the Main Card
+  const cardScanner = {
+    hidden: { opacity: 0, clipPath: "inset(0% 0% 100% 0%)", scale: 1.05 },
+    visible: { 
+      opacity: 1, 
+      clipPath: "inset(0% 0% 0% 0%)", 
+      scale: 1,
+      transition: { duration: 1.5, ease: [0.25, 1, 0.5, 1] } 
+    }
+  }
+
   return (
     <section id="applications" className="py-24 relative bg-navy-950/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-12">
+        <motion.div 
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
+            variants={sectionVariants}
+        >
+            <motion.div variants={titleScanner} className="text-center max-w-3xl mx-auto mb-12">
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
                     Aplicații Industriale (Enterprise)
                 </h2>
                 <p className="text-slate-400 text-base mt-4">
                     De la podeaua fabricii până la manipularea materialelor periculoase, platforma noastră înlocuiește infrastructura rigidă cu automatizare adaptivă.
                 </p>
-            </div>
+            </motion.div>
 
-            <div className="flex justify-center overflow-x-auto gap-2 mb-8 pb-2">
+            <motion.div variants={tabsFade} className="flex justify-center overflow-x-auto gap-2 mb-8 pb-2">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
@@ -106,9 +148,10 @@ export default function Applications() {
                       <i className={`fa-solid ${tab.icon} mr-2`}></i> {tab.label}
                   </button>
                 ))}
-            </div>
+            </motion.div>
 
-            <div 
+            <motion.div 
+              variants={cardScanner}
               className="glass-card rounded-2xl p-8 border border-cyber-cyan/20 overflow-hidden"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
@@ -146,10 +189,10 @@ export default function Applications() {
                       </div>
                   </motion.div>
                 </AnimatePresence>
-            </div>
+            </motion.div>
 
             {/* Pagination / Progress Bars */}
-            <div className="flex justify-center items-center gap-3 mt-8">
+            <motion.div variants={tabsFade} className="flex justify-center items-center gap-3 mt-8">
                 {tabs.map((tab) => {
                     const isActive = activeTab === tab.id;
                     return (
@@ -167,8 +210,8 @@ export default function Applications() {
                         </div>
                     )
                 })}
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     </section>
   )
 }
