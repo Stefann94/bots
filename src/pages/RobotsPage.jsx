@@ -49,12 +49,18 @@ const Sparkles = ({ color }) => {
 
 export default function RobotsPage() {
   const [hoveredCategory, setHoveredCategory] = useState(null)
+  const [isScrolling, setIsScrolling] = useState(false)
   
   const scrollToSection = (id) => {
     const element = document.getElementById(id)
     if (element) {
-      // Offset for a smaller header if needed
-      element.scrollIntoView({ behavior: 'smooth' })
+      setIsScrolling(true);
+      element.scrollIntoView({ behavior: 'smooth' });
+      
+      // Re-enable pointer events after scroll animation completes (~1s)
+      setTimeout(() => {
+        setIsScrolling(false);
+      }, 1000);
     }
   }
 
@@ -80,7 +86,7 @@ export default function RobotsPage() {
             onClick={() => scrollToSection('umanoizi')}
             onMouseEnter={() => setHoveredCategory('umanoizi')}
             onMouseLeave={() => setHoveredCategory(null)}
-            className="group relative flex-1 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-white/5 cursor-pointer transition-all duration-500 overflow-hidden"
+            className="group relative flex-1 flex flex-col items-center justify-center cursor-pointer transition-all duration-500 overflow-hidden"
           >
             {/* Background Image Specific */}
             <div className={`absolute inset-0 bg-[url('/images/humanoid_bg.png')] bg-cover bg-[center_top_15%] md:bg-top transition-all duration-700 ease-in-out ${hoveredCategory === 'umanoizi' ? 'grayscale-0' : 'grayscale-[50%]'}`}></div>
@@ -101,7 +107,7 @@ export default function RobotsPage() {
             onClick={() => scrollToSection('patrupede')}
             onMouseEnter={() => setHoveredCategory('patrupede')}
             onMouseLeave={() => setHoveredCategory(null)}
-            className="group relative flex-1 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-white/5 cursor-pointer transition-all duration-500 overflow-hidden"
+            className="group relative flex-1 flex flex-col items-center justify-center cursor-pointer transition-all duration-500 overflow-hidden"
           >
             {/* Background Image Specific */}
             <div className={`absolute inset-0 bg-[url('/images/quadruped_bg.png')] bg-cover bg-center transition-all duration-700 ease-in-out ${hoveredCategory === 'patrupede' ? 'grayscale-0' : 'grayscale-[50%]'}`}></div>
@@ -178,7 +184,8 @@ export default function RobotsPage() {
       </div>
 
       {/* CONTINUT CENTRAL PE FUNDAL INCHIS (Stil Boxed) */}
-      <div className="max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 pb-10 mt-16 mb-8 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
+      <div className={`transition-all duration-300 ${isScrolling ? 'pointer-events-none' : ''}`}>
+        <div id="umanoizi" className="scroll-mt-24 max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 pb-10 mt-16 mb-8 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
 
       {/* ========================================================= */}
       {/* 2. SECȚIUNEA UMANOIZI */}
@@ -188,7 +195,7 @@ export default function RobotsPage() {
       </div> {/* End Continut Central */}
 
       {/* CONTINUT CENTRAL PATRUPEDE */}
-      <div className="max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 pb-32 mb-10 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
+      <div id="patrupede" className="scroll-mt-24 max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 pb-32 mb-10 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
           <ModelsQuadrupedSection />
 
           {/* DEEP DIVE PATRUPEDE (STICKY SCROLL) */}
@@ -197,6 +204,13 @@ export default function RobotsPage() {
           {/* SHOWCASE 3D INTERACTIV */}
           <ModelsQuadruped3D />
       </div>
+
+      {/* CONTINUT CENTRAL AI CORE (Placeholder for upcoming components) */}
+      <div id="ai" className="scroll-mt-24 max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 pb-32 mb-10 shadow-[0_0_50px_rgba(0,0,0,0.3)] min-h-[50vh]">
+          {/* Aici vom insera componentele pentru AI Core conform planului ales */}
+      </div>
+
+      </div> {/* End Pointer Events Wrapper */}
 
     </main>
   )
