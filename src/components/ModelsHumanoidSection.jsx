@@ -108,6 +108,161 @@ const BlueprintCard = ({ title, text, align = 'left', delay = 0 }) => (
   </motion.div>
 )
 
+const DualCoreAccordion = () => {
+    const [hoveredIndex, setHoveredIndex] = useState(null);
+
+    const panels = [
+        {
+            title: "Independență Edge AI",
+            subtitle: "Autonomie Cognitivă",
+            image: "/images/ai_autonomous_mode.png",
+            borderColor: "border-cyber-cyan/20",
+            hoverBorderColor: "hover:border-cyber-cyan/50",
+            textColor: "text-cyber-cyan",
+            overlayColor: "bg-cyber-cyan",
+            icon: "fa-microchip",
+            content: (
+                <div className="space-y-6">
+                    <div className="flex gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-cyber-cyan/10 border border-cyber-cyan/30 flex items-center justify-center shrink-0">
+                            <i className="fa-solid fa-brain text-cyber-cyan"></i>
+                        </div>
+                        <div>
+                            <h4 className="text-white font-bold mb-1 whitespace-normal">Decizii Procesate Local</h4>
+                            <p className="text-slate-300 text-sm whitespace-normal">Analiză vizuală 100% on-board prin unitatea Neural Processing, navigând fabricile fără latență la servere.</p>
+                        </div>
+                    </div>
+                    <div className="flex gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-cyber-cyan/10 border border-cyber-cyan/30 flex items-center justify-center shrink-0">
+                            <i className="fa-solid fa-eye text-cyber-cyan"></i>
+                        </div>
+                        <div>
+                            <h4 className="text-white font-bold mb-1 whitespace-normal">Semantic Mapping</h4>
+                            <p className="text-slate-300 text-sm whitespace-normal">Creierul AI identifică instantaneu operatorii, stivuitoarele și obstacolele, creând traiectorii sigure.</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        },
+        {
+            title: "Simbioză Om-Mașină",
+            subtitle: "Teleoperare Shadow VR",
+            image: "/images/vr_teleoperation_mode.png",
+            borderColor: "border-purple-500/20",
+            hoverBorderColor: "hover:border-purple-500/50",
+            textColor: "text-purple-400",
+            overlayColor: "bg-purple-500",
+            icon: "fa-vr-cardboard",
+            content: (
+                <div className="space-y-6">
+                    <div className="flex gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center shrink-0">
+                            <i className="fa-solid fa-hand-holding-hand text-purple-400"></i>
+                        </div>
+                        <div>
+                            <h4 className="text-white font-bold mb-1 whitespace-normal">Control Haptic Ultra-Precis</h4>
+                            <p className="text-slate-300 text-sm whitespace-normal">Mănușile operatorului preiau 1-la-1 forța și unghiul, transformând robotul într-un avatar digital invulnerabil.</p>
+                        </div>
+                    </div>
+                    <div className="flex gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center shrink-0">
+                            <i className="fa-solid fa-biohazard text-purple-400"></i>
+                        </div>
+                        <div>
+                            <h4 className="text-white font-bold mb-1 whitespace-normal">Medii Extreme</h4>
+                            <p className="text-slate-300 text-sm whitespace-normal">Tehnologie concepută pentru intervenții nucleare, dezamorsări chimice sau stingerea incendiilor de la distanță.</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+    ];
+
+    return (
+        <div className="mt-32 mb-20 relative">
+             <div className="text-center mb-16 relative z-20">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+                    <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase mb-4">
+                        Control <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Dual Core</span>
+                    </h2>
+                    <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+                        Navighează fluid între inteligența artificială total autonomă și preluarea manuală (VR) pentru scenarii cu risc letal.
+                    </p>
+                </motion.div>
+             </div>
+
+             <div className="max-w-7xl mx-auto h-[600px] flex flex-col md:flex-row gap-6 px-4 sm:px-6 relative z-20">
+                 {panels.map((panel, index) => {
+                     const isHovered = hoveredIndex === index;
+                     const isOtherHovered = hoveredIndex !== null && hoveredIndex !== index;
+                     // Pe mobile facem simplu un card sub altul. Pe desktop flex accordion.
+                     
+                     return (
+                         <motion.div 
+                             key={index}
+                             onHoverStart={() => setHoveredIndex(index)}
+                             onHoverEnd={() => setHoveredIndex(null)}
+                             animate={{ flex: isHovered ? 2.5 : (isOtherHovered ? 0.5 : 1) }}
+                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                             className={`relative rounded-3xl overflow-hidden flex-1 min-h-[300px] md:min-h-full border ${panel.borderColor} ${panel.hoverBorderColor} bg-[#060D1F] transition-colors duration-500 group shadow-2xl`}
+                         >
+                             {/* Imagine de fundal nouă */}
+                             <div className="absolute inset-0">
+                                 <img src={panel.image} alt={panel.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                                 {/* Gradienți dubli pentru lizibilitatea textului, negru jos, mix-blend la culoare */}
+                                 <div className={`absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/80 to-transparent`}></div>
+                                 <div className={`absolute inset-0 mix-blend-overlay opacity-30 ${panel.overlayColor}`}></div>
+                             </div>
+
+                             {/* Conținut Flex */}
+                             <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end z-10">
+                                 
+                                 {/* Titlu și Iconiță (Mereu Vizibile) */}
+                                 <div className="flex items-center gap-4 mb-2">
+                                     <div className={`w-14 h-14 rounded-2xl border ${panel.borderColor} bg-[#060D1F]/50 backdrop-blur flex items-center justify-center shrink-0 shadow-lg`}>
+                                         <i className={`fa-solid ${panel.icon} text-2xl ${panel.textColor}`}></i>
+                                     </div>
+                                     <div className="overflow-hidden min-w-[200px]">
+                                         <div className={`text-xs font-mono tracking-widest uppercase mb-1 ${panel.textColor}`}>
+                                            {panel.subtitle}
+                                         </div>
+                                         <h3 className="text-2xl md:text-3xl font-black text-white whitespace-nowrap">
+                                            {panel.title}
+                                         </h3>
+                                     </div>
+                                 </div>
+
+                                 {/* Descrierea extinsă care apare la HOVER pe Desktop (pe mobile o arătăm mereu sau cu un click/CSS hover limitat) */}
+                                 <div className="hidden md:block overflow-hidden">
+                                     <motion.div 
+                                         initial={false}
+                                         animate={{ 
+                                             height: isHovered ? 'auto' : 0, 
+                                             opacity: isHovered ? 1 : 0,
+                                             marginTop: isHovered ? 16 : 0
+                                         }}
+                                         className="w-[350px] lg:w-[450px]"
+                                     >
+                                         <div className="bg-[#060D1F]/70 backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                                             {panel.content}
+                                         </div>
+                                     </motion.div>
+                                 </div>
+                                 
+                                 {/* Pe mobile arătăm textul mereu ca să fie lizibil (se va face stivă oricum) */}
+                                 <div className="block md:hidden mt-4 bg-[#060D1F]/70 backdrop-blur-md p-5 rounded-2xl border border-white/10">
+                                     {panel.content}
+                                 </div>
+                                 
+                             </div>
+                         </motion.div>
+                     )
+                 })}
+             </div>
+        </div>
+    )
+}
+
 export default function ModelsHumanoidSection() {
   return (
     <section id="umanoizi" className="py-24 relative">
@@ -351,6 +506,8 @@ export default function ModelsHumanoidSection() {
 
                </div>
            </div>
+
+           <DualCoreAccordion />
 
        </div>
     </section>
