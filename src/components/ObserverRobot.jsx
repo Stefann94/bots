@@ -77,12 +77,21 @@ export default function ObserverRobot() {
       const elapsed = t - flyStartTime.current
       if (elapsed < flyDuration) {
         const progress = elapsed / flyDuration
-        // Se ridică la MAX 15 unități (iese complet din ecran)
-        extraY = Math.sin(progress * Math.PI) * 15
         
-        // Tilt pe spate când zboară
+        // Prima jumătate: accelerează în sus (0 la +20)
+        if (progress < 0.5) {
+          const p = progress * 2 // de la 0 la 1
+          extraY = p * p * p * 20
+        } 
+        // A doua jumătate: vine de jos (-20 la 0) decelărând
+        else {
+          const p = (progress - 0.5) * 2 - 1 // de la -1 la 0
+          extraY = (p * p * p) * 20
+        }
+        
+        // Tilt pe spate constant care revine ușor la 0
         if (groupRef.current) {
-          groupRef.current.rotation.x = -Math.sin(progress * Math.PI) * 0.4
+          groupRef.current.rotation.x = -Math.sin(progress * Math.PI) * 0.5
         }
       } else {
         flyStartTime.current = null
