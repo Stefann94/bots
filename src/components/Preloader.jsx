@@ -14,23 +14,61 @@ export default function Preloader() {
       return
     }
 
-    // Simulăm un boot sequence de ~2 secunde (timp suficient ca imaginile mari să se descarce în fundal)
+    let isMounted = true;
+    let imagesAreReady = false;
+
+    // Pozele esențiale și masive (Hero & Home)
+    const criticalImages = [
+      '/images/hero_humanoid.png',
+      '/images/hero_quadruped.png',
+      '/images/hero_core.png',
+      '/images/h1_real.png',
+      '/images/g1_real.png',
+      '/images/agibot_real.png'
+    ];
+
+    // Le încărcăm forțat în memorie
+    Promise.all(criticalImages.map(src => {
+      return new Promise(resolve => {
+        const img = new Image();
+        img.src = src;
+        img.onload = resolve;
+        img.onerror = resolve; // Mergem mai departe chiar dacă una pică
+      });
+    })).then(() => {
+      imagesAreReady = true;
+    });
+
+    // Timeout de siguranță de max 10 secunde (în caz de net foarte slab)
+    const timeout = setTimeout(() => {
+      imagesAreReady = true;
+    }, 10000);
+
     const interval = setInterval(() => {
       setProgress(prev => {
-        const nextProgress = prev + Math.floor(Math.random() * 15) + 5
-        if (nextProgress >= 100) {
-          clearInterval(interval)
+        if (imagesAreReady) {
+          clearInterval(interval);
+          clearTimeout(timeout);
           setTimeout(() => {
-            setLoading(false)
-            sessionStorage.setItem('nexus_booted', 'true')
-          }, 400) // Pauză scurtă la 100% înainte să dispară
-          return 100
+            if (isMounted) {
+              setLoading(false);
+              sessionStorage.setItem('nexus_booted', 'true');
+            }
+          }, 400); // Pauză scurtă la 100% înainte să dispară
+          return 100;
         }
-        return nextProgress
-      })
-    }, 150)
 
-    return () => clearInterval(interval)
+        // Creștem treptat progresul, dar ne blocăm la 99% dacă pozele nu sunt gata
+        const nextProgress = prev + Math.floor(Math.random() * 8) + 2;
+        return nextProgress >= 99 ? 99 : nextProgress;
+      })
+    }, 200)
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+      clearTimeout(timeout);
+    }
   }, [])
 
   return (
