@@ -73,7 +73,8 @@ export default function Hero() {
 
   return (
     <>
-      <section className="relative min-h-screen pt-28 pb-16 flex items-center justify-center gap-8 lg:gap-16 overflow-hidden bg-grid-pattern radial-glow-top">
+      <section className="relative min-h-screen pt-28 pb-16 flex items-center justify-center gap-8 lg:gap-16 overflow-hidden radial-glow-top">
+          <div className="absolute inset-0 bg-navy-950/20 z-0"></div>
         <NetworkBackground />
         <LayoutGroup>
           {/* Background Ambient Glow Orbs */}

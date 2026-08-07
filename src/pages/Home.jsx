@@ -8,7 +8,7 @@ import Contact from '../components/Contact'
 
 export default function Home() {
   return (
-    <main>
+    <main className="bg-grid-pattern relative">
       <Hero />
       <RobotSeries />
       <AgiBotSeries />

@@ -117,7 +117,7 @@ export default function Applications() {
   }
 
   return (
-    <section id="applications" className="py-24 relative bg-navy-950/50">
+    <section id="applications" className="py-24 relative">
         <motion.div 
             className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
             initial="hidden"

@@ -48,7 +48,7 @@ export default function RobotSeries() {
   }
 
   return (
-    <section id="unitree-series" className="py-24 relative bg-grid-pattern overflow-hidden">
+    <section id="unitree-series" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial="hidden"
