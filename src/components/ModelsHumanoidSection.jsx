@@ -38,13 +38,6 @@ const PowerFlow = () => {
   return (
     <div className="absolute inset-0 pointer-events-none">
       {/* Animated power lines connecting */}
-      <div className="absolute top-1/2 left-0 w-full h-[1px] bg-blue-500/10">
-        <motion.div 
-          className="h-full w-1/4 bg-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.8)]"
-          animate={{ x: ['-100%', '400%'] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-        />
-      </div>
       <div className="absolute top-1/4 left-0 w-full h-[1px] bg-blue-500/10">
         <motion.div 
           className="h-full w-1/4 bg-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.8)]"
@@ -62,18 +55,22 @@ const PowerFlow = () => {
 
 // Animație specifică pentru Cardul 3 (Radar) - Cercuri orbitale continue
 const OrbitalRings = () => (
-  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
-    <div className="absolute w-[180%] h-[180%] max-w-[600px] max-h-[600px] border border-cyber-cyan/10 rounded-full animate-[spin_20s_linear_infinite]">
-      <div className="absolute top-0 left-1/2 w-3 h-3 bg-cyber-cyan rounded-full shadow-[0_0_15px_rgba(0,240,255,0.8)] -translate-x-1/2 -translate-y-1/2"></div>
+  <motion.div 
+    className="absolute -bottom-32 -right-32 flex items-center justify-center pointer-events-none z-0 overflow-hidden w-[500px] h-[500px] opacity-60 group-hover:opacity-100 transition-opacity duration-1000"
+    animate={{ y: [-20, 20, -20], rotate: [0, 5, -5, 0] }}
+    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+  >
+    <div className="absolute w-[80%] h-[80%] border border-cyber-cyan/20 rounded-full animate-[spin_20s_linear_infinite]">
+      <div className="absolute top-0 left-1/2 w-4 h-4 bg-cyber-cyan rounded-full shadow-[0_0_20px_rgba(0,240,255,0.9)] -translate-x-1/2 -translate-y-1/2"></div>
     </div>
-    <div className="absolute w-[130%] h-[130%] max-w-[450px] max-h-[450px] border border-cyber-cyan/20 rounded-full animate-[spin_15s_linear_infinite_reverse]">
-      <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-cyber-cyan/80 rounded-full shadow-[0_0_10px_rgba(0,240,255,0.6)] -translate-x-1/2 translate-y-1/2"></div>
+    <div className="absolute w-[60%] h-[60%] border border-cyber-cyan/30 rounded-full animate-[spin_15s_linear_infinite_reverse]" style={{ transform: 'rotateX(20deg) rotateY(20deg)' }}>
+      <div className="absolute bottom-0 left-1/2 w-3 h-3 bg-cyber-cyan/90 rounded-full shadow-[0_0_15px_rgba(0,240,255,0.7)] -translate-x-1/2 translate-y-1/2"></div>
     </div>
-    <div className="absolute w-[80%] h-[80%] max-w-[280px] max-h-[280px] border border-dashed border-cyber-cyan/30 rounded-full animate-[spin_10s_linear_infinite]">
-      <div className="absolute top-1/2 right-0 w-1.5 h-1.5 bg-cyber-cyan/60 rounded-full shadow-[0_0_8px_rgba(0,240,255,0.4)] translate-x-1/2 -translate-y-1/2"></div>
+    <div className="absolute w-[40%] h-[40%] border border-dashed border-cyber-cyan/40 rounded-full animate-[spin_10s_linear_infinite]" style={{ transform: 'rotateX(-20deg) rotateY(-20deg)' }}>
+      <div className="absolute top-1/2 right-0 w-2 h-2 bg-cyber-cyan/70 rounded-full shadow-[0_0_10px_rgba(0,240,255,0.5)] translate-x-1/2 -translate-y-1/2"></div>
     </div>
-    <div className="absolute w-[30%] h-[30%] max-w-[100px] max-h-[100px] bg-cyber-cyan/10 rounded-full animate-pulse blur-xl"></div>
-  </div>
+    <div className="absolute w-[15%] h-[15%] bg-cyber-cyan/10 rounded-full animate-pulse shadow-[0_0_50px_rgba(0,240,255,0.3)]"></div>
+  </motion.div>
 )
 
 export default function ModelsHumanoidSection() {
@@ -154,22 +151,25 @@ export default function ModelsHumanoidSection() {
                >
                    <HolographicRings />
                    
-                   <div className="w-full h-[35%] rounded-[24px] overflow-hidden relative border border-purple-500/10 shrink-0 mb-4 z-10">
+                   <div className="w-full h-[45%] rounded-[24px] overflow-hidden relative border border-purple-500/10 shrink-0 mb-4 z-10">
                        <div className="absolute inset-0 bg-[url('/images/humanoid_gallery_2.png')] bg-cover bg-center group-hover:scale-110 transition-transform duration-[2s]"></div>
                    </div>
                    
                    <div className="flex flex-col flex-grow justify-between z-10 px-2 pb-2">
-                       <div className="flex items-center justify-between mb-3">
-                           <h4 className="text-2xl font-bold text-white">Manipulare Haptică</h4>
-                           <div className="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/30 flex items-center justify-center relative group-hover:bg-purple-500/30 transition-colors shrink-0 ml-2">
-                               <i className="fa-solid fa-hand-sparkles text-purple-400"></i>
+                       <div>
+                           <div className="flex items-center justify-between mb-3">
+                               <h4 className="text-2xl font-bold text-white">Manipulare Haptică</h4>
+                               <div className="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/30 flex items-center justify-center relative group-hover:bg-purple-500/30 transition-colors shrink-0 ml-2">
+                                   <i className="fa-solid fa-hand-sparkles text-purple-400"></i>
+                               </div>
                            </div>
+                           
+                           <p className="text-slate-400 text-sm leading-relaxed">
+                               Mâinile bionice integrează senzori de feedback tactil pe fiecare falangă. Robotul simte greutatea și textura, putând să țină un ou fără să-l spargă sau să opereze bormașini industriale.
+                           </p>
                        </div>
                        
-                       <p className="text-slate-400 text-sm leading-relaxed mb-4">
-                           Mâinile bionice integrează senzori de feedback tactil pe fiecare falangă. Robotul simte greutatea și textura, putând să țină un ou fără să-l spargă sau să opereze bormașini industriale cu o precizie chirurgicală.
-                       </p>
-                       <div className="grid grid-cols-2 gap-3 mt-auto">
+                       <div className="grid grid-cols-2 gap-3 mt-4">
                            <div className="bg-[#060D1F]/80 border border-purple-500/20 p-3 rounded-xl hover:border-purple-400 transition-colors">
                                <div className="text-purple-400 font-mono text-lg font-bold">43 DoF</div>
                                <div className="text-[10px] text-slate-400 uppercase tracking-widest mt-1">Articulații Complexe</div>
@@ -188,19 +188,19 @@ export default function ModelsHumanoidSection() {
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
                  transition={{ duration: 0.6, delay: 0.1 }}
-                 className="md:col-span-5 h-[350px] glass-card rounded-[32px] p-6 relative overflow-hidden group border-cyber-cyan/20 hover:border-cyber-cyan/50 flex flex-col justify-center bg-[#132247]/40"
+                 className="md:col-span-5 h-[350px] glass-card rounded-[32px] p-8 relative overflow-hidden group border-cyber-cyan/20 hover:border-cyber-cyan/50 flex flex-col bg-[#132247]/40"
                >
-                   <OrbitalRings />
-
-                   <div className="relative z-20 bg-[#060D1F]/70 backdrop-blur-md p-6 rounded-2xl border border-cyber-cyan/20 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                   <div className="relative z-20">
                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-cyber-cyan/10 border border-cyber-cyan/30 text-cyber-cyan text-xs font-mono uppercase tracking-widest mb-4">
                            Percepție Ultra-Senzorială
                        </div>
                        <h4 className="text-3xl font-black text-white mb-2">Conștientizare Spațială 360°</h4>
-                       <p className="text-slate-400 text-sm max-w-sm leading-relaxed">
+                       <p className="text-slate-400 text-sm max-w-sm leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
                            Fuziunea dintre unitatea LiDAR LIVOX Mid-360 și camerele de adâncime creează o hartă point-cloud detaliată la milimetru. Robotul nu doar vede obstacolele, ci anticipează traiectoria acestora în timp real.
                        </p>
                    </div>
+                   
+                   <OrbitalRings />
                </motion.div>
 
                {/* 4. MODULAR BATTERY BOX */}
