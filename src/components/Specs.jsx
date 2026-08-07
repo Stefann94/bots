@@ -1,27 +1,25 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion'
 
 function Counter({ to, duration }) {
-  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+  const isInView = useInView(ref, { margin: "-20% 0px -20% 0px", once: false })
+  const count = useMotionValue(0)
+  const rounded = useTransform(count, Math.round)
 
   useEffect(() => {
-    let start = 0
-    const step = to / (duration * 60)
-    
-    const tick = () => {
-      start += step
-      if (start < to) {
-        setCount(Math.ceil(start))
-        requestAnimationFrame(tick)
-      } else {
-        setCount(to)
-      }
+    if (isInView) {
+      // Delay so it syncs with the container opening animation
+      const timeout = setTimeout(() => {
+        animate(count, to, { duration: duration, ease: "easeOut" })
+      }, 500)
+      return () => clearTimeout(timeout)
+    } else {
+      count.set(0)
     }
-    
-    requestAnimationFrame(tick)
-  }, [to, duration])
+  }, [isInView, to, duration, count])
 
-  return <>{count}</>
+  return <motion.span ref={ref}>{rounded}</motion.span>
 }
 
 export default function Specs() {
@@ -52,20 +50,47 @@ export default function Specs() {
     }
   ]
 
+  // Containerul se deschide de la centru spre exterior
+  const containerVariants = {
+    hidden: { opacity: 0, clipPath: "inset(0% 50% 0% 50%)" },
+    visible: { 
+        opacity: 1,
+        clipPath: "inset(0% 0% 0% 0%)",
+        transition: { 
+            duration: 0.9, 
+            ease: [0.16, 1, 0.3, 1],
+            staggerChildren: 0.15,
+            delayChildren: 0.4
+        }
+    }
+  }
+
+  // Fiecare element intră ca un "Glitch/Skew" cybernetic
+  const itemVariants = {
+    hidden: { opacity: 0, x: 60, skewX: -25 },
+    visible: { 
+        opacity: 1, 
+        x: 0, 
+        skewX: 0,
+        transition: { type: "spring", stiffness: 120, damping: 12 }
+    }
+  }
+
   return (
     <section id="specs" className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-50"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="glass-card rounded-3xl p-10 border border-cyber-cyan/30 radial-glow-center relative z-10 shadow-2xl shadow-cyan-900/10">
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 text-center"
-                >
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
+              variants={containerVariants}
+              className="glass-card rounded-3xl p-10 border border-cyber-cyan/30 radial-glow-center relative z-10 shadow-2xl shadow-cyan-900/10"
+            >
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 text-center">
                     {specs.map((spec, index) => (
-                      <div key={index} className="flex flex-col items-center justify-center space-y-3 group">
+                      <motion.div variants={itemVariants} key={index} className="flex flex-col items-center justify-center space-y-3 group">
                           <i className={`fa-solid ${spec.icon} text-cyber-cyan/40 text-3xl mb-2 group-hover:text-cyber-cyan transition-colors duration-300`}></i>
                           
                           <div className="flex items-baseline justify-center gap-1">
@@ -80,10 +105,10 @@ export default function Specs() {
                           <div className="text-xs sm:text-sm font-mono text-slate-300 uppercase tracking-widest font-semibold">
                               {spec.label}
                           </div>
-                      </div>
+                      </motion.div>
                     ))}
-                </motion.div>
-            </div>
+                </div>
+            </motion.div>
         </div>
     </section>
   )
