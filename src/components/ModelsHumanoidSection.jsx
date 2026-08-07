@@ -287,19 +287,28 @@ export default function ModelsHumanoidSection() {
                <div className="relative min-h-[800px] flex flex-col md:flex-row items-center justify-between gap-10 md:gap-0">
                   
                   {/* Holograma Centrală (Fundal Vizual pe Mobile, Centrat pe Desktop) */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10 md:opacity-100 z-0 overflow-hidden">
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10 md:opacity-100 z-0">
+                      
+                      {/* Controlled Glow Behind */}
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[500px] bg-cyber-cyan/30 blur-[120px] rounded-full mix-blend-screen"></div>
+
                       <motion.div 
-                        className="relative h-[800px] w-auto"
+                        className="relative h-[800px] w-auto flex items-center justify-center"
                         animate={{ y: [-15, 15, -15] }}
                         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                       >
-                         <img 
-                           src="/images/humanoid_parallax.png" 
-                           alt="Hologramă Umanoid"
-                           className="h-full object-contain filter hue-rotate-180 saturate-[1.5] brightness-125 drop-shadow-[0_0_40px_rgba(0,240,255,0.4)]" 
-                         />
-                         {/* Scanline overlay pentru efect de hologramă */}
-                         <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.8)_50%)] bg-[length:100%_6px] mix-blend-overlay"></div>
+                         <div 
+                            className="relative h-full"
+                            style={{ WebkitMaskImage: 'radial-gradient(ellipse 50% 45% at 50% 50%, black 60%, transparent 100%)', maskImage: 'radial-gradient(ellipse 50% 45% at 50% 50%, black 60%, transparent 100%)' }}
+                         >
+                             <img 
+                               src="/images/humanoid_parallax.png" 
+                               alt="Hologramă Umanoid"
+                               className="h-full object-contain filter hue-rotate-180 saturate-[1.5] brightness-125" 
+                             />
+                             {/* Scanline overlay pentru efect de hologramă */}
+                             <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.8)_50%)] bg-[length:100%_6px] mix-blend-overlay"></div>
+                         </div>
                       </motion.div>
                   </div>
 
