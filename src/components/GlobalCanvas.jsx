@@ -9,9 +9,7 @@ export default function GlobalCanvas() {
   const location = useLocation()
   const isModelsPage = location.pathname === '/modele-3d'
 
-  // Dacă suntem pe pagina de modele, nu afișăm stelele globale și robotul,
-  // pentru că acolo avem propriul fundal și propriul design.
-  if (isModelsPage) return null;
+  // Am eliminat restricția pentru isModelsPage ca să se vadă stelele și pe modele-3d
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[100]">

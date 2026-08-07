@@ -3,7 +3,7 @@ import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import RobotCanvas from './RobotCanvas'
 import CustomVideoPlayer from './CustomVideoPlayer'
 import { Link } from 'react-router-dom'
-
+import NetworkBackground from './NetworkBackground'
 export default function Hero() {
   const [robotColor, setRobotColor] = useState('#ffffff')
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
@@ -74,6 +74,7 @@ export default function Hero() {
   return (
     <>
       <section className="relative min-h-screen pt-28 pb-16 flex items-center justify-center gap-8 lg:gap-16 overflow-hidden bg-grid-pattern radial-glow-top">
+        <NetworkBackground />
         <LayoutGroup>
           {/* Background Ambient Glow Orbs */}
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyber-cyan/10 rounded-full filter blur-[120px] pointer-events-none animate-pulse-glow"></div>

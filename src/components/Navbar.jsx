@@ -40,7 +40,7 @@ export default function Navbar() {
   }, [location])
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-[99999] glass-nav transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <a href="/" className="flex items-center gap-3 group">
                 <div className="relative w-10 h-10 rounded-lg bg-navy-900 border border-cyber-cyan/40 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.3)] group-hover:border-cyber-cyan transition-all duration-300">

@@ -1,6 +1,12 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-
+import HumanoidsSection from '../components/HumanoidsSection'
+import RobotSeries from '../components/RobotSeries'
+import AgiBotSeries from '../components/AgiBotSeries'
+import Features from '../components/Features'
+import Applications from '../components/Applications'
+import Specs from '../components/Specs'
+import Contact from '../components/Contact'
 // --- Variabile de Animație ---
 const fadeUpVariant = {
   hidden: { opacity: 0, y: 50 },
@@ -62,12 +68,12 @@ export default function RobotsPage() {
   if (hoveredCategory === 'ai') overlayClasses = 'bg-transparent'
 
   return (
-    <main className="bg-black text-white min-h-screen overflow-hidden selection:bg-cyber-cyan/30">
+    <main className="text-white min-h-screen overflow-hidden selection:bg-cyber-cyan/30">
       
       {/* ========================================================= */}
       {/* 1. HERO SECTION (INTERACTIVE HUB) - Mai mic, dimensiune de banner */}
       {/* ========================================================= */}
-      <section className="relative w-full h-[55vh] min-h-[400px] overflow-hidden flex pt-16 bg-black">
+      <section className="relative w-full h-[55vh] min-h-[400px] overflow-hidden flex pt-16 bg-grid-pattern radial-glow-top">
         
         {/* Conținutul Hero (Cele 3 coloane complet egale, lățime maximă) */}
         <div className="relative z-10 w-full h-full flex flex-col md:flex-row">
@@ -175,98 +181,14 @@ export default function RobotsPage() {
       </div>
 
       {/* ========================================================= */}
-      {/* 2. SECȚIUNEA UMANOIZI (Ancoră: #umanoizi) */}
+      {/* STRUCTURĂ PRELUATĂ DE PE HOME PAGE */}
       {/* ========================================================= */}
-      <section id="umanoizi" className="relative w-full pt-24 pb-16 bg-black">
-        
-        {/* Intro Umanoizi */}
-        <div className="relative z-20 text-center flex flex-col items-center px-6">
-          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="text-green-500 font-mono text-sm md:text-base tracking-[0.3em] uppercase mb-4">
-            Unitree G1
-          </motion.h2>
-          <motion.h1 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="text-6xl md:text-8xl font-black tracking-tight mb-6">
-            Viitorul este <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-300 to-slate-500">Biped.</span>
-          </motion.h1>
-          <motion.p initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="text-slate-400 max-w-lg text-lg md:text-xl font-light">
-            O capodoperă a ingineriei robotice. Construit pentru a trăi și munci alături de noi.
-          </motion.p>
-        </div>
-
-        {/* Bento Grid */}
-        <div className="relative w-full py-24 px-6 md:px-12 max-w-7xl mx-auto z-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <motion.div variants={fadeUpVariant} className="md:col-span-2 bg-white/[0.02] border border-white/10 rounded-[32px] p-10 hover:bg-white/[0.04] transition-colors relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                 <i className="fa-solid fa-bolt text-8xl text-green-500"></i>
-              </div>
-              <h3 className="text-5xl font-black mb-2">3.3 m/s</h3>
-              <p className="text-slate-400 font-mono text-sm tracking-widest uppercase mb-6">Viteză de deplasare</p>
-              <p className="text-slate-300 font-light max-w-md">Echipat cu actuatoare ultra-performante ce permit alergare, sărituri și recuperare instantanee a echilibrului.</p>
-            </motion.div>
-
-            <motion.div variants={fadeUpVariant} className="bg-white/[0.02] border border-white/10 rounded-[32px] p-10 hover:bg-white/[0.04] transition-colors flex flex-col justify-between">
-              <div>
-                <i className="fa-solid fa-battery-full text-green-500 text-3xl mb-4"></i>
-                <h3 className="text-3xl font-bold mb-2">Schimbare Rapidă</h3>
-              </div>
-              <p className="text-slate-400 text-sm font-light">Sistem modular de baterii interschimbabile on-the-fly.</p>
-            </motion.div>
-
-            <motion.div variants={fadeUpVariant} className="bg-white/[0.02] border border-white/10 rounded-[32px] p-10 hover:bg-white/[0.04] transition-colors">
-               <i className="fa-solid fa-radar text-green-500 text-3xl mb-4"></i>
-               <h3 className="text-2xl font-bold mb-2">LiDAR 360°</h3>
-               <p className="text-slate-400 text-sm font-light">Cartografierea precisă a spațiului cu senzori Mid-360.</p>
-            </motion.div>
-
-            <motion.div variants={fadeUpVariant} className="md:col-span-2 bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/20 rounded-[32px] p-10 relative overflow-hidden">
-               <h3 className="text-4xl font-black mb-2 text-green-500">Dexteritate Extremă</h3>
-               <p className="text-slate-300 font-light max-w-sm">Mâini capabile să manevreze un ou fără să-l spargă, sau să spargă o nucă cu precizie chirurgicală.</p>
-               <div className="absolute right-[-20%] bottom-[-20%] w-64 h-64 border border-green-500/30 rounded-full flex items-center justify-center opacity-50">
-                  <i className="fa-solid fa-hand-sparkles text-6xl text-green-500"></i>
-               </div>
-            </motion.div>
-
-          </motion.div>
-        </div>
-
-        {/* H1 Reveal Mic la final de sectiune Umanoizi */}
-        <div className="w-full flex items-center justify-center py-20 bg-gradient-to-b from-transparent to-red-950/20">
-          <div className="text-center px-6">
-             <p className="text-red-500 font-mono text-sm tracking-[0.3em] uppercase mb-4">Forță Industrială</p>
-             <h2 className="text-5xl font-black mb-4">Unitree H1</h2>
-             <button className="bg-red-600/20 text-red-400 border border-red-500/50 hover:bg-red-600 hover:text-white px-6 py-2 rounded-full font-bold transition-all">
-               Descoperă H1 (În curând)
-             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================= */}
-      {/* 3. SECȚIUNEA PATRUPEDE (Ancoră: #patrupede) */}
-      {/* ========================================================= */}
-      <section id="patrupede" className="relative w-full min-h-screen py-32 bg-black border-t border-orange-500/20 flex flex-col items-center justify-center">
-         <div className="text-center px-6 max-w-3xl mx-auto">
-            <i className="fa-solid fa-dog text-6xl text-orange-500/50 mb-8"></i>
-            <h2 className="text-5xl md:text-7xl font-black mb-6">Agilitate Animală</h2>
-            <p className="text-xl text-slate-400 font-light mb-12">
-               Modelele patrupede din seria Go2 și B2 sunt capabile să traverseze cele mai dure terenuri. (Secțiune în dezvoltare)
-            </p>
-         </div>
-      </section>
-
-      {/* ========================================================= */}
-      {/* 4. SECȚIUNEA A.I. (Ancoră: #ai) */}
-      {/* ========================================================= */}
-      <section id="ai" className="relative w-full min-h-screen py-32 bg-black border-t border-purple-500/20 flex flex-col items-center justify-center">
-         <div className="text-center px-6 max-w-3xl mx-auto">
-            <i className="fa-solid fa-brain text-6xl text-purple-500/50 mb-8"></i>
-            <h2 className="text-5xl md:text-7xl font-black mb-6">Creierul Digital</h2>
-            <p className="text-xl text-slate-400 font-light mb-12">
-               Inteligența artificială care dă viață întregului ecosistem robotic. Învățare automată continuă. (Secțiune în dezvoltare)
-            </p>
-         </div>
-      </section>
+      <RobotSeries />
+      <AgiBotSeries />
+      <Features />
+      <Applications />
+      <Specs />
+      <Contact />
 
     </main>
   )
