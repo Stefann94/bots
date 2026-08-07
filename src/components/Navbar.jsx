@@ -51,7 +51,7 @@ export default function Navbar() {
                 <button onClick={() => handleNav('/modele-3d', null)} className={`hover:text-cyber-cyan transition-colors ${location.pathname === '/modele-3d' ? 'text-cyber-cyan' : ''}`}>Modele 3D</button>
                 <button onClick={() => handleNav('/', 'technology')} className="hover:text-cyber-cyan transition-colors">Inovație</button>
                 <button onClick={() => handleNav('/', 'applications')} className="hover:text-cyber-cyan transition-colors">Aplicații</button>
-                <button onClick={() => handleNav('/', 'contact')} className="hover:text-cyber-cyan transition-colors">Contact</button>
+                <button onClick={() => handleNav('/contact', null)} className={`hover:text-cyber-cyan transition-colors ${location.pathname === '/contact' ? 'text-cyber-cyan' : ''}`}>Contact</button>
             </nav>
 
             <div className="hidden sm:flex items-center gap-4">
@@ -77,7 +77,7 @@ export default function Navbar() {
                 <a href="/modele-3d" onClick={() => setMenuOpen(false)} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Modele 3D</a>
                 <button onClick={() => handleNav('/', 'technology')} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Inovație</button>
                 <button onClick={() => handleNav('/', 'applications')} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Aplicații</button>
-                <button onClick={() => handleNav('/', 'contact')} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Contact</button>
+                <button onClick={() => handleNav('/contact', null)} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Contact</button>
                 
                 <a href="/modele-3d" onClick={() => setMenuOpen(false)} className="w-full mt-4 py-3 flex items-center justify-center bg-cyber-cyan text-navy-950 font-mono font-bold text-xs uppercase rounded-lg">
                     <i className="fa-solid fa-rocket mr-2"></i> EXPLOREAZĂ UMANOIZII

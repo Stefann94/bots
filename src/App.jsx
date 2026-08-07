@@ -7,6 +7,7 @@ import RobotsPage from './pages/RobotsPage'
 import HumanoidsPage from './pages/HumanoidsPage'
 import QuadrupedsPage from './pages/QuadrupedsPage'
 import AIPage from './pages/AIPage'
+import ContactPage from './pages/ContactPage'
 
 import { useGLTF } from '@react-three/drei'
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/robots/humanoids" element={<HumanoidsPage />} />
         <Route path="/robots/quadrupeds" element={<QuadrupedsPage />} />
         <Route path="/robots/ai" element={<AIPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>
