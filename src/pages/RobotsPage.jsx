@@ -1,12 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-import HumanoidsSection from '../components/HumanoidsSection'
-import RobotSeries from '../components/RobotSeries'
-import AgiBotSeries from '../components/AgiBotSeries'
-import Features from '../components/Features'
-import Applications from '../components/Applications'
-import Specs from '../components/Specs'
-import Contact from '../components/Contact'
+import ModelsHumanoidSection from '../components/ModelsHumanoidSection'
 // --- Variabile de Animație ---
 const fadeUpVariant = {
   hidden: { opacity: 0, y: 50 },
@@ -68,7 +62,7 @@ export default function RobotsPage() {
   if (hoveredCategory === 'ai') overlayClasses = 'bg-transparent'
 
   return (
-    <main className="text-white min-h-screen overflow-hidden selection:bg-cyber-cyan/30">
+    <main className="text-white min-h-screen overflow-hidden selection:bg-cyber-cyan/30 bg-[#0f1f3d]">
       
       {/* ========================================================= */}
       {/* 1. HERO SECTION (INTERACTIVE HUB) - Mai mic, dimensiune de banner */}
@@ -145,9 +139,9 @@ export default function RobotsPage() {
       </section>
 
 
-      {/* 4 Butoane Suprapuse (Stil MintDent) */}
+      {/* 4 Butoane Suprapuse (Stil MintDent) - Acestea raman lipite de Hero */}
       <div className="relative z-30 w-full flex justify-center -mt-16 px-4">
-        <div className="flex flex-row bg-[#0b1120]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] divide-x divide-white/5">
+        <div className="flex flex-row bg-[#0b1120]/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] divide-x divide-white/5">
           
           {/* Card 1: LiDAR */}
           <div className="p-6 md:px-8 md:py-6 flex flex-col items-center justify-center text-center w-[160px] md:w-[240px] hover:bg-white/5 transition-colors cursor-pointer group">
@@ -180,15 +174,15 @@ export default function RobotsPage() {
         </div>
       </div>
 
+      {/* CONTINUT CENTRAL PE FUNDAL INCHIS (Stil Boxed) */}
+      <div className="max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 pb-32 mt-16 mb-10 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
+
       {/* ========================================================= */}
-      {/* STRUCTURĂ PRELUATĂ DE PE HOME PAGE */}
+      {/* 2. SECȚIUNEA UMANOIZI */}
       {/* ========================================================= */}
-      <RobotSeries />
-      <AgiBotSeries />
-      <Features />
-      <Applications />
-      <Specs />
-      <Contact />
+      <ModelsHumanoidSection />
+
+      </div> {/* End Continut Central */}
 
     </main>
   )

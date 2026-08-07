@@ -10,9 +10,9 @@ export default function GlobalCanvas() {
   const isModelsPage = location.pathname === '/modele-3d'
 
   // Am eliminat restricția pentru isModelsPage ca să se vadă stelele și pe modele-3d
-
+  // (Revenim la fundalul stelat peste tot)
   return (
-    <div className="fixed inset-0 pointer-events-none z-[100]">
+    <div className="fixed inset-0 pointer-events-none z-0">
       <Canvas 
         style={{ pointerEvents: 'none' }}
         eventSource={document.body}
