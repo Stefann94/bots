@@ -71,7 +71,7 @@ export default function ModelsQuadrupedSection() {
             subtitle: "4.7 m/s Max",
             icon: "fa-bolt",
             desc: "Performanță explozivă propulsată de actuatoare ultra-lightweight. Aleargă, sare și recuperează echilibrul instantaneu după un impact sever.",
-            img: "/images/quad_speed.png"
+            img: "/images/quad_1.png"
         },
         {
             id: "lidar",
@@ -79,7 +79,7 @@ export default function ModelsQuadrupedSection() {
             subtitle: "LiDAR Mapping",
             icon: "fa-satellite-dish",
             desc: "Senzorii LIVOX Mid-360 acoperă fiecare unghi mort, creând hărți point-cloud în timp real pentru navigație autonomă perfectă, chiar și în întuneric total.",
-            img: "/images/quad_lidar.png"
+            img: "/images/quad_2.png"
         },
         {
             id: "terrain",
@@ -87,7 +87,7 @@ export default function ModelsQuadrupedSection() {
             subtitle: "Off-Road AI",
             icon: "fa-mountain",
             desc: "Scări, moloz, pietre alunecoase? Niciun obstacol nu îl oprește. Algoritmii MPC corectează postura și calculează forța pe fiecare picior la nivel de milisecundă.",
-            img: "/images/quad_terrain.png"
+            img: "/images/quad_3.png"
         },
         {
             id: "battery",
@@ -95,7 +95,7 @@ export default function ModelsQuadrupedSection() {
             subtitle: "Certificare IP68",
             icon: "fa-shield-halved",
             desc: "Complet sigilat împotriva apei și prafului. Funcționează impecabil în ploaie torențială, furtuni de praf și medii industriale toxice.",
-            img: "/images/quad_battery.png"
+            img: "/images/quad_4.png"
         }
     ]
 

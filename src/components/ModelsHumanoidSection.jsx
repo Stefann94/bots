@@ -115,7 +115,7 @@ const DualCoreAccordion = () => {
         {
             title: "Independență Edge AI",
             subtitle: "Autonomie Cognitivă",
-            image: "/images/ai_autonomous_mode.png",
+            image: "/images/dual_core_1.png",
             borderColor: "border-cyber-cyan/20",
             hoverBorderColor: "hover:border-cyber-cyan/50",
             textColor: "text-cyber-cyan",
@@ -147,7 +147,7 @@ const DualCoreAccordion = () => {
         {
             title: "Simbioză Om-Mașină",
             subtitle: "Teleoperare Shadow VR",
-            image: "/images/vr_teleoperation_mode.png",
+            image: "/images/dual_core_2.png",
             borderColor: "border-purple-500/20",
             hoverBorderColor: "hover:border-purple-500/50",
             textColor: "text-purple-400",
