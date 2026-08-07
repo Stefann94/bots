@@ -4,6 +4,7 @@ import ModelsHumanoidSection from '../components/ModelsHumanoidSection'
 import ModelsQuadrupedSection from '../components/ModelsQuadrupedSection'
 import ModelsQuadrupedDeepDive from '../components/ModelsQuadrupedDeepDive'
 import ModelsQuadruped3D from '../components/ModelsQuadruped3D'
+import ModelsAICoreSection from '../components/ModelsAICoreSection'
 // --- Variabile de Animație ---
 const fadeUpVariant = {
   hidden: { opacity: 0, y: 50 },
@@ -207,7 +208,7 @@ export default function RobotsPage() {
 
       {/* CONTINUT CENTRAL AI CORE (Placeholder for upcoming components) */}
       <div id="ai" className="scroll-mt-24 max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 pb-32 mb-10 shadow-[0_0_50px_rgba(0,0,0,0.3)] min-h-[50vh]">
-          {/* Aici vom insera componentele pentru AI Core conform planului ales */}
+          <ModelsAICoreSection />
       </div>
 
       </div> {/* End Pointer Events Wrapper */}
