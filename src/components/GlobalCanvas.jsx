@@ -34,8 +34,8 @@ export default function GlobalCanvas() {
           {/* Particulele pe tot fundalul */}
           <ParticleSystem />
           
-          {/* Robotul fixat în dreapta jos */}
-          <ObserverRobot />
+          {/* Robotul fixat în dreapta jos (ascuns pe pagina de contact) */}
+          {location.pathname !== '/contact' && <ObserverRobot />}
         </Suspense>
       </Canvas>
     </div>
