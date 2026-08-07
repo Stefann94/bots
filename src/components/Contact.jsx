@@ -1,8 +1,82 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+
+function CustomSelect({ options, value, onChange, placeholder }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <div 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-5 py-3.5 rounded-xl bg-navy-950/80 border border-slate-700/80 text-white text-sm cursor-pointer flex justify-between items-center transition-all hover:border-cyber-cyan/50 focus-within:border-cyber-cyan focus-within:ring-2 focus-within:ring-cyber-cyan/20"
+      >
+        <span className={value ? 'text-white' : 'text-slate-500'}>
+          {value || placeholder}
+        </span>
+        <i className={`fa-solid fa-chevron-down text-cyber-cyan text-sm transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}></i>
+      </div>
+      
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-0 right-0 mt-2 bg-navy-900 border border-slate-700/80 rounded-xl overflow-hidden z-50 shadow-2xl shadow-cyan-900/20"
+          >
+            {options.map((option, idx) => (
+              <div 
+                key={idx}
+                onClick={() => {
+                  onChange(option)
+                  setIsOpen(false)
+                }}
+                className={`px-5 py-3 text-sm cursor-pointer transition-colors ${
+                  value === option 
+                    ? 'bg-cyber-cyan/20 text-cyber-cyan font-bold border-l-2 border-cyber-cyan' 
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white border-l-2 border-transparent'
+                }`}
+              >
+                {option}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 
 export default function Contact() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [model, setModel] = useState('Unitree H1 Bipedal')
+  const [timeline, setTimeline] = useState('Imediat (Q1 2026)')
+
+  const modelOptions = [
+    'Unitree H1 Bipedal',
+    'Unitree G1 Compact',
+    'AgiBot Raise A1 / A2',
+    'Platformă de Cercetare Custom'
+  ]
+
+  const timelineOptions = [
+    'Imediat (Q1 2026)',
+    '3-6 Luni',
+    'Fază de Cercetare & Evaluare'
+  ]
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -34,44 +108,49 @@ export default function Contact() {
                   </div>
 
                   <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           <div>
-                              <label className="block text-xs font-mono text-slate-300 mb-1">Nume Complet *</label>
-                              <input type="text" required placeholder="Dr. Alexander Vance" className="w-full px-4 py-3 rounded-lg bg-navy-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyber-cyan transition-colors" />
+                              <label className="block text-sm font-medium text-slate-300 mb-2">Nume Complet *</label>
+                              <input type="text" required placeholder="Ex: Ion Popescu" className="w-full px-5 py-3.5 rounded-xl bg-navy-950/80 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-cyber-cyan focus:ring-2 focus:ring-cyber-cyan/20 transition-all placeholder-slate-600" />
                           </div>
                           <div>
-                              <label className="block text-xs font-mono text-slate-300 mb-1">Email Corporate *</label>
-                              <input type="email" required placeholder="a.vance@enterprise.ro" className="w-full px-4 py-3 rounded-lg bg-navy-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyber-cyan transition-colors" />
+                              <label className="block text-sm font-medium text-slate-300 mb-2">Email Corporate *</label>
+                              <input type="email" required placeholder="contact@compania-ta.ro" className="w-full px-5 py-3.5 rounded-xl bg-navy-950/80 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-cyber-cyan focus:ring-2 focus:ring-cyber-cyan/20 transition-all placeholder-slate-600" />
                           </div>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div>
-                              <label className="block text-xs font-mono text-slate-300 mb-1">Model de Interes Principal</label>
-                              <select className="w-full px-4 py-3 rounded-lg bg-navy-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyber-cyan transition-colors">
-                                  <option>Unitree H1 Bipedal</option>
-                                  <option>Unitree G1 Compact</option>
-                                  <option>AgiBot Raise A1 / A2</option>
-                                  <option>Platformă de Cercetare Custom</option>
-                              </select>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                          <div className="relative">
+                              <label className="block text-sm font-medium text-slate-300 mb-2">Model de Interes Principal</label>
+                              <CustomSelect 
+                                options={modelOptions}
+                                value={model}
+                                onChange={setModel}
+                              />
                           </div>
-                          <div>
-                              <label className="block text-xs font-mono text-slate-300 mb-1">Timeline Implementare</label>
-                              <select className="w-full px-4 py-3 rounded-lg bg-navy-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyber-cyan transition-colors">
-                                  <option>Imediat (Q1 2026)</option>
-                                  <option>3-6 Luni</option>
-                                  <option>Fază de Cercetare & Evaluare</option>
-                              </select>
+                          <div className="relative">
+                              <label className="block text-sm font-medium text-slate-300 mb-2">Timeline Implementare</label>
+                              <CustomSelect 
+                                options={timelineOptions}
+                                value={timeline}
+                                onChange={setTimeline}
+                              />
                           </div>
                       </div>
 
                       <div>
-                          <label className="block text-xs font-mono text-slate-300 mb-1">Detalii Proiect & Cerințe Implementare</label>
-                          <textarea rows="4" placeholder="Specifică mediul, nevoile de payload, integrările software..." className="w-full px-4 py-3 rounded-lg bg-navy-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyber-cyan transition-colors"></textarea>
+                          <label className="block text-sm font-medium text-slate-300 mb-2">Detalii Proiect & Cerințe Implementare</label>
+                          <textarea rows="4" placeholder="Specifică mediul de operare, nevoile de încărcătură, integrările software necesare..." className="w-full px-5 py-3.5 rounded-xl bg-navy-950/80 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-cyber-cyan focus:ring-2 focus:ring-cyber-cyan/20 transition-all placeholder-slate-600 resize-none"></textarea>
                       </div>
 
-                      <button type="submit" disabled={loading} className="w-full py-4 bg-cyber-cyan text-navy-950 font-mono font-bold text-sm tracking-wider uppercase rounded-xl hover:bg-cyan-300 hover:shadow-[0_0_25px_rgba(0,240,255,0.6)] transition-all flex justify-center items-center">
-                          {loading ? <i className="fa-solid fa-spinner fa-spin text-xl"></i> : 'Trimite Solicitare Enterprise'}
+                      <button type="submit" disabled={loading} className="w-full py-4 bg-gradient-to-r from-cyber-cyan to-blue-500 text-navy-950 font-extrabold text-sm tracking-widest uppercase rounded-xl hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:scale-[1.01] transition-all duration-300 flex justify-center items-center group">
+                          {loading ? (
+                            <i className="fa-solid fa-spinner fa-spin text-xl"></i>
+                          ) : (
+                            <span className="flex items-center gap-2">
+                              Trimite Solicitare Enterprise <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                          )}
                       </button>
                   </form>
               </div>
