@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import ModelsHumanoidSection from '../components/ModelsHumanoidSection'
 import ModelsQuadrupedSection from '../components/ModelsQuadrupedSection'
+import ModelsQuadrupedDeepDive from '../components/ModelsQuadrupedDeepDive'
 // --- Variabile de Animație ---
 const fadeUpVariant = {
   hidden: { opacity: 0, y: 50 },
@@ -63,7 +64,7 @@ export default function RobotsPage() {
   if (hoveredCategory === 'ai') overlayClasses = 'bg-transparent'
 
   return (
-    <main className="text-white min-h-screen overflow-hidden selection:bg-cyber-cyan/30 bg-[#0f1f3d]">
+    <main className="text-white min-h-screen overflow-x-clip selection:bg-cyber-cyan/30 bg-[#0f1f3d]">
       
       {/* ========================================================= */}
       {/* 1. HERO SECTION (INTERACTIVE HUB) - Mai mic, dimensiune de banner */}
@@ -186,8 +187,11 @@ export default function RobotsPage() {
       </div> {/* End Continut Central */}
 
       {/* CONTINUT CENTRAL PATRUPEDE */}
-      <div className="max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 mb-10 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
+      <div className="max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 pb-32 mb-10 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
           <ModelsQuadrupedSection />
+
+          {/* DEEP DIVE PATRUPEDE (STICKY SCROLL) */}
+          <ModelsQuadrupedDeepDive />
       </div>
 
     </main>
