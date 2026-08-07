@@ -5,7 +5,7 @@ const features = [
         tag: "AMPRENTĂ 4D",
         title: "LIVOX Mid-360 LiDAR",
         desc: "Sistem omnidirecțional de mapare care generează o replică digitală a mediului, detectând obstacole de la firul ierbii până la 50 de metri distanță.",
-        img: "/images/dd_lidar.png",
+        img: "/images/dd_lidar.webp",
         bullets: [
             "Câmp vizual sferic 360° x 59°",
             "Milioane de puncte procesate pe secundă",
@@ -16,7 +16,7 @@ const features = [
         tag: "INTELIGENȚĂ NEURALĂ",
         title: "Procesor AI Core",
         desc: "Creierul central care analizează datele senzoriale și calculează traiectoria și echilibrul pentru fiecare picior în parte, la nivel de milisecundă.",
-        img: "/images/dd_cpu.png",
+        img: "/images/dd_cpu.webp",
         bullets: [
             "Peste 30 Trilioane de Operații pe secundă",
             "Învățare prin Reinforcement Learning",
@@ -27,7 +27,7 @@ const features = [
         tag: "BIOMECANICĂ TITAN-CARBON",
         title: "Actuatoare 120Nm",
         desc: "Motoare electrice ultra-ușoare dezvoltate in-house, capabile să elibereze explozii masive de putere pentru sărituri și transportul de sarcini grele.",
-        img: "/images/dd_actuator.png",
+        img: "/images/dd_actuator.webp",
         bullets: [
             "Densitate record a puterii raportat la masă",
             "Răcire activă integrată cu cupru",

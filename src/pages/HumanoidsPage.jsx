@@ -55,7 +55,7 @@ export default function HumanoidsPage() {
           transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="absolute bottom-0 w-[400px] md:w-[600px] h-[500px] md:h-[700px] flex items-end justify-center"
         >
-          {/* Aici va veni imaginea 2D (.png transparent) */}
+          {/* Aici va veni imaginea 2D (.webp transparent) */}
           <div className="w-full h-[80%] bg-gradient-to-t from-cyber-cyan/20 to-transparent rounded-t-full relative flex items-center justify-center overflow-hidden border-t border-cyber-cyan/10">
              <i className="fa-solid fa-robot text-9xl text-cyber-cyan/20"></i>
              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyber-cyan/10 via-transparent to-transparent"></div>

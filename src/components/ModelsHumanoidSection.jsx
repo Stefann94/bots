@@ -115,7 +115,7 @@ const DualCoreAccordion = () => {
         {
             title: "Independență Edge AI",
             subtitle: "Autonomie Cognitivă",
-            image: "/images/dual_core_1.png",
+            image: "/images/dual_core_1.webp",
             borderColor: "border-cyber-cyan/20",
             hoverBorderColor: "hover:border-cyber-cyan/50",
             textColor: "text-cyber-cyan",
@@ -147,7 +147,7 @@ const DualCoreAccordion = () => {
         {
             title: "Simbioză Om-Mașină",
             subtitle: "Teleoperare Shadow VR",
-            image: "/images/dual_core_2.png",
+            image: "/images/dual_core_2.webp",
             borderColor: "border-purple-500/20",
             hoverBorderColor: "hover:border-purple-500/50",
             textColor: "text-purple-400",
@@ -312,7 +312,7 @@ export default function ModelsHumanoidSection() {
                    
                    {/* Background Image */}
                    <div className="w-full h-full rounded-[24px] overflow-hidden relative">
-                       <div className="absolute inset-0 bg-[url('/images/humanoid_real_1.png')] bg-cover bg-top group-hover:scale-105 transition-transform duration-[2s] ease-out"></div>
+                       <div className="absolute inset-0 bg-[url('/images/humanoid_real_1.webp')] bg-cover bg-top group-hover:scale-105 transition-transform duration-[2s] ease-out"></div>
                        <div className="absolute inset-0 bg-emerald-900/10 mix-blend-overlay"></div>
                    </div>
 
@@ -342,7 +342,7 @@ export default function ModelsHumanoidSection() {
                    <HolographicRings />
                    
                    <div className="w-full h-[45%] rounded-[24px] overflow-hidden relative border border-purple-500/10 shrink-0 mb-4 z-10">
-                       <div className="absolute inset-0 bg-[url('/images/humanoid_real_2.png')] bg-cover bg-center group-hover:scale-110 transition-transform duration-[2s]"></div>
+                       <div className="absolute inset-0 bg-[url('/images/humanoid_real_2.webp')] bg-cover bg-center group-hover:scale-110 transition-transform duration-[2s]"></div>
                    </div>
                    
                    <div className="flex flex-col flex-grow justify-between z-10 px-2 pb-2">
@@ -404,7 +404,7 @@ export default function ModelsHumanoidSection() {
                    <PowerFlow />
                    
                    <div className="w-full md:w-5/12 h-48 md:h-full rounded-[24px] overflow-hidden relative z-10 border border-blue-500/20">
-                       <div className="absolute inset-0 bg-[url('/images/humanoid_real_3.png')] bg-cover bg-top group-hover:scale-105 transition-transform duration-[2s]"></div>
+                       <div className="absolute inset-0 bg-[url('/images/humanoid_real_3.webp')] bg-cover bg-top group-hover:scale-105 transition-transform duration-[2s]"></div>
                        <div className="absolute inset-0 bg-blue-900/20 mix-blend-overlay"></div>
                    </div>
                    
@@ -462,7 +462,7 @@ export default function ModelsHumanoidSection() {
                             style={{ WebkitMaskImage: 'radial-gradient(ellipse 50% 45% at 50% 50%, black 60%, transparent 100%)', maskImage: 'radial-gradient(ellipse 50% 45% at 50% 50%, black 60%, transparent 100%)' }}
                          >
                              <img 
-                               src="/images/humanoid_parallax.png" 
+                               src="/images/humanoid_parallax.webp" 
                                alt="Hologramă Umanoid"
                                className="h-full object-contain filter hue-rotate-180 saturate-[1.5] brightness-125" 
                              />

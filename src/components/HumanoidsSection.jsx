@@ -30,7 +30,7 @@ export default function HumanoidsSection() {
       <section className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-black border-t border-white/5">
         <motion.div 
           style={{ y: yParallax }} 
-          className="absolute inset-0 w-full h-[120%] -top-[10%] bg-[url('/images/humanoid_parallax.png')] bg-cover bg-center opacity-40"
+          className="absolute inset-0 w-full h-[120%] -top-[10%] bg-[url('/images/humanoid_parallax.webp')] bg-cover bg-center opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/80" />
         
@@ -92,7 +92,7 @@ export default function HumanoidsSection() {
             {/* Left: Sticky Image */}
             <div className="w-full md:w-1/2 h-screen sticky top-0 flex items-center justify-center p-6 md:p-12">
                <div className="w-full h-full max-h-[60vh] md:max-h-[70vh] rounded-3xl overflow-hidden relative shadow-2xl shadow-green-500/10">
-                  <img src="/images/humanoid_sticky.png" alt="Humanoid Portrait" className="w-full h-full object-cover" />
+                  <img src="/images/humanoid_sticky.webp" alt="Humanoid Portrait" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-8">
                      <p className="text-green-400 font-mono text-xs tracking-widest uppercase flex items-center gap-3">
                         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
@@ -145,7 +145,7 @@ export default function HumanoidsSection() {
             
             {/* Image 1 */}
             <div className="w-[85vw] md:w-[700px] h-[300px] md:h-[450px] rounded-3xl overflow-hidden relative shadow-2xl group">
-               <img src="/images/humanoid_gallery_1.png" alt="Joint Detail" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+               <img src="/images/humanoid_gallery_1.webp" alt="Joint Detail" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-1000"></div>
                <div className="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
                   <p className="text-xs md:text-sm font-mono text-green-400 uppercase tracking-widest">Actuatoare Gen 2</p>
@@ -154,7 +154,7 @@ export default function HumanoidsSection() {
 
             {/* Image 2 */}
             <div className="w-[85vw] md:w-[700px] h-[300px] md:h-[450px] rounded-3xl overflow-hidden relative shadow-2xl group">
-               <img src="/images/humanoid_gallery_2.png" alt="Hand Detail" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+               <img src="/images/humanoid_gallery_2.webp" alt="Hand Detail" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-1000"></div>
                <div className="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
                   <p className="text-xs md:text-sm font-mono text-green-400 uppercase tracking-widest">Senzori Tactili de Forță</p>

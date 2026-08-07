@@ -49,7 +49,7 @@ export default function Applications() {
         'Precizie de 99.8% la manipularea și fixarea componentelor de mici dimensiuni.',
         'Eficiență maximă prin operare continuă 24/7 și sisteme de schimbare rapidă a bateriei.'
       ],
-      image: '/images/fabrica.png'
+      image: '/images/fabrica.webp'
     },
     logistics: {
       title: 'Logistică & Sortare Autonomă',
@@ -58,7 +58,7 @@ export default function Applications() {
         'Integrare software directă cu sistemele existente de management (WMS / ERP).',
         'Senzori avansați pentru evitarea obstacolelor în medii extrem de aglomerate.'
       ],
-      image: '/images/logistica.png'
+      image: '/images/logistica.webp'
     },
     research: {
       title: 'Platformă Avansată pentru Cercetare',
@@ -67,7 +67,7 @@ export default function Applications() {
         'Compatibilitate nativă cu mediile de simulare NVIDIA Isaac Sim și Mujoco.',
         'Control direct (low-level) al cuplului pentru fiecare articulație în parte.'
       ],
-      image: '/images/cercetare.png'
+      image: '/images/cercetare.webp'
     },
     hazardous: {
       title: 'Inspecție în Medii Periculoase',
@@ -76,7 +76,7 @@ export default function Applications() {
         'Construcție robustă, complet sigilată la apă și praf (Standard IP67).',
         'Versiuni speciale certificate împotriva exploziilor pentru industria chimică.'
       ],
-      image: '/images/inspectii.png'
+      image: '/images/inspectii.webp'
     }
   }
 

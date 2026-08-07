@@ -94,7 +94,7 @@ export default function RobotSeries() {
 
                             <div className="w-full h-56 rounded-xl bg-navy-900 border border-slate-800 flex items-center justify-center relative overflow-hidden mb-6 shrink-0">
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <img src="/images/h1_real.png" alt="Unitree H1" className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] mix-blend-lighten group-hover:scale-110" />
+                                    <img src="/images/h1_real.webp" alt="Unitree H1" className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] mix-blend-lighten group-hover:scale-110" />
                                 </div>
                                 <div className="absolute bottom-3 left-3 right-3 flex justify-between text-[11px] font-mono text-slate-400 bg-navy-950/80 p-2 rounded backdrop-blur-sm">
                                     <span>ÎNĂLȚIME: 180 CM</span>
@@ -173,7 +173,7 @@ export default function RobotSeries() {
 
                             <div className="w-full h-56 rounded-xl bg-navy-900 border border-slate-800 flex items-center justify-center relative overflow-hidden mb-6 shrink-0">
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <img src="/images/g1_real.png" alt="Unitree G1" className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] mix-blend-lighten group-hover:scale-110" />
+                                    <img src="/images/g1_real.webp" alt="Unitree G1" className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] mix-blend-lighten group-hover:scale-110" />
                                 </div>
                                 <div className="absolute bottom-3 left-3 right-3 flex justify-between text-[11px] font-mono text-slate-400 bg-navy-950/80 p-2 rounded backdrop-blur-sm">
                                     <span>ÎNĂLȚIME: 127 CM</span>

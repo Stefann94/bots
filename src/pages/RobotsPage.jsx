@@ -90,7 +90,7 @@ export default function RobotsPage() {
             className="group relative flex-1 flex flex-col items-center justify-center cursor-pointer transition-all duration-500 overflow-hidden"
           >
             {/* Background Image Specific */}
-            <div className={`absolute inset-0 bg-[url('/images/hero_humanoid.png')] bg-cover bg-[center_top_10%] md:bg-[center_top_15%] transition-all duration-700 ease-in-out ${hoveredCategory === 'umanoizi' ? 'grayscale-0' : 'grayscale-[50%]'}`}></div>
+            <div className={`absolute inset-0 bg-[url('/images/hero_humanoid.webp')] bg-cover bg-[center_top_10%] md:bg-[center_top_15%] transition-all duration-700 ease-in-out ${hoveredCategory === 'umanoizi' ? 'grayscale-0' : 'grayscale-[50%]'}`}></div>
             {/* Tint Overlay (are o mică tentă verde default, mai puternică la hover) */}
             <div className={`absolute inset-0 transition-colors duration-700 ${hoveredCategory === 'umanoizi' ? 'bg-green-500/40 mix-blend-color' : 'bg-green-500/10 mix-blend-color'}`}></div>
             <div className={`absolute inset-0 transition-colors duration-700 ${hoveredCategory === 'umanoizi' ? 'bg-black/20' : 'bg-black/60'}`}></div>
@@ -111,7 +111,7 @@ export default function RobotsPage() {
             className="group relative flex-1 flex flex-col items-center justify-center cursor-pointer transition-all duration-500 overflow-hidden"
           >
             {/* Background Image Specific */}
-            <div className={`absolute inset-0 bg-[url('/images/hero_core.png')] bg-cover bg-[center_top_30%] md:bg-center transition-all duration-700 ease-in-out ${hoveredCategory === 'patrupede' ? 'grayscale-0' : 'grayscale-[50%]'}`}></div>
+            <div className={`absolute inset-0 bg-[url('/images/hero_core.webp')] bg-cover bg-[center_top_30%] md:bg-center transition-all duration-700 ease-in-out ${hoveredCategory === 'patrupede' ? 'grayscale-0' : 'grayscale-[50%]'}`}></div>
             {/* Tint Overlay */}
             <div className={`absolute inset-0 transition-colors duration-700 ${hoveredCategory === 'patrupede' ? 'bg-orange-500/40 mix-blend-color' : 'bg-orange-500/10 mix-blend-color'}`}></div>
             <div className={`absolute inset-0 transition-colors duration-700 ${hoveredCategory === 'patrupede' ? 'bg-black/20' : 'bg-black/60'}`}></div>
@@ -132,7 +132,7 @@ export default function RobotsPage() {
             className="group relative flex-1 flex flex-col items-center justify-center cursor-pointer transition-all duration-500 overflow-hidden"
           >
             {/* Background Image Specific */}
-            <div className={`absolute inset-0 bg-[url('/images/hero_quadruped.png')] bg-cover bg-center transition-all duration-700 ease-in-out ${hoveredCategory === 'ai' ? 'grayscale-0' : 'grayscale-[50%]'}`}></div>
+            <div className={`absolute inset-0 bg-[url('/images/hero_quadruped.webp')] bg-cover bg-center transition-all duration-700 ease-in-out ${hoveredCategory === 'ai' ? 'grayscale-0' : 'grayscale-[50%]'}`}></div>
             {/* Tint Overlay */}
             <div className={`absolute inset-0 transition-colors duration-700 ${hoveredCategory === 'ai' ? 'bg-purple-600/40 mix-blend-color' : 'bg-purple-600/10 mix-blend-color'}`}></div>
             <div className={`absolute inset-0 transition-colors duration-700 ${hoveredCategory === 'ai' ? 'bg-black/20' : 'bg-black/60'}`}></div>

@@ -79,7 +79,7 @@ export default function AgiBotSeries() {
                 </div>
 
                 <motion.div variants={imageContainerVariants} className="lg:col-span-6 relative bg-navy-950 min-h-[400px] flex items-center justify-center overflow-hidden group">
-                    <img src="/images/agibot_real.png" alt="AgiBot Raise A1" className="absolute inset-0 w-full h-full object-cover object-top opacity-75 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] mix-blend-lighten group-hover:scale-110" />
+                    <img src="/images/agibot_real.webp" alt="AgiBot Raise A1" className="absolute inset-0 w-full h-full object-cover object-top opacity-75 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] mix-blend-lighten group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-navy-900/90 via-navy-950/30 to-transparent z-10 pointer-events-none"></div>
                     <div className="absolute inset-0 bg-gradient-to-r from-navy-900/80 via-transparent to-transparent z-10 pointer-events-none lg:block hidden"></div>
                     

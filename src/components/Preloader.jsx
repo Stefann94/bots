@@ -19,12 +19,12 @@ export default function Preloader() {
 
     // Pozele esențiale și masive (Hero & Home)
     const criticalImages = [
-      '/images/hero_humanoid.png',
-      '/images/hero_quadruped.png',
-      '/images/hero_core.png',
-      '/images/h1_real.png',
-      '/images/g1_real.png',
-      '/images/agibot_real.png'
+      '/images/hero_humanoid.webp',
+      '/images/hero_quadruped.webp',
+      '/images/hero_core.webp',
+      '/images/h1_real.webp',
+      '/images/g1_real.webp',
+      '/images/agibot_real.webp'
     ];
 
     // Le încărcăm forțat în memorie

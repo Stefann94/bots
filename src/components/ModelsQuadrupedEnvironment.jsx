@@ -6,7 +6,7 @@ const environments = [
         id: 'rubble', 
         label: 'Teren Accidentat', 
         desc: 'Simulare obstacole neregulate și moloz.',
-        img: '/images/env_rubble.png', 
+        img: '/images/env_rubble.webp', 
         stats: { trac: '92%', susp: 'Adaptive', mode: 'Off-Road' }, 
         theme: 'from-orange-500/20 to-transparent',
         accent: 'text-orange-500',
@@ -16,7 +16,7 @@ const environments = [
         id: 'snow', 
         label: 'Condiții Extreme', 
         desc: 'Simulare gheață, zăpadă și aderență scăzută.',
-        img: '/images/terrain_background.png', 
+        img: '/images/terrain_background.webp', 
         stats: { trac: '85%', susp: 'Stiff', mode: 'Winter' }, 
         theme: 'from-blue-500/20 to-transparent',
         accent: 'text-blue-400',
@@ -26,7 +26,7 @@ const environments = [
         id: 'stairs', 
         label: 'Mediu Industrial', 
         desc: 'Navigare spații înguste, scări și structuri metalice.',
-        img: '/images/quad_lidar.png', 
+        img: '/images/quad_lidar.webp', 
         stats: { trac: '98%', susp: 'Climbing', mode: 'Inspection' }, 
         theme: 'from-yellow-500/20 to-transparent',
         accent: 'text-yellow-500',
@@ -36,7 +36,7 @@ const environments = [
         id: 'asphalt', 
         label: 'Pistă de Viteză', 
         desc: 'Suprafață plană pentru accelerație maximă.',
-        img: '/images/quad_speed.png', 
+        img: '/images/quad_speed.webp', 
         stats: { trac: '100%', susp: 'Aero', mode: 'Sprint' }, 
         theme: 'from-cyber-cyan/20 to-transparent',
         accent: 'text-cyber-cyan',
@@ -167,7 +167,7 @@ export default function ModelsQuadrupedEnvironment() {
                     </div>
 
                     {/* Scanline Effect */}
-                    <div className="absolute inset-0 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/black-scales.png')] opacity-20 mix-blend-overlay" />
+                    <div className="absolute inset-0 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/black-scales.webp')] opacity-20 mix-blend-overlay" />
                     
                     {/* Vignette */}
                     <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/80 via-transparent to-black/40" />
