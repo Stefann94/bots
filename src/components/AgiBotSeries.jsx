@@ -12,10 +12,6 @@ export default function AgiBotSeries() {
             >
                 <div className="lg:col-span-6 p-8 lg:p-12 flex flex-col justify-between">
                     <div>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-cyber-cyan/10 text-cyber-cyan text-xs font-mono uppercase mb-4 border border-cyber-cyan/30">
-                            <i className="fa-solid fa-microchip"></i> Serie Dedicată: AgiBot Series
-                        </div>
-
                         <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mt-2 leading-tight">
                             Robotul Biped AGI de <br />
                             <span className="text-cyber-cyan cyan-glow-text">Nouă Generație</span>
@@ -30,38 +26,26 @@ export default function AgiBotSeries() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
                             <div className="p-4 rounded-xl bg-navy-950/80 border border-slate-800">
-                                <div className="text-cyber-cyan text-lg font-bold font-mono">12 DoF Hands</div>
-                                <div className="text-xs text-slate-400 mt-1">Manipulare fină duală cu feedback tactil</div>
+                                <div className="text-cyber-cyan text-lg font-bold font-mono">Dexteritate Extremă</div>
+                                <div className="text-xs text-slate-400 mt-1">Mâini cu 12 articulații independente</div>
                             </div>
                             <div className="p-4 rounded-xl bg-navy-950/80 border border-slate-800">
-                                <div className="text-cyber-cyan text-lg font-bold font-mono">Zero-Shot AI</div>
-                                <div className="text-xs text-slate-400 mt-1">Percepție spațială și auto-învățare automată</div>
+                                <div className="text-cyber-cyan text-lg font-bold font-mono">Sistem AGI Integrat</div>
+                                <div className="text-xs text-slate-400 mt-1">Capacitate nativă de adaptare și învățare</div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="mt-8 pt-6 border-t border-slate-800/80 flex items-center gap-4">
-                        <button className="px-6 py-3 bg-cyber-cyan text-navy-950 font-mono font-bold text-xs uppercase rounded-lg hover:bg-cyan-300 transition-all shadow-[0_0_15px_rgba(0,240,255,0.4)]">
-                            Solicită Prototip AgiBot
-                        </button>
-                        <span className="text-xs font-mono text-slate-400">PRODUCȚIE ÎN MASĂ</span>
-                    </div>
                 </div>
 
-                <div className="lg:col-span-6 relative bg-navy-950 min-h-[400px] flex items-center justify-center p-8 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-transparent to-transparent z-10"></div>
+                <div className="lg:col-span-6 relative bg-navy-950 min-h-[320px] flex items-center justify-center overflow-hidden">
+                    <img src="/images/agibot_real.png" alt="AgiBot Raise A1" className="absolute inset-0 w-full h-full object-cover object-top opacity-75 hover:opacity-100 transition-opacity duration-700 mix-blend-lighten" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy-900/90 via-navy-950/30 to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-navy-900/80 via-transparent to-transparent z-10 pointer-events-none lg:block hidden"></div>
                     
-                    <div className="relative z-0 w-full h-full flex flex-col items-center justify-center text-center">
-                        <div className="w-64 h-64 rounded-full bg-cyber-cyan/10 border border-cyber-cyan/30 flex items-center justify-center relative animate-pulse">
-                            <i className="fa-solid fa-robot text-9xl text-cyber-cyan/80 filter drop-shadow-[0_0_20px_rgba(0,240,255,0.8)]"></i>
-                            
-                            <div className="absolute inset-0 rounded-full border border-dashed border-cyber-cyan/40 animate-spin" style={{ animationDuration: '20s' }}></div>
-                        </div>
-
-                        <div className="mt-6 z-20">
-                            <div className="text-lg font-bold text-white font-mono">AgiBot Raise A1</div>
-                            <div className="text-xs text-cyber-cyan font-mono mt-1">AGI EMBODIED INTELLIGENCE</div>
-                        </div>
+                    <div className="relative z-20 w-full h-full flex flex-col items-center justify-end text-center p-8 pb-12 mt-auto">
+                        <div className="text-2xl font-bold text-white font-mono drop-shadow-md">AgiBot Raise A1</div>
+                        <div className="text-sm text-cyber-cyan font-mono mt-2 uppercase tracking-widest drop-shadow-md">Inteligență Artificială Generativă</div>
                     </div>
                 </div>
             </motion.div>
