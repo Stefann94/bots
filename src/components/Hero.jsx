@@ -131,7 +131,7 @@ export default function Hero() {
                   <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
                       <a href="/modele-3d" className="group relative w-full sm:w-auto px-8 py-3.5 bg-cyber-cyan text-navy-950 text-sm font-bold tracking-widest uppercase rounded-md overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(0,240,255,0.4)]">
                           <span className="relative z-10 flex items-center justify-center gap-2">
-                              Explorează Umanoizii <i className="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                              Explorează Umanoizii
                           </span>
                           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
                       </a>
@@ -225,7 +225,6 @@ export default function Hero() {
                       >
                           <div className="flex items-center gap-3">
                               <span>VIEW MORE ABOUT UNITREE</span>
-                              <i className="fa-solid fa-arrow-right text-[10px] transition-transform group-hover:translate-x-1"></i>
                           </div>
                       </button>
                   </div>
