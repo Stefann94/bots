@@ -92,23 +92,56 @@ export default function Contact() {
     }, 1500)
   }
 
+  // Circular Iris Reveal for the container
+  const cardVariants = {
+    hidden: { clipPath: "circle(0% at 50% 50%)", scale: 0.9, opacity: 0 },
+    visible: { 
+      clipPath: "circle(150% at 50% 50%)", 
+      scale: 1,
+      opacity: 1,
+      transition: { 
+        duration: 1.2, 
+        ease: [0.25, 1, 0.5, 1],
+        staggerChildren: 0.15,
+        delayChildren: 0.3
+      } 
+    }
+  }
+
+  // Staggered boot-up for form fields
+  const fieldVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: { type: "spring", stiffness: 100, damping: 15 } 
+    }
+  }
+
   return (
     <>
       <section id="about" className="py-24 relative">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="glass-card rounded-3xl p-8 sm:p-12 border border-cyber-cyan/40 shadow-2xl relative overflow-hidden">
+              <motion.div 
+                variants={cardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, margin: "-15% 0px -15% 0px" }}
+                className="glass-card rounded-3xl p-8 sm:p-12 border border-cyber-cyan/40 shadow-2xl relative overflow-hidden"
+              >
                   <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-cyber-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                  <div className="text-center mb-8">
+                  <motion.div variants={fieldVariants} className="text-center mb-8">
                       <span className="text-xs font-mono text-cyber-cyan uppercase tracking-widest">ACHIZIȚII ENTERPRISE</span>
                       <h2 className="text-3xl font-bold text-white mt-2">Programează o Demonstrație Live</h2>
                       <p className="text-slate-400 text-sm mt-2">
                           Testează modelele humanoide Unitree și AgiBot la sediul tău sau vizitează hub-urile noastre tehnologice regionale.
                       </p>
-                  </div>
+                  </motion.div>
 
                   <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <motion.div variants={fieldVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           <div>
                               <label className="block text-sm font-medium text-slate-300 mb-2">Nume Complet *</label>
                               <input type="text" required placeholder="Ex: Ion Popescu" className="w-full px-5 py-3.5 rounded-xl bg-navy-950/80 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-cyber-cyan focus:ring-2 focus:ring-cyber-cyan/20 transition-all placeholder-slate-600" />
@@ -117,9 +150,9 @@ export default function Contact() {
                               <label className="block text-sm font-medium text-slate-300 mb-2">Email Corporate *</label>
                               <input type="email" required placeholder="contact@compania-ta.ro" className="w-full px-5 py-3.5 rounded-xl bg-navy-950/80 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-cyber-cyan focus:ring-2 focus:ring-cyber-cyan/20 transition-all placeholder-slate-600" />
                           </div>
-                      </div>
+                      </motion.div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <motion.div variants={fieldVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           <div className="relative">
                               <label className="block text-sm font-medium text-slate-300 mb-2">Model de Interes Principal</label>
                               <CustomSelect 
@@ -136,14 +169,14 @@ export default function Contact() {
                                 onChange={setTimeline}
                               />
                           </div>
-                      </div>
+                      </motion.div>
 
-                      <div>
+                      <motion.div variants={fieldVariants}>
                           <label className="block text-sm font-medium text-slate-300 mb-2">Detalii Proiect & Cerințe Implementare</label>
                           <textarea rows="4" placeholder="Specifică mediul de operare, nevoile de încărcătură, integrările software necesare..." className="w-full px-5 py-3.5 rounded-xl bg-navy-950/80 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-cyber-cyan focus:ring-2 focus:ring-cyber-cyan/20 transition-all placeholder-slate-600 resize-none"></textarea>
-                      </div>
+                      </motion.div>
 
-                      <button type="submit" disabled={loading} className="w-full py-4 bg-gradient-to-r from-cyber-cyan to-blue-500 text-navy-950 font-extrabold text-sm tracking-widest uppercase rounded-xl hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:scale-[1.01] transition-all duration-300 flex justify-center items-center group">
+                      <motion.button variants={fieldVariants} type="submit" disabled={loading} className="w-full py-4 bg-gradient-to-r from-cyber-cyan to-blue-500 text-navy-950 font-extrabold text-sm tracking-widest uppercase rounded-xl hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:scale-[1.01] transition-all duration-300 flex justify-center items-center group">
                           {loading ? (
                             <i className="fa-solid fa-spinner fa-spin text-xl"></i>
                           ) : (
@@ -151,9 +184,9 @@ export default function Contact() {
                               Trimite Solicitare Enterprise <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                             </span>
                           )}
-                      </button>
+                      </motion.button>
                   </form>
-              </div>
+              </motion.div>
           </div>
       </section>
 
