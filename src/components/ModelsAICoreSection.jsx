@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const NeuralNode = ({ x, y, icon, label, color, isActive, onHover, onLeave, delay = 0 }) => (
@@ -65,6 +65,226 @@ const SynapticLine = ({ startX, startY, endX, endY, isActive, color }) => {
                 </motion.circle>
             )}
         </svg>
+    );
+};
+
+const TrainingMatrixSection = () => {
+    const [iterations, setIterations] = useState(4528190);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIterations(prev => prev + Math.floor(Math.random() * 42) + 10);
+        }, 80);
+        return () => clearInterval(interval);
+    }, []);
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } }
+    };
+
+    return (
+        <div className="w-full mt-32 mb-16 px-4 relative">
+            {/* Background Glows for section */}
+            <div className="absolute top-1/2 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -translate-y-1/2 pointer-events-none"></div>
+            
+            <motion.div 
+                className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 relative z-10"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+            >
+                <div className="flex-1 space-y-6">
+                    <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-black text-white tracking-tighter uppercase">
+                        Evoluție <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyber-cyan drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">Sintetică</span>
+                    </motion.h2>
+                    <motion.p variants={itemVariants} className="text-slate-400 text-lg leading-relaxed">
+                        Înainte să facă primul pas fizic, roboții noștri trăiesc mii de vieți în <strong className="text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">Simulatorul Matrix</strong>. Prin Reinforcement Learning, AI-ul testează miliarde de scenarii de fizică, învățând din greșeli într-un mediu virtual accelerat.
+                    </motion.p>
+                    <motion.div variants={itemVariants} className="bg-white/5 border border-white/10 rounded-xl p-5 inline-block shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl relative overflow-hidden group">
+                        {/* Shimmer effect */}
+                        <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/10 opacity-40 group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                        
+                        <div className="flex items-center gap-3 mb-2">
+                            <i className="fa-solid fa-vr-cardboard text-cyber-cyan text-lg"></i>
+                            <div className="text-xs text-cyber-cyan font-mono uppercase tracking-widest">Mediu Virtual: Isaac Sim</div>
+                        </div>
+                        <div className="text-slate-300 text-sm">Fizică rigidă 1:1. Simulare fricțiune, gravitație, vânt.</div>
+                    </motion.div>
+                </div>
+
+                <motion.div 
+                    variants={itemVariants}
+                    className="flex-1 w-full h-[400px] relative rounded-3xl border border-white/10 bg-[#02050A] overflow-hidden group flex items-center justify-center shadow-[0_0_50px_rgba(168,85,247,0.1)]"
+                >
+                    {/* Glowing Core Background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-transparent"></div>
+
+                    {/* Grid Background with Fade Mask */}
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px] [perspective:1000px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)]">
+                        <motion.div 
+                            className="w-full h-full border-t border-purple-500/40"
+                            animate={{ rotateX: [60, 60], y: [0, 40] }}
+                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                    </div>
+                    
+                    {/* Iteration Counter */}
+                    <div className="relative z-10 text-center bg-black/40 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.8)] before:absolute before:inset-0 before:rounded-2xl before:border before:border-purple-500/20 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-500">
+                        <div className="flex justify-center mb-3">
+                            <i className="fa-solid fa-infinity text-purple-400 text-2xl animate-pulse"></i>
+                        </div>
+                        <div className="text-purple-300 font-mono text-xs md:text-sm uppercase tracking-widest mb-2 opacity-80">Iterații de Antrenament</div>
+                        <div className="font-mono text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                            {iterations.toLocaleString()}
+                        </div>
+                        <div className="text-emerald-400 text-[10px] md:text-xs font-mono mt-4 flex items-center justify-center gap-2 bg-emerald-500/10 py-1.5 px-3 rounded-full border border-emerald-500/20 inline-flex">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_5px_#10B981]"></span>
+                            REWARD_FUNCTION: OPTIMIZED
+                        </div>
+                    </div>
+
+                    {/* Edge highlights */}
+                    <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+                    <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyber-cyan/50 to-transparent"></div>
+                </motion.div>
+            </motion.div>
+        </div>
+    );
+};
+
+const SwarmIntelligenceSection = () => {
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } }
+    };
+
+    return (
+        <div className="w-full mt-32 mb-16 px-4 relative">
+            {/* Background Glows for section */}
+            <div className="absolute top-1/2 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] -translate-y-1/2 pointer-events-none"></div>
+
+            <motion.div 
+                className="max-w-6xl mx-auto flex flex-col lg:flex-row-reverse items-center gap-12 relative z-10"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+            >
+                <div className="flex-1 space-y-6">
+                    <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-black text-white tracking-tighter uppercase">
+                        Swarm <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyber-cyan drop-shadow-[0_0_15px_rgba(16,185,129,0.4)]">Intelligence</span>
+                    </motion.h2>
+                    <motion.p variants={itemVariants} className="text-slate-400 text-lg leading-relaxed">
+                        Ce învață un robot, învață toată flota. Conștiința colectivă (Hive Mind) permite partajarea instantanee a hărților 3D, a strategiilor de evitare și a datelor despre mediul înconjurător. 
+                    </motion.p>
+                    <motion.p variants={itemVariants} className="text-slate-400 text-lg leading-relaxed">
+                        Dacă un patrupede detectează o prăpastie la etajul 3, toți umanoizii din clădire își ajustează automat rutele. Nu doar hardware. E o <strong className="text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">minte colectivă</strong>.
+                    </motion.p>
+                </div>
+
+                <motion.div 
+                    variants={itemVariants}
+                    className="flex-1 w-full h-[400px] relative rounded-3xl border border-white/10 bg-[#030712] overflow-hidden flex items-center justify-center shadow-[0_0_50px_rgba(16,185,129,0.1)] group"
+                >
+                    {/* Hexagon / Dotted Map Background */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.05)_0%,transparent_70%)]"></div>
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_80%)]"></div>
+                    
+                    {/* Radar Effect */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-48 h-48 border border-emerald-500/30 rounded-full absolute shadow-[0_0_30px_rgba(16,185,129,0.1)_inset]"></div>
+                        <div className="w-80 h-80 border border-emerald-500/20 rounded-full absolute border-dashed"></div>
+                        <div className="w-[450px] h-[450px] border border-emerald-500/10 rounded-full absolute"></div>
+                        
+                        {/* Radar Sweep */}
+                        <motion.div 
+                            className="w-full h-full absolute rounded-full opacity-60 mix-blend-screen"
+                            style={{ background: 'conic-gradient(from 0deg, transparent 70%, rgba(16, 185, 129, 0.4) 98%, rgba(255,255,255,0.8) 100%)' }}
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                        />
+                    </div>
+                    
+                    {/* Fleet Nodes */}
+                    <div className="relative w-full h-full">
+                        {/* Center Node */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                            {/* Ripple Effect */}
+                            <div className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40"></div>
+                            <div className="w-5 h-5 bg-emerald-400 rounded-full shadow-[0_0_20px_#10B981] border-2 border-white"></div>
+                            <div className="text-[10px] text-emerald-300 font-mono font-bold absolute top-7 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black/60 px-2 py-0.5 rounded backdrop-blur border border-emerald-500/30">NEXUS_HUB</div>
+                        </div>
+
+                        {/* Node 1 */}
+                        <div className="absolute top-[25%] left-[25%] z-10 group-hover:-translate-y-1 transition-transform duration-500">
+                            <div className="w-3 h-3 bg-cyber-cyan rounded-full shadow-[0_0_15px_#00F0FF] relative">
+                                <div className="absolute inset-0 rounded-full bg-cyber-cyan animate-ping opacity-30" style={{ animationDelay: '0.2s' }}></div>
+                            </div>
+                            <div className="text-[10px] text-cyber-cyan font-mono absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 px-1 rounded">U-01</div>
+                            <svg className="absolute top-1.5 left-1.5 overflow-visible pointer-events-none">
+                                <motion.line x1="0" y1="0" x2="115" y2="85" stroke="rgba(0, 240, 255, 0.4)" strokeWidth="1.5" strokeDasharray="4 4"
+                                    animate={{ strokeDashoffset: [20, 0] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                />
+                                {/* Data packet moving along line */}
+                                <motion.circle r="2" fill="#fff" filter="blur(1px)">
+                                    <animateMotion dur="1.5s" repeatCount="indefinite" path="M 0 0 L 115 85" />
+                                </motion.circle>
+                            </svg>
+                        </div>
+
+                        {/* Node 2 */}
+                        <div className="absolute top-[75%] left-[20%] z-10 group-hover:translate-x-1 transition-transform duration-500">
+                            <div className="w-3 h-3 bg-cyber-cyan rounded-full shadow-[0_0_15px_#00F0FF] relative">
+                                <div className="absolute inset-0 rounded-full bg-cyber-cyan animate-ping opacity-30" style={{ animationDelay: '0.7s' }}></div>
+                            </div>
+                            <div className="text-[10px] text-cyber-cyan font-mono absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 px-1 rounded">Q-04</div>
+                            <svg className="absolute top-1.5 left-1.5 overflow-visible pointer-events-none">
+                                <motion.line x1="0" y1="0" x2="135" y2="-85" stroke="rgba(0, 240, 255, 0.4)" strokeWidth="1.5" strokeDasharray="4 4"
+                                    animate={{ strokeDashoffset: [20, 0] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                />
+                                <motion.circle r="2" fill="#fff" filter="blur(1px)">
+                                    <animateMotion dur="2s" repeatCount="indefinite" path="M 135 -85 L 0 0" />
+                                </motion.circle>
+                            </svg>
+                        </div>
+                        
+                        {/* Node 3 */}
+                        <div className="absolute top-[35%] left-[75%] z-10 group-hover:translate-x-1 transition-transform duration-500">
+                            <div className="w-3 h-3 bg-purple-400 rounded-full shadow-[0_0_15px_#A855F7] relative">
+                                <div className="absolute inset-0 rounded-full bg-purple-400 animate-ping opacity-30" style={{ animationDelay: '1.2s' }}></div>
+                            </div>
+                            <div className="text-[10px] text-purple-400 font-mono absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 px-1 rounded">U-02</div>
+                            <svg className="absolute top-1.5 left-1.5 overflow-visible pointer-events-none">
+                                <motion.line x1="0" y1="0" x2="-115" y2="50" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="1.5" strokeDasharray="4 4"
+                                    animate={{ strokeDashoffset: [20, 0] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                />
+                                <motion.circle r="2" fill="#fff" filter="blur(1px)">
+                                    <animateMotion dur="1s" repeatCount="indefinite" path="M -115 50 L 0 0" />
+                                </motion.circle>
+                            </svg>
+                        </div>
+                    </div>
+                </motion.div>
+            </motion.div>
+        </div>
     );
 };
 
@@ -149,7 +369,7 @@ export default function ModelsAICoreSection() {
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 >
                     {/* Pulsing Aura */}
-                    <div className={`absolute w-64 h-64 rounded-full blur-[80px] opacity-40 transition-colors duration-1000 ${activeNodeData ? '' : 'bg-white/20'}`} style={{ backgroundColor: activeNodeData ? activeNodeData.color : undefined }}></div>
+                    <div className={`absolute w-48 h-48 rounded-full blur-3xl opacity-40 transition-colors duration-1000 ${activeNodeData ? '' : 'bg-white/20'}`} style={{ backgroundColor: activeNodeData ? activeNodeData.color : undefined }}></div>
                     
                     {/* The Core Orb */}
                     <div className="relative w-40 h-40 rounded-full flex items-center justify-center">
@@ -203,6 +423,12 @@ export default function ModelsAICoreSection() {
                 </AnimatePresence>
 
             </div>
+
+            {/* Evoluție Sintetică (The Matrix) */}
+            <TrainingMatrixSection />
+
+            {/* Swarm Intelligence (Hive Mind) */}
+            <SwarmIntelligenceSection />
             
             {/* Mobile Helper Text */}
             <div className="mt-8 text-center text-slate-500 text-sm font-mono flex items-center justify-center gap-2">
