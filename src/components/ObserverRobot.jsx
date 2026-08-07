@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -9,9 +9,15 @@ export default function ObserverRobot() {
   const leftArmRef = useRef()
   const rightArmRef = useRef()
   const chestRef = useRef()
+  const buttonRef = useRef()
+  const arrowRef = useRef()
+  
+  const flyTrigger = useRef(false)
+  const flyStartTime = useRef(null)
   
   const target = new THREE.Vector3()
-  const { viewport } = useThree()
+  const raycaster = useMemo(() => new THREE.Raycaster(), [])
+  const { viewport, camera } = useThree()
 
   const isMobile = viewport.width < 5
   
@@ -32,19 +38,62 @@ export default function ObserverRobot() {
       pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1
       pointer.current.y = -(e.clientY / window.innerHeight) * 2 + 1
     }
+    
+    const handleClick = () => {
+      if (isMobile) return
+      
+      raycaster.setFromCamera(pointer.current, camera)
+      if (buttonRef.current) {
+        const intersects = raycaster.intersectObject(buttonRef.current, true)
+        if (intersects.length > 0) {
+          flyTrigger.current = true
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+      }
+    }
+    
     window.addEventListener('pointermove', handlePointerMove)
-    return () => window.removeEventListener('pointermove', handlePointerMove)
-  }, [])
+    window.addEventListener('click', handleClick)
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('click', handleClick)
+    }
+  }, [camera, isMobile, raycaster])
 
   useFrame((state) => {
     if (isMobile) return
 
     const t = state.clock.elapsedTime
 
+    // 0. Animația de zbor la click
+    if (flyTrigger.current) {
+      flyStartTime.current = t
+      flyTrigger.current = false
+    }
+
+    let extraY = 0
+    if (flyStartTime.current !== null) {
+      const flyDuration = 2.5 // Durata totală a zborului
+      const elapsed = t - flyStartTime.current
+      if (elapsed < flyDuration) {
+        const progress = elapsed / flyDuration
+        // Se ridică la MAX 15 unități (iese complet din ecran)
+        extraY = Math.sin(progress * Math.PI) * 15
+        
+        // Tilt pe spate când zboară
+        if (groupRef.current) {
+          groupRef.current.rotation.x = -Math.sin(progress * Math.PI) * 0.4
+        }
+      } else {
+        flyStartTime.current = null
+        if (groupRef.current) groupRef.current.rotation.x = 0
+      }
+    }
+
     // 1. Efectul de respirație (Mișcare Sus-Jos a întregului corp)
     const breathOffset = Math.sin(t * 2.5) * 0.08
     if (groupRef.current) {
-      groupRef.current.position.y = posY + breathOffset
+      groupRef.current.position.y = posY + breathOffset + extraY
     }
 
     // 2. Extinderea pieptului (Respirație)
@@ -98,6 +147,29 @@ export default function ObserverRobot() {
       neckRef.current.quaternion.copy(currentQuat)
       neckRef.current.quaternion.slerp(targetQuat, 0.2) // Reflexe fulgerătoare
     }
+    
+    // 5. Animația săgeții (marire/micsorare la 3 secunde)
+    if (arrowRef.current) {
+      const cycle = t % 3
+      let scaleAnim = 1
+      if (cycle < 0.3) {
+        scaleAnim = 1 + Math.sin((cycle / 0.3) * Math.PI) * 0.3
+      }
+      arrowRef.current.scale.set(scaleAnim, scaleAnim, 0.1 * scaleAnim)
+    }
+    
+    // 6. Hover state folosind raycaster manual
+    if (buttonRef.current) {
+      raycaster.setFromCamera(pointer.current, state.camera)
+      const intersects = raycaster.intersectObject(buttonRef.current, true)
+      if (intersects.length > 0) {
+        document.body.style.cursor = 'pointer'
+        buttonRef.current.hovered = true
+      } else if (buttonRef.current.hovered) {
+        document.body.style.cursor = ''
+        buttonRef.current.hovered = false
+      }
+    }
   })
 
   // Materiale
@@ -139,11 +211,29 @@ export default function ObserverRobot() {
           <meshStandardMaterial {...glossyWhite} />
         </mesh>
         
-        {/* Detaliu Inima/Core (Glow Cyan sub piept) */}
-        <mesh position={[0, 0.2, 0.56]}>
-          <circleGeometry args={[0.15, 32]} />
-          <meshStandardMaterial {...cyanGlow} />
-        </mesh>
+        {/* Buton Go To Top (Fosta inimă) */}
+        <group 
+          ref={buttonRef}
+          position={[0, 0.2, 0.60]}
+        >
+          {/* Fundalul butonului (solid cyan) */}
+          <mesh>
+            <circleGeometry args={[0.15, 32]} />
+            <meshStandardMaterial color="#00f0ff" roughness={0.4} metalness={0.2} />
+          </mesh>
+          
+          {/* Săgeata neagră 3D aplatizată cu animație */}
+          <group ref={arrowRef} position={[0, 0, 0.01]} scale={[1, 1, 0.1]}>
+            <mesh position={[0, 0.03, 0]}>
+              <coneGeometry args={[0.05, 0.08, 16]} />
+              <meshBasicMaterial color="#000000" />
+            </mesh>
+            <mesh position={[0, -0.03, 0]}>
+              <boxGeometry args={[0.04, 0.06, 0.1]} />
+              <meshBasicMaterial color="#000000" />
+            </mesh>
+          </group>
+        </group>
       </group>
 
       {/* --- BRAȚE --- */}
