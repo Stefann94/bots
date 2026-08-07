@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Applications() {
   const [activeTab, setActiveTab] = useState('manufacturing')
+  const [isHovered, setIsHovered] = useState(false)
+  const [progress, setProgress] = useState(0)
 
   const tabs = [
     { id: 'manufacturing', icon: 'fa-industry', label: 'Producție' },
@@ -10,51 +12,71 @@ export default function Applications() {
     { id: 'research', icon: 'fa-flask', label: 'Cercetare & Laborator' },
     { id: 'hazardous', icon: 'fa-triangle-exclamation', label: 'Inspecție Medii Periculoase' },
   ]
+  const tabIds = tabs.map(t => t.id)
+
+  useEffect(() => {
+    if (isHovered) return
+
+    const intervalTime = 50 // ms
+    const totalTime = 4000 // 4 seconds
+    const increment = (intervalTime / totalTime) * 100
+
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          const currentIndex = tabIds.indexOf(activeTab)
+          const nextIndex = (currentIndex + 1) % tabIds.length
+          setActiveTab(tabIds[nextIndex])
+          return 0
+        }
+        return prev + increment
+      })
+    }, intervalTime)
+
+    return () => clearInterval(timer)
+  }, [activeTab, isHovered, tabIds])
+
+  const handleTabClick = (id) => {
+    setActiveTab(id)
+    setProgress(0)
+  }
 
   const tabContents = {
     manufacturing: {
       title: 'Asamblare Automată de Precizie',
-      tag: 'ASAMBLARE',
-      desc: 'Humanoizii Unitree & AgiBot se integrează perfect în liniile de asamblare auto alături de personalul uman. Operează unelte, preiau componente și efectuează sarcini QA fără infrastructură fixă.',
+      desc: 'Roboții noștri se integrează perfect în liniile de producție existente, lucrând în siguranță alături de angajați. Pot opera unelte standard, manipula piese complexe și efectua controlul calității (QA) fără a necesita modificări ale infrastructurii din fabrică.',
       points: [
-        'Rată de precizie de 99.8% la instalarea micro-șuruburilor',
-        'Operare 24/7 continuă cu schimbare rapidă a bateriei'
+        'Precizie de 99.8% la manipularea și fixarea componentelor de mici dimensiuni.',
+        'Eficiență maximă prin operare continuă 24/7 și sisteme de schimbare rapidă a bateriei.'
       ],
-      icon: 'fa-industry',
-      facility: 'FACILITY ID: DETROIT-PLANT-04'
+      image: '/images/fabrica.png'
     },
     logistics: {
-      title: 'Sortare & Paletizare Autonomă',
-      tag: 'FULFILLMENT & FREIGHT',
-      desc: 'Capabili să ridice încărcături de până la 30kg, navigând pe culoare aglomerate de depozit, încărcând camioane și organizând inventarul greu cu control adaptiv al forței.',
+      title: 'Logistică & Sortare Autonomă',
+      desc: 'Optimizarea depozitelor devine extrem de simplă. Bipedezii pot prelua, sorta și muta pachete grele de până la 30kg. Navighează autonom printre rafturi și evită dinamic stivuitoarele sau personalul uman.',
       points: [
-        'Integrare nativă completă ROS2 & ERP',
-        'Evitarea obstacolelor în zone umane dinamice'
+        'Integrare software directă cu sistemele existente de management (WMS / ERP).',
+        'Senzori avansați pentru evitarea obstacolelor în medii extrem de aglomerate.'
       ],
-      icon: 'fa-boxes-packing',
-      facility: 'FACILITY ID: LOGISTICS-HUB-FRANKFURT'
+      image: '/images/logistica.png'
     },
     research: {
-      title: 'Cercetare Open-Source AI & Robotică',
-      tag: 'ACADEMIE & R&D ENTERPRISE',
-      desc: 'Acces SDK complet cu API-uri Python și C++, suport de simulare Mujoco și Isaac Gym, permițând cercetătorilor să testeze noi modele RL instantaneu.',
+      title: 'Platformă Avansată pentru Cercetare',
+      desc: 'Oferim acces complet la hardware pentru laboratoare și universități. Prin SDK-ul nostru deschis, cercetătorii pot testa direct pe robot noi algoritmi de Inteligență Artificială, Machine Learning sau locomoție.',
       points: [
-        'Pipeline nativ NVIDIA Isaac Sim',
-        'API pentru control low-level al cuplului'
+        'Compatibilitate nativă cu mediile de simulare NVIDIA Isaac Sim și Mujoco.',
+        'Control direct (low-level) al cuplului pentru fiecare articulație în parte.'
       ],
-      icon: 'fa-flask',
-      facility: 'LAB ID: ETH-ZURICH-ROBOTICS'
+      image: '/images/cercetare.png'
     },
     hazardous: {
-      title: 'Inspecție la Distanță în Zone de Risc',
-      tag: 'INFRASTRUCTURĂ CHIMICĂ & ENERGIE',
-      desc: 'Înlocuirea operatorilor umani în zone de risc crescut, centrale nucleare, platforme offshore pentru scanare termică și verificări structurale.',
+      title: 'Inspecție în Medii Periculoase',
+      desc: 'Protejăm viețile umane trimițând roboți în mediile cu risc extrem (centrale nucleare, platforme offshore, rafinării). Aceștia pot efectua scanări termice, citi contoare sau verifica scurgeri de gaze toxice.',
       points: [
-        'Rezistență la praf și apă rating IP67',
-        'Variante certificate ATEX anti-explozie'
+        'Construcție robustă, complet sigilată la apă și praf (Standard IP67).',
+        'Versiuni speciale certificate împotriva exploziilor pentru industria chimică.'
       ],
-      icon: 'fa-triangle-exclamation',
-      facility: 'FACILITY ID: OFFSHORE-RIG-NORTH-SEA'
+      image: '/images/inspectii.png'
     }
   }
 
@@ -74,7 +96,7 @@ export default function Applications() {
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() => handleTabClick(tab.id)}
                     className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all border ${
                       activeTab === tab.id 
                         ? 'bg-cyber-cyan text-navy-950 font-bold border-cyber-cyan shadow-[0_0_15px_rgba(0,240,255,0.3)]' 
@@ -86,7 +108,11 @@ export default function Applications() {
                 ))}
             </div>
 
-            <div className="glass-card rounded-2xl p-8 border border-cyber-cyan/20 overflow-hidden">
+            <div 
+              className="glass-card rounded-2xl p-8 border border-cyber-cyan/20 overflow-hidden"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeTab}
@@ -97,25 +123,50 @@ export default function Applications() {
                     className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
                   >
                       <div>
-                          <span className="text-xs font-mono text-cyber-cyan uppercase">{tabContents[activeTab].tag}</span>
-                          <h3 className="text-2xl font-bold text-white mt-1">{tabContents[activeTab].title}</h3>
-                          <p className="text-slate-300 text-sm mt-4 leading-relaxed">
+                          <h3 className="text-2xl font-bold text-white mb-4">{tabContents[activeTab].title}</h3>
+                          <p className="text-slate-300 text-sm leading-relaxed">
                               {tabContents[activeTab].desc}
                           </p>
-                          <ul className="space-y-2 mt-6 text-sm text-slate-400">
+                          <ul className="space-y-3 mt-6 text-sm text-slate-400">
                               {tabContents[activeTab].points.map((pt, idx) => (
-                                <li key={idx} className="flex items-center gap-2">
-                                  <i className="fa-solid fa-circle-check text-cyber-cyan"></i> {pt}
+                                <li key={idx} className="flex items-start gap-3">
+                                  <i className="fa-solid fa-check text-cyber-cyan mt-1"></i> 
+                                  <span>{pt}</span>
                                 </li>
                               ))}
                           </ul>
                       </div>
-                      <div className="h-64 rounded-xl bg-navy-900 border border-slate-800 flex items-center justify-center relative overflow-hidden">
-                          <i className={`fa-solid ${tabContents[activeTab].icon} text-8xl text-cyber-cyan/20`}></i>
-                          <span className="absolute bottom-4 left-4 text-xs font-mono text-slate-400">{tabContents[activeTab].facility}</span>
+                      <div className="h-72 rounded-xl bg-navy-900 border border-slate-800 flex items-center justify-center relative overflow-hidden">
+                          <img 
+                            src={tabContents[activeTab].image} 
+                            alt={tabContents[activeTab].title} 
+                            className="absolute inset-0 w-full h-full object-cover object-top opacity-80 mix-blend-lighten"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-transparent to-transparent opacity-80 pointer-events-none"></div>
                       </div>
                   </motion.div>
                 </AnimatePresence>
+            </div>
+
+            {/* Pagination / Progress Bars */}
+            <div className="flex justify-center items-center gap-3 mt-8">
+                {tabs.map((tab) => {
+                    const isActive = activeTab === tab.id;
+                    return (
+                        <div 
+                          key={tab.id}
+                          onClick={() => handleTabClick(tab.id)}
+                          className="h-1.5 w-12 sm:w-16 rounded-full bg-slate-800 overflow-hidden cursor-pointer"
+                        >
+                            <div 
+                              className="h-full bg-cyber-cyan transition-all duration-75 ease-linear"
+                              style={{ 
+                                width: isActive ? `${progress}%` : '0%',
+                              }}
+                            ></div>
+                        </div>
+                    )
+                })}
             </div>
         </div>
     </section>
