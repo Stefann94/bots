@@ -73,6 +73,36 @@ const OrbitalRings = () => (
   </motion.div>
 )
 
+// Card individual pentru Anatomia Holografică
+const BlueprintCard = ({ title, text, align = 'left', delay = 0 }) => (
+  <motion.div 
+    initial={{ opacity: 0, x: align === 'left' ? -50 : 50 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8, delay }}
+    className={`relative z-20 flex flex-col ${align === 'left' ? 'md:items-end md:text-right text-left items-start' : 'items-start text-left'}`}
+  >
+    {/* Data Line (Laser) conectat la robot */}
+    <div className={`absolute top-1/2 -translate-y-1/2 ${align === 'left' ? '-right-12' : '-left-12'} w-3 h-3 bg-cyber-cyan rounded-full shadow-[0_0_15px_rgba(0,240,255,1)] hidden md:block`}>
+        <div className="absolute inset-0 bg-cyber-cyan rounded-full animate-ping opacity-50"></div>
+        {/* Animated Beam */}
+        <div className={`absolute top-1/2 -translate-y-1/2 h-[1px] ${align === 'left' ? 'bg-gradient-to-r from-cyber-cyan to-transparent left-full' : 'bg-gradient-to-l from-cyber-cyan to-transparent right-full'} w-32 lg:w-48 opacity-40 overflow-hidden`}>
+             <motion.div 
+                className="h-full w-full bg-white shadow-[0_0_10px_rgba(255,255,255,1)]"
+                animate={{ x: align === 'left' ? ['-100%', '200%'] : ['100%', '-200%'] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+             />
+        </div>
+    </div>
+
+    {/* Caseta de text */}
+    <div className="bg-[#060D1F]/80 backdrop-blur-md p-6 rounded-2xl border border-cyber-cyan/20 shadow-[0_0_30px_rgba(0,240,255,0.05)] max-w-sm hover:border-cyber-cyan/50 hover:shadow-[0_0_40px_rgba(0,240,255,0.15)] transition-all duration-500 group">
+        <h4 className="text-xl font-bold text-white mb-2 group-hover:text-cyber-cyan transition-colors">{title}</h4>
+        <p className="text-slate-400 text-sm leading-relaxed">{text}</p>
+    </div>
+  </motion.div>
+)
+
 export default function ModelsHumanoidSection() {
   return (
     <section id="umanoizi" className="py-24 relative">
@@ -113,7 +143,7 @@ export default function ModelsHumanoidSection() {
                <motion.div 
                  initial={{ opacity: 0, scale: 0.95 }}
                  whileInView={{ opacity: 1, scale: 1 }}
-                 viewport={{ once: true }}
+                 viewport={{ once: false, amount: 0.25 }}
                  transition={{ duration: 0.6 }}
                  className="md:col-span-8 h-[500px] glass-card rounded-[32px] p-2 relative overflow-hidden group shadow-[0_0_30px_rgba(0,0,0,0.5)] border-emerald-500/20 hover:border-emerald-500/50 transition-colors duration-500 bg-[#132247]/40"
                >
@@ -145,7 +175,7 @@ export default function ModelsHumanoidSection() {
                <motion.div 
                  initial={{ opacity: 0, x: 30 }}
                  whileInView={{ opacity: 1, x: 0 }}
-                 viewport={{ once: true }}
+                 viewport={{ once: false, amount: 0.25 }}
                  transition={{ duration: 0.6, delay: 0.2 }}
                  className="md:col-span-4 h-[500px] glass-card rounded-[32px] p-4 relative overflow-hidden group border-purple-500/20 hover:border-purple-500/50 bg-[#132247]/40 flex flex-col"
                >
@@ -186,7 +216,7 @@ export default function ModelsHumanoidSection() {
                <motion.div 
                  initial={{ opacity: 0, y: 30 }}
                  whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: true }}
+                 viewport={{ once: false, amount: 0.25 }}
                  transition={{ duration: 0.6, delay: 0.1 }}
                  className="md:col-span-5 h-[350px] glass-card rounded-[32px] p-8 relative overflow-hidden group border-cyber-cyan/20 hover:border-cyber-cyan/50 flex flex-col bg-[#132247]/40"
                >
@@ -207,7 +237,7 @@ export default function ModelsHumanoidSection() {
                <motion.div 
                  initial={{ opacity: 0, y: 30 }}
                  whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: true }}
+                 viewport={{ once: false, amount: 0.25 }}
                  transition={{ duration: 0.6, delay: 0.3 }}
                  className="md:col-span-7 h-[350px] glass-card rounded-[32px] p-2 relative overflow-hidden group border-blue-500/20 hover:border-blue-500/50 flex flex-col md:flex-row bg-[#132247]/40"
                >
@@ -233,6 +263,81 @@ export default function ModelsHumanoidSection() {
                </motion.div>
 
            </div>
+
+           {/* ========================================================= */}
+           {/* HOLOGRAM ANATOMY CHAPTER */}
+           {/* ========================================================= */}
+           <div className="mt-40 mb-20 relative">
+               {/* Titlu Mini-Capitol */}
+               <motion.div 
+                 initial={{ opacity: 0, y: 30 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 className="text-center mb-24 relative z-20"
+               >
+                   <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase mb-4">
+                       Anatomie <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan to-blue-500 drop-shadow-[0_0_20px_rgba(0,240,255,0.5)]">Digitală</span>
+                   </h2>
+                   <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+                       Sistemul nervos central și algoritmii decizionali care transformă hardware-ul mecanic într-o entitate complet autonomă.
+                   </p>
+               </motion.div>
+
+               {/* Grid-ul cu Holograma în centru */}
+               <div className="relative min-h-[800px] flex flex-col md:flex-row items-center justify-between gap-10 md:gap-0">
+                  
+                  {/* Holograma Centrală (Fundal Vizual pe Mobile, Centrat pe Desktop) */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10 md:opacity-100 z-0 overflow-hidden">
+                      <motion.div 
+                        className="relative h-[800px] w-auto"
+                        animate={{ y: [-15, 15, -15] }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                         <img 
+                           src="/images/humanoid_parallax.png" 
+                           alt="Hologramă Umanoid"
+                           className="h-full object-contain filter hue-rotate-180 saturate-[1.5] brightness-125 drop-shadow-[0_0_40px_rgba(0,240,255,0.4)]" 
+                         />
+                         {/* Scanline overlay pentru efect de hologramă */}
+                         <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.8)_50%)] bg-[length:100%_6px] mix-blend-overlay"></div>
+                      </motion.div>
+                  </div>
+
+                  {/* Coloana Stângă */}
+                  <div className="flex flex-col gap-12 md:gap-40 relative z-20 w-full md:w-1/3">
+                     <BlueprintCard 
+                        align="left"
+                        delay={0.1}
+                        title="Reinforcement Learning" 
+                        text="Agilitatea umanoidă nu este programată mecanic. Robotul învață să meargă în simulatoare fizice, efectuând milioane de iterații virtuale și antrenându-și rețelele neurale înainte de a face primul pas în lumea reală." 
+                     />
+                     <BlueprintCard 
+                        align="left"
+                        delay={0.3}
+                        title="Viziune Stereoscopică Semantică" 
+                        text="Procesează date video 4K în timp real pentru a identifica adâncimea, textura și natura obiectelor din jur, permițând interacțiuni hiper-precise și sigure alături de personalul uman." 
+                     />
+                  </div>
+
+                  {/* Coloana Dreaptă */}
+                  <div className="flex flex-col gap-12 md:gap-40 relative z-20 w-full md:w-1/3 mt-12 md:mt-32">
+                     <BlueprintCard 
+                        align="right"
+                        delay={0.2}
+                        title="Model Predictive Control (MPC)" 
+                        text="Creierul calculează continuu viitorul imediat. Robotul știe exact cum se va schimba centrul său de greutate în următoarele secunde, ajustându-și forța și postura proactiv, nu doar reactiv." 
+                     />
+                     <BlueprintCard 
+                        align="right"
+                        delay={0.4}
+                        title="Procesare Edge AI On-Board" 
+                        text="Arhitectură de calcul integrată direct în trunchiul robotului. Ia decizii critice de navigație, echilibru și manipulare haptică în microsecunde, cu zero dependență de latența rețelelor cloud." 
+                     />
+                  </div>
+
+               </div>
+           </div>
+
        </div>
     </section>
   )
