@@ -12,7 +12,7 @@ export default function HologramHero() {
     setFlashColor(colorClass)
     setIsFlashing(true)
     setTimeout(() => {
-      navigate(path)
+      window.location.href = path
     }, 400) // navigate after flash peaks
   }
 

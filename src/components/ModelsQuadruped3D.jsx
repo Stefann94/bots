@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import QuadrupedCanvas from './QuadrupedCanvas'
 
 export default function ModelsQuadruped3D() {
-    const [robotColor, setRobotColor] = useState('#ffffff')
+    const [robotColor, setRobotColor] = useState('#f97316')
     const [isColorMenuOpen, setIsColorMenuOpen] = useState(false)
 
     const colors = [

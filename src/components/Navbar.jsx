@@ -12,16 +12,8 @@ export default function Navbar() {
   const handleNav = (path, hashId) => {
     setMenuOpen(false)
     if (location.pathname !== path) {
-      navigate(path)
-      // Small delay to allow the new page to render before scrolling
-      if (hashId) {
-        setTimeout(() => {
-          const el = document.getElementById(hashId)
-          if (el) el.scrollIntoView({ behavior: 'smooth' })
-        }, 300)
-      } else {
-        window.scrollTo(0, 0)
-      }
+      // Hard navigation to force a full page refresh (F5 equivalent)
+      window.location.href = hashId ? `${path}#${hashId}` : path;
     } else if (hashId) {
       const el = document.getElementById(hashId)
       if (el) el.scrollIntoView({ behavior: 'smooth' })
@@ -82,14 +74,14 @@ export default function Navbar() {
               className="md:hidden glass-card border-t border-slate-800/80 px-6 py-4 space-y-3 overflow-hidden"
             >
                 <button onClick={() => handleNav('/', null)} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Acasă</button>
-                <Link to="/modele-3d" onClick={() => setMenuOpen(false)} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Modele 3D</Link>
+                <a href="/modele-3d" onClick={() => setMenuOpen(false)} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Modele 3D</a>
                 <button onClick={() => handleNav('/', 'technology')} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Inovație</button>
                 <button onClick={() => handleNav('/', 'applications')} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Aplicații</button>
                 <button onClick={() => handleNav('/', 'contact')} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Contact</button>
                 
-                <Link to="/modele-3d" onClick={() => setMenuOpen(false)} className="w-full mt-4 py-3 flex items-center justify-center bg-cyber-cyan text-navy-950 font-mono font-bold text-xs uppercase rounded-lg">
+                <a href="/modele-3d" onClick={() => setMenuOpen(false)} className="w-full mt-4 py-3 flex items-center justify-center bg-cyber-cyan text-navy-950 font-mono font-bold text-xs uppercase rounded-lg">
                     <i className="fa-solid fa-rocket mr-2"></i> EXPLOREAZĂ UMANOIZII
-                </Link>
+                </a>
             </motion.div>
           )}
         </AnimatePresence>

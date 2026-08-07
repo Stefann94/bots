@@ -26,9 +26,9 @@ export default function HumanoidsPage() {
         
         {/* Buton Înapoi */}
         <div className="absolute top-24 left-4 z-50">
-          <Link to="/modele-3d" className="text-slate-400 hover:text-white transition-colors flex items-center gap-2 font-mono text-sm bg-black/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
-            <i className="fa-solid fa-arrow-left"></i> Hub
-          </Link>
+          <a href="/modele-3d" className="text-slate-400 hover:text-white transition-colors flex items-center gap-2 font-mono text-sm bg-black/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
+            <i className="fa-solid fa-arrow-left"></i> Înapoi la Modele 3D
+          </a>
         </div>
 
         <motion.div 
