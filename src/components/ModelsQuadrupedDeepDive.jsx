@@ -77,7 +77,13 @@ export default function ModelsQuadrupedDeepDive() {
                             
                             {/* The Pinned Image Card (Smaller & Aligned) */}
                             <div className="sticky top-[25vh] w-full flex pointer-events-none">
-                                <div className={`relative h-[50vh] w-full lg:w-[55%] overflow-hidden rounded-[30px] shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-white/5 bg-[#020617] pointer-events-auto ${isEven ? 'mr-auto' : 'ml-auto'}`}>
+                                <motion.div 
+                                    initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
+                                    whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                                    viewport={{ once: false, amount: 0.4 }}
+                                    transition={{ duration: 1, ease: "easeOut" }}
+                                    className={`relative h-[50vh] w-full lg:w-[55%] overflow-hidden rounded-[30px] shadow-[0_0_50px_rgba(0,240,255,0.1)] border border-cyber-cyan/20 bg-[#020617] pointer-events-auto ${isEven ? 'mr-auto' : 'ml-auto'}`}
+                                >
                                     <img 
                                         src={feature.img} 
                                         alt={feature.title}
@@ -85,16 +91,23 @@ export default function ModelsQuadrupedDeepDive() {
                                     />
                                     {/* Gradient subtil pentru contrast */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/60 to-transparent" />
-                                </div>
+                                </motion.div>
                             </div>
 
                             {/* The Scrolling Text Box Container */}
                             <div className={`absolute inset-0 pointer-events-none flex flex-col justify-center px-4 lg:px-0 ${isEven ? 'items-end' : 'items-start'}`}>
                                 
                                 {/* Fereastra de sticlă - Overlapping */}
-                                <div 
-                                    className={`pointer-events-auto w-full max-w-2xl bg-[#0F172A]/90 backdrop-blur-xl border border-slate-700/50 p-10 md:p-12 rounded-[24px] shadow-[0_30px_80px_rgba(0,0,0,0.8)] ${isEven ? 'lg:-translate-x-12' : 'lg:translate-x-12'} z-10`}
+                                <motion.div 
+                                    initial={{ opacity: 0, scale: 0.9, y: 50, filter: 'blur(10px)' }}
+                                    whileInView={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+                                    viewport={{ once: false, amount: 0.3 }}
+                                    transition={{ duration: 0.8, ease: "easeOut" }}
+                                    className={`pointer-events-auto w-full max-w-2xl bg-[#0B1221]/95 backdrop-blur-2xl border border-cyber-cyan/30 p-10 md:p-12 rounded-[24px] shadow-[0_20px_80px_rgba(0,0,0,0.9)] ${isEven ? 'lg:-translate-x-12' : 'lg:translate-x-12'} z-10 relative overflow-hidden group`}
                                 >
+                                    {/* Un mic accent luminos ambiental în casetă */}
+                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyber-cyan to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+                                    
                                     <div className="text-cyber-cyan text-sm font-mono uppercase tracking-[0.2em] mb-4">
                                         {feature.tag}
                                     </div>
@@ -113,7 +126,7 @@ export default function ModelsQuadrupedDeepDive() {
                                             </li>
                                         ))}
                                     </ul>
-                                </div>
+                                </motion.div>
                                 
                             </div>
                         </div>
