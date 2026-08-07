@@ -138,7 +138,7 @@ export default function RobotSeries() {
                             </div>
                             <div className="mt-auto flex justify-center pt-6 relative z-10">
                                 <button onClick={() => setFlippedH1(false)} className="px-6 py-2.5 rounded-full border border-slate-600 text-slate-300 text-sm font-mono hover:bg-slate-700 hover:text-white transition-colors w-full sm:w-auto">
-                                    <i className="fa-solid fa-arrow-left-long mr-2"></i> Înapoi
+                                    Înapoi
                                 </button>
                             </div>
                         </div>
@@ -217,7 +217,7 @@ export default function RobotSeries() {
                             </div>
                             <div className="mt-auto flex justify-center pt-6 relative z-10">
                                 <button onClick={() => setFlippedG1(false)} className="px-6 py-2.5 rounded-full border border-slate-600 text-slate-300 text-sm font-mono hover:bg-slate-700 hover:text-white transition-colors w-full sm:w-auto">
-                                    <i className="fa-solid fa-arrow-left-long mr-2"></i> Înapoi
+                                    Înapoi
                                 </button>
                             </div>
                         </div>
