@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import ModelsHumanoidSection from '../components/ModelsHumanoidSection'
+import ModelsQuadrupedSection from '../components/ModelsQuadrupedSection'
 // --- Variabile de Animație ---
 const fadeUpVariant = {
   hidden: { opacity: 0, y: 50 },
@@ -175,7 +176,7 @@ export default function RobotsPage() {
       </div>
 
       {/* CONTINUT CENTRAL PE FUNDAL INCHIS (Stil Boxed) */}
-      <div className="max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 pb-32 mt-16 mb-10 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
+      <div className="max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 pb-10 mt-16 mb-8 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
 
       {/* ========================================================= */}
       {/* 2. SECȚIUNEA UMANOIZI */}
@@ -183,6 +184,11 @@ export default function RobotsPage() {
       <ModelsHumanoidSection />
 
       </div> {/* End Continut Central */}
+
+      {/* CONTINUT CENTRAL PATRUPEDE */}
+      <div className="max-w-7xl mx-auto bg-black/40 backdrop-blur-md rounded-[40px] border border-white/5 relative z-20 pt-8 mb-10 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
+          <ModelsQuadrupedSection />
+      </div>
 
     </main>
   )
