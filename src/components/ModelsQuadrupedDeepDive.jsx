@@ -33,17 +33,6 @@ const features = [
             "Răcire activă integrată cu cupru",
             "Rezistență extremă la forțele de impact"
         ]
-    },
-    {
-        tag: "INSPECȚIE INDUSTRIALĂ",
-        title: "Sistem Dual Vision",
-        desc: "Robotul este echipat cu camere termale și optice suprapuse pentru a depista scurgeri de gaz, supraîncălziri sau pentru misiuni de salvare.",
-        img: "/images/dd_thermal.png",
-        bullets: [
-            "Detecție termică de înaltă rezoluție",
-            "Streaming video 4K live către operator",
-            "Zoom optic fără pierdere de calitate"
-        ]
     }
 ]
 

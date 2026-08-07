@@ -155,7 +155,7 @@ export default function RobotsPage() {
           
           {/* Card 1: LiDAR */}
           <div className="p-6 md:px-8 md:py-6 flex flex-col items-center justify-center text-center w-[160px] md:w-[240px] hover:bg-white/5 transition-colors cursor-pointer group">
-            <i className="fa-solid fa-radar text-green-400 text-2xl mb-3 group-hover:scale-110 transition-transform"></i>
+            <i className="fa-solid fa-satellite-dish text-green-400 text-2xl mb-3 group-hover:scale-110 transition-transform"></i>
             <p className="text-[10px] md:text-xs text-slate-400 font-light leading-tight mb-3">Senzori LIVOX Mid-360<br/>Cartografiere spațială</p>
             <h4 className="text-[10px] md:text-[11px] font-bold tracking-[0.2em] text-green-400 uppercase mt-auto">LiDAR 360°</h4>
           </div>

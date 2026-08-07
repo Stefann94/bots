@@ -288,6 +288,119 @@ const SwarmIntelligenceSection = () => {
     );
 };
 
+const AvatarModeSection = () => {
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } }
+    };
+
+    return (
+        <div className="w-full mt-32 mb-32 px-4 relative">
+            {/* Background Glows for section */}
+            <div className="absolute top-1/2 left-0 w-96 h-96 bg-red-500/10 rounded-full blur-[100px] -translate-y-1/2 pointer-events-none"></div>
+
+            <motion.div 
+                className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 relative z-10"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+            >
+                <div className="flex-1 space-y-6">
+                    <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-black text-white tracking-tighter uppercase">
+                        Avatar <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]">Mode</span>
+                    </motion.h2>
+                    <motion.p variants={itemVariants} className="text-slate-400 text-lg leading-relaxed">
+                        Inteligența Artificială gestionează 99% din situații. Pentru excepțiile extreme, lansăm **Avatar Mode**. Operatorii umani se conectează la rețeaua neuronală prin căști VR cu haptic feedback, preluând controlul fizic total al unității.
+                    </motion.p>
+                    <motion.div variants={itemVariants} className="bg-red-500/5 border border-red-500/20 rounded-xl p-5 inline-block shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl relative overflow-hidden group">
+                        <div className="flex items-center gap-3 mb-2">
+                            <i className="fa-solid fa-headset text-red-500 text-lg animate-pulse"></i>
+                            <div className="text-xs text-red-400 font-mono uppercase tracking-widest font-bold">Override Uman Activat</div>
+                        </div>
+                        <div className="text-slate-300 text-sm">Latentă sub 5ms. Sincronizare perfectă om-mașină. Robotul devine o extensie a corpului tău.</div>
+                    </motion.div>
+                </div>
+
+                <motion.div 
+                    variants={itemVariants}
+                    className="flex-1 w-full h-[400px] relative rounded-3xl border border-white/10 bg-[#02050A] overflow-hidden flex items-center justify-center shadow-[0_0_50px_rgba(239,68,68,0.15)] group"
+                >
+                    {/* VR Lens Distortion Effect */}
+                    <div className="absolute inset-0 border-[30px] border-black/80 rounded-[40px] pointer-events-none z-30 shadow-[0_0_100px_black_inset]"></div>
+                    
+                    {/* Camera Feed Background (Simulated with dark noise and scanlines) */}
+                    <div className="absolute inset-0 bg-slate-900 z-0">
+                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4px_4px]"></div>
+                    </div>
+
+                    {/* LIVE REC Indicator */}
+                    <div className="absolute top-10 left-12 z-20 flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse shadow-[0_0_10px_#EF4444]"></div>
+                        <span className="text-red-500 font-mono text-sm font-bold tracking-widest drop-shadow-[0_0_5px_#EF4444]">REC</span>
+                    </div>
+
+                    {/* HUD Battery & Signal */}
+                    <div className="absolute top-10 right-12 z-20 flex flex-col items-end gap-1 font-mono text-[10px] text-cyan-400 opacity-80">
+                        <div className="flex items-center gap-2">
+                            <span>LINK_STR: 99%</span>
+                            <div className="flex gap-0.5"><div className="w-1 h-3 bg-cyan-400"></div><div className="w-1 h-3 bg-cyan-400"></div><div className="w-1 h-3 bg-cyan-400"></div><div className="w-1 h-3 bg-cyan-400"></div></div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span>SYS_PWR: 84%</span>
+                            <div className="w-10 h-2 border border-cyan-400 p-[1px]"><div className="w-[84%] h-full bg-cyan-400"></div></div>
+                        </div>
+                    </div>
+
+                    {/* Center Targeting Reticle */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-48 h-48 border border-white/20 rounded-full flex items-center justify-center">
+                        <div className="w-32 h-32 border border-dashed border-red-500/50 rounded-full animate-[spin_10s_linear_infinite]"></div>
+                        <div className="absolute w-2 h-2 bg-red-500 rounded-full"></div>
+                        
+                        {/* Crosshairs */}
+                        <div className="absolute top-0 bottom-0 left-1/2 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent -translate-x-1/2"></div>
+                        <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-y-1/2"></div>
+                        
+                        {/* Dynamic Target Box */}
+                        <motion.div 
+                            className="absolute w-12 h-12 border-2 border-cyan-400 opacity-60"
+                            animate={{ x: [0, 40, -20, 0], y: [0, -30, 20, 0] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            <div className="absolute -top-4 -right-8 text-[8px] text-cyan-400 font-mono bg-black/50 px-1">OBJ_LOCKED</div>
+                        </motion.div>
+                    </div>
+
+                    {/* Bottom Data Stream */}
+                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-8 font-mono text-[10px] text-white/50 text-center">
+                        <div>
+                            <div className="text-red-400 mb-1">OVERRIDE</div>
+                            <div>MANUAL_CTRL</div>
+                        </div>
+                        <div>
+                            <div className="text-cyan-400 mb-1">LATENCY</div>
+                            <div>4.2ms</div>
+                        </div>
+                        <div>
+                            <div className="text-emerald-400 mb-1">STABILITY</div>
+                            <div>NOMINAL</div>
+                        </div>
+                    </div>
+                </motion.div>
+            </motion.div>
+        </div>
+    );
+};
+
 export default function ModelsAICoreSection() {
     const [activeNode, setActiveNode] = useState(null);
 
@@ -430,10 +543,9 @@ export default function ModelsAICoreSection() {
             {/* Swarm Intelligence (Hive Mind) */}
             <SwarmIntelligenceSection />
             
-            {/* Mobile Helper Text */}
-            <div className="mt-8 text-center text-slate-500 text-sm font-mono flex items-center justify-center gap-2">
-                <i className="fa-solid fa-hand-pointer animate-bounce"></i> Atinge nodurile pentru detalii
-            </div>
+            {/* Avatar Mode (Teleoperare VR) */}
+            <AvatarModeSection />
+            
         </section>
     );
 }
