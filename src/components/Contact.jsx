@@ -122,7 +122,7 @@ export default function Contact() {
   return (
     <>
       <section id="about" className="py-24 relative">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative z-[20] max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div 
                 variants={cardVariants}
                 initial="hidden"
@@ -180,8 +180,8 @@ export default function Contact() {
                           {loading ? (
                             <i className="fa-solid fa-spinner fa-spin text-xl"></i>
                           ) : (
-                            <span className="flex items-center gap-2">
-                              Trimite Solicitare Enterprise <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            <span className="flex items-center justify-center">
+                              Trimite Solicitare Enterprise
                             </span>
                           )}
                       </motion.button>

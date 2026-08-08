@@ -71,7 +71,7 @@ export default function Features() {
   return (
     <section id="technology" className="py-24 relative overflow-hidden">
         <motion.div 
-            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+            className="relative z-[20] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
             style={{ perspective: 1500 }}
             initial="hidden"
             whileInView="visible"

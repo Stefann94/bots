@@ -119,7 +119,7 @@ export default function Applications() {
   return (
     <section id="applications" className="py-24 relative">
         <motion.div 
-            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+            className="relative z-[20] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, margin: "-20% 0px -20% 0px" }}

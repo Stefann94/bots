@@ -43,7 +43,7 @@ export default function AgiBotSeries() {
 
   return (
     <section id="agibot-series" className="py-24 relative border-t border-slate-800 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ perspective: 2000 }}>
+        <div className="relative z-[20] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ perspective: 2000 }}>
             <motion.div 
               initial="hidden"
               whileInView="visible"
