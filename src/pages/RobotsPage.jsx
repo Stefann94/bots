@@ -72,12 +72,32 @@ export default function RobotsPage() {
   if (hoveredCategory === 'ai') overlayClasses = 'bg-transparent'
 
   return (
-    <main className="text-white min-h-screen overflow-x-clip selection:bg-cyber-cyan/30 bg-[#0f1f3d]">
+    <main className="text-white min-h-screen overflow-x-clip selection:bg-cyber-cyan/30 relative">
+      
+      {/* Fundal Serios și Premium (Fixed, z-[5] sub robot) */}
+      <div className="fixed inset-0 z-[5] bg-navy-950 overflow-hidden pointer-events-none">
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px',
+          }}
+        />
+        <div className="absolute top-[10%] left-[15%] w-[500px] h-[500px] bg-cyber-cyan/5 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute top-[40%] right-[10%] w-[700px] h-[700px] bg-blue-600/5 rounded-full blur-[150px] mix-blend-screen" />
+        <div className="absolute bottom-[20%] left-[25%] w-[600px] h-[600px] bg-sky-500/5 rounded-full blur-[130px] mix-blend-screen" />
+        <div className="absolute left-[20%] -top-[10%] -bottom-[10%] w-[1px] bg-gradient-to-b from-transparent via-cyber-cyan/10 to-transparent" />
+        <div className="absolute right-[20%] -top-[10%] -bottom-[10%] w-[1px] bg-gradient-to-b from-transparent via-blue-500/10 to-transparent" />
+        <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
+      </div>
+
+      {/* Container flexibil fără z-index global pentru a permite straturilor interne să iasă la suprafață */}
+      <div className="relative">
       
       {/* ========================================================= */}
-      {/* 1. HERO SECTION (INTERACTIVE HUB) - Mai mic, dimensiune de banner */}
+      {/* 1. HERO SECTION (INTERACTIVE HUB) - z-[5] sub robot */}
       {/* ========================================================= */}
-      <section className="relative w-full h-[55vh] min-h-[400px] overflow-hidden flex pt-16 bg-grid-pattern radial-glow-top">
+      <section className="relative z-[5] w-full h-[55vh] min-h-[400px] overflow-hidden flex pt-16 bg-grid-pattern radial-glow-top">
         
         {/* Conținutul Hero (Cele 3 coloane complet egale, lățime maximă) */}
         <div className="relative z-10 w-full h-full flex flex-col md:flex-row">
@@ -212,6 +232,8 @@ export default function RobotsPage() {
       </div>
 
       </div> {/* End Pointer Events Wrapper */}
+      
+      </div> {/* End Conținut pagină relativ */}
 
     </main>
   )
