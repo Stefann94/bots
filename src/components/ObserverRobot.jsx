@@ -36,16 +36,31 @@ export default function ObserverRobot() {
     hitX: new THREE.Vector3(),
     hitY: new THREE.Vector3(),
   }), [])
-  const { viewport } = useThree()
+  const { viewport, size } = useThree()
 
   const isMobile = viewport.width < 5
-  
+
+  // Coloana de conținut e max-w-7xl (1280px) centrată, iar robotul e ancorat
+  // de marginea din dreapta. Sub ~1800px lățime cele două se intersectează:
+  // pe un MacBook 14" (1512px) 70% din robot cădea peste conținut.
+  //
+  // Pragul e pe lățimea REALĂ în pixeli, nu pe `viewport.width` (unități de
+  // lume): acela depinde de raportul ecranului, deci un monitor mare 16:10 ar
+  // fi fost prins din greșeală în ajustare.
+  //
+  // La >= 1800px factorii sunt exact 1.8 și 1.6, adică formula originală
+  // neatinsă. Sub prag, robotul se micșorează și se lipește de colț.
+  const stramt = Math.min(1, Math.max(0, (size.width - 1440) / (1800 - 1440)))
+  const factorMic = 0.62 + 0.38 * stramt // 0.62 la <=1440px, 1 la >=1800px
+  const margineX = 1.1 + 0.7 * stramt    // mai mic = mai aproape de marginea dreaptă
+  const margineY = 2.3 - 0.7 * stramt    // compensează coborârea provocată de scalarea mai mică
+
   // Calculăm un scale dinamic: mic pe laptopuri (0.45), puțin mai mare pe ecrane ultrawide (max 0.75)
-  const scale = isMobile ? 0 : Math.min(0.75, Math.max(0.45, viewport.width * 0.06))
-  
+  const scale = isMobile ? 0 : Math.min(0.75, Math.max(0.45, viewport.width * 0.06)) * factorMic
+
   // Îl poziționăm dinamic, păstrând o margine ("padding") proporțională cu mărimea lui
-  const posX = (viewport.width / 2) - (scale * 1.8)
-  const posY = -(viewport.height / 2) + (scale * 1.6)
+  const posX = (viewport.width / 2) - (scale * margineX)
+  const posY = -(viewport.height / 2) + (scale * margineY)
 
   // Folosim un listener nativ pe window pentru a garanta tracking-ul,
   // indiferent de pointerEvents="none" pe Canvas.
@@ -208,7 +223,15 @@ export default function ObserverRobot() {
       buttonRef.current.getWorldPosition(hitC)
       // Puțin peste bizou: butonul desenat are ~28px pe ecran, prea puțin
       // pentru o țintă de click confortabilă.
-      const raza = 0.27 * scale
+      //
+      // Pe ecrane mici robotul e micșorat, iar o rază pur proporțională
+      // ducea ținta la 36x24px, sub pragul la care clicul mai nimerește -
+      // mai ales că robotul respiră și butonul urcă-coboară ~24px.
+      // Impunem un minim în PIXELI, convertit în unități de lume. Pe ecrane
+      // mari raza proporțională e oricum mai mare, deci nu se schimbă nimic.
+      const razaMinPx = 24
+      const pxPeUnitate = size.width / viewport.width
+      const raza = Math.max(0.27 * scale, razaMinPx / pxPeUnitate)
       hitX.set(hitC.x + raza, hitC.y, hitC.z)
       hitY.set(hitC.x, hitC.y + raza, hitC.z)
       hitC.project(state.camera)
