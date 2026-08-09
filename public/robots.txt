@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bots-zeta-seven.vercel.app/sitemap.xml
