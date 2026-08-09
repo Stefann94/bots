@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(cd \"C:\\\\Users\\\\Sony\\\\Desktop\\\\bots\"; git diff --stat -- src/pages/ContactPage.jsx; Write-Output \"--- ContactRadar size ---\"; \\(Get-Item \"src\\\\components\\\\ContactRadar.jsx\"\\).Length)",
-      "Bash(git add *)",
-      "Bash(git commit -m ' *)"
-    ]
-  }
-}
