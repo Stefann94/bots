@@ -1,19 +1,23 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
-// Blip-urile de pe radar (poziții procentuale + etichete)
-const BLIPS = [
-  { x: 50, y: 50, label: 'București · HQ', main: true, delay: 0 },
-  { x: 28, y: 32, label: 'Cluj-Napoca', main: false, delay: 0.6 },
-  { x: 72, y: 38, label: 'Iași', main: false, delay: 1.2 },
-  { x: 38, y: 72, label: 'Timișoara', main: false, delay: 1.8 },
-  { x: 66, y: 66, label: 'Constanța', main: false, delay: 2.4 },
-]
+// Cât stă aprins fiecare oraș înainte să treacă la următorul
+const CYCLE_MS = 4000
 
-const HUBS = [
-  { city: 'București', role: 'HQ · Showroom & Service', load: 100 },
-  { city: 'Cluj-Napoca', role: 'Hub tehnic regional', load: 72 },
-  { city: 'Timișoara', role: 'Hub tehnic regional', load: 58 },
+// Orașele: alimentează și blip-urile de pe radar, și lista din dreapta.
+// x/y sunt procente în interiorul radarului, București e în centru.
+// Doar București + Cluj + Timișoara sunt hub-uri (vezi textul: „trei hub-uri”).
+const CITIES = [
+  { name: 'București', role: 'HQ · Showroom & Service', load: 100, x: 50, y: 50, main: true },
+  { name: 'Cluj-Napoca', role: 'Hub tehnic regional', load: 72, x: 28, y: 32 },
+  { name: 'Timișoara', role: 'Hub tehnic regional', load: 58, x: 18, y: 55 },
+  { name: 'Brașov', role: 'Punct de service', load: 64, x: 47, y: 35 },
+  { name: 'Sibiu', role: 'Punct de service', load: 52, x: 34, y: 44 },
+  { name: 'Constanța', role: 'Punct de service', load: 47, x: 78, y: 62 },
+  { name: 'Craiova', role: 'Punct de service', load: 44, x: 32, y: 70 },
+  { name: 'Galați', role: 'Punct de service', load: 41, x: 73, y: 44 },
+  { name: 'Piatra Neamț', role: 'Punct de service', load: 39, x: 67, y: 28 },
+  { name: 'Oradea', role: 'Punct de service', load: 36, x: 17, y: 36 },
 ]
 
 // Ora locală din București + dacă programul e deschis (L-V, 09:00-18:00)
@@ -41,11 +45,46 @@ function getBucharestState() {
 
 export default function ContactRadar() {
   const [state, setState] = useState(getBucharestState)
+  const [active, setActive] = useState(0)
+  const [hovered, setHovered] = useState(false)
+
+  const listRef = useRef(null)
+  const itemRefs = useRef([])
 
   useEffect(() => {
     const id = setInterval(() => setState(getBucharestState()), 1000)
     return () => clearInterval(id)
   }, [])
+
+  // Rotește orașul activ la fiecare 4s. Se repornește de la zero ori de câte
+  // ori se schimbă `active`, deci un hover reia numărătoarea de la acel oraș.
+  useEffect(() => {
+    if (hovered) return
+    const id = setTimeout(() => setActive((i) => (i + 1) % CITIES.length), CYCLE_MS)
+    return () => clearTimeout(id)
+  }, [active, hovered])
+
+  // Ține orașul activ vizibil în lista cu scroll (mișcă doar containerul,
+  // niciodată pagina).
+  useEffect(() => {
+    const box = listRef.current
+    const el = itemRefs.current[active]
+    if (!box || !el) return
+    // Masurat prin rect-uri, nu prin offsetTop: offsetTop se raporteaza la
+    // primul stramos pozitionat, care aici nu e containerul listei.
+    const top = el.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop
+    const bottom = top + el.offsetHeight
+    if (top < box.scrollTop) {
+      box.scrollTo({ top, behavior: 'smooth' })
+    } else if (bottom > box.scrollTop + box.clientHeight) {
+      box.scrollTo({ top: bottom - box.clientHeight, behavior: 'smooth' })
+    }
+  }, [active])
+
+  const focusCity = (i) => {
+    setHovered(true)
+    setActive(i)
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -90,29 +129,76 @@ export default function ContactRadar() {
           />
 
           {/* Blip-uri */}
-          {BLIPS.map((blip) => (
-            <div
-              key={blip.label}
-              className="absolute -translate-x-1/2 -translate-y-1/2 group"
-              style={{ left: `${blip.x}%`, top: `${blip.y}%` }}
-            >
-              <motion.span
-                className={`block rounded-full ${blip.main ? 'w-3 h-3 bg-cyber-cyan' : 'w-2 h-2 bg-cyber-ice'}`}
-                style={{ boxShadow: '0 0 12px rgba(0,240,255,0.9)' }}
-                animate={{ scale: [1, 1.5, 1], opacity: [1, 0.55, 1] }}
-                transition={{ duration: 2.4, repeat: Infinity, delay: blip.delay, ease: 'easeInOut' }}
-              />
-              {/* Undă care se propagă din blip */}
-              <motion.span
-                className="absolute inset-0 rounded-full border border-cyber-cyan/60"
-                animate={{ scale: [1, 4], opacity: [0.7, 0] }}
-                transition={{ duration: 2.4, repeat: Infinity, delay: blip.delay, ease: 'easeOut' }}
-              />
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[10px] font-mono text-cyber-cyan/0 group-hover:text-cyber-cyan/90 transition-colors duration-300">
-                {blip.label}
-              </span>
-            </div>
-          ))}
+          {CITIES.map((city, i) => {
+            const isActive = i === active
+            // Orașele din dreapta radarului primesc eticheta în stânga,
+            // ca să nu iasă din card.
+            const flip = city.x > 58
+
+            return (
+              <div
+                key={city.name}
+                className="absolute -translate-x-1/2 -translate-y-1/2 z-10"
+                style={{ left: `${city.x}%`, top: `${city.y}%` }}
+              >
+                <div
+                  className="relative w-8 h-8 flex items-center justify-center cursor-pointer"
+                  onMouseEnter={() => focusCity(i)}
+                  onMouseLeave={() => setHovered(false)}
+                >
+                  <span className="relative flex items-center justify-center">
+                    <motion.span
+                      className={`block rounded-full ${city.main ? 'w-3 h-3 bg-cyber-cyan' : 'w-2 h-2 bg-cyber-ice'}`}
+                      style={{ boxShadow: '0 0 12px rgba(0,240,255,0.9)' }}
+                      // Doar puls de scalare, fara oscilatie de opacitate:
+                      // cu 10 puncte, clipitul devenea deranjant.
+                      animate={{ scale: isActive ? [1, 1.8, 1] : [1, 1.4, 1] }}
+                      transition={{ duration: 2.4, repeat: Infinity, delay: i * 0.3, ease: 'easeInOut' }}
+                    />
+                    {/* Undă care se propagă din blip. Porneste si se termina la
+                        opacitate 0: altfel, la reluarea buclei, inelul reapare
+                        brusc exact peste punct si citeste ca un flash alb. */}
+                    <motion.span
+                      className="absolute inset-0 rounded-full border border-cyber-cyan/60"
+                      animate={{ scale: [1, 2.5, 4], opacity: [0, 0.6, 0] }}
+                      transition={{ duration: 2.4, repeat: Infinity, delay: i * 0.3, ease: 'easeOut' }}
+                    />
+                    {/* Halou care marchează orașul activ */}
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.span
+                          initial={{ scale: 0.4, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0.4, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                          className="absolute -inset-2 rounded-full border border-cyber-cyan/70"
+                          style={{ boxShadow: '0 0 16px rgba(0,240,255,0.45)' }}
+                        />
+                      )}
+                    </AnimatePresence>
+                  </span>
+
+                  {/* Eticheta: una singură pe radar, a orașului activ */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.span
+                        initial={{ opacity: 0, x: flip ? 6 : -6 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: flip ? 6 : -6 }}
+                        transition={{ duration: 0.25, ease: 'easeOut' }}
+                        className={`absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-[10px] font-mono text-cyber-cyan pointer-events-none ${
+                          flip ? 'right-full mr-1 text-right' : 'left-full ml-1'
+                        }`}
+                        style={{ textShadow: '0 0 10px rgba(0,240,255,0.6)' }}
+                      >
+                        {city.name}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            )
+          })}
 
           {/* Coordonate decorative */}
           <span className="absolute top-0 left-0 text-[9px] font-mono text-slate-600">44.43°N</span>
@@ -148,32 +234,37 @@ export default function ContactRadar() {
             </div>
           </div>
 
-          {/* Hub-uri cu bare de încărcare animate */}
-          <div className="space-y-4">
-            {HUBS.map((hub, i) => (
-              <motion.div
-                key={hub.city}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 + i * 0.15, duration: 0.6 }}
-                className="group"
-              >
-                <div className="flex justify-between items-baseline mb-2">
-                  <span className="text-sm font-bold text-white">{hub.city}</span>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500">{hub.role}</span>
+          {/* Lista orașelor: 3 vizibile, restul la scroll */}
+          <div
+            ref={listRef}
+            style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,240,255,0.35) transparent' }}
+            className="max-h-[8.25rem] overflow-y-auto pr-3 space-y-4 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-slate-800/50 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-cyber-cyan/40 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-cyber-cyan/60"
+          >
+            {CITIES.map((city, i) => {
+              const isActive = i === active
+
+              return (
+                <div key={city.name} ref={(el) => { itemRefs.current[i] = el }}>
+                  <div className="flex justify-between items-baseline mb-2 gap-3">
+                    <span className={`text-sm font-bold transition-colors duration-300 ${isActive ? 'text-cyber-cyan' : 'text-white'}`}>
+                      {city.name}
+                    </span>
+                    <span className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-300 ${isActive ? 'text-cyber-cyan/70' : 'text-slate-500'}`}>
+                      {city.role}
+                    </span>
+                  </div>
+                  <div className="h-[3px] w-full bg-slate-800 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${city.load}%` }}
+                      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                      className="h-full bg-gradient-to-r from-cyber-cyan to-blue-500 rounded-full transition-shadow duration-300"
+                      style={isActive ? { boxShadow: '0 0 10px rgba(0,240,255,0.7)' } : undefined}
+                    />
+                  </div>
                 </div>
-                <div className="h-[3px] w-full bg-slate-800 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${hub.load}%` }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 + i * 0.15, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="h-full bg-gradient-to-r from-cyber-cyan to-blue-500 rounded-full"
-                  />
-                </div>
-              </motion.div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </motion.div>
