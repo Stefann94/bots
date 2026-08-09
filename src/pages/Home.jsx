@@ -4,6 +4,7 @@ import AgiBotSeries from '../components/AgiBotSeries'
 import Features from '../components/Features'
 import Applications from '../components/Applications'
 import Specs from '../components/Specs'
+import ContactRadar from '../components/ContactRadar'
 import Contact from '../components/Contact'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
@@ -70,6 +71,10 @@ export default function Home() {
           <Features />
           <Applications />
           <Specs />
+          {/* Rețea operațională (radar + ceas live), chiar înainte de formular */}
+          <section className="relative py-24">
+            <ContactRadar />
+          </section>
           <Contact />
         </div>
       </div>
