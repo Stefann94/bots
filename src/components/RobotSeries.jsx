@@ -1,9 +1,16 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
+import { useReveal } from '../hooks/useReveal'
 
 export default function RobotSeries() {
   const [flippedH1, setFlippedH1] = useState(false)
   const [flippedG1, setFlippedG1] = useState(false)
+
+  // Aceleași praguri ca înainte, dar fără bucla care făcea elementele să
+  // tremure când se opreau exact pe marginea de declanșare.
+  const [refTitlu, stareTitlu] = useReveal({ amount: 0.3 })
+  const [refH1, stareH1] = useReveal({ amount: 0.15 })
+  const [refG1, stareG1] = useReveal({ amount: 0.15 })
 
   // Configurații pentru animații premium 3D la scroll
   const textVariants = {
@@ -50,10 +57,10 @@ export default function RobotSeries() {
   return (
     <section id="unitree-series" className="py-24 relative overflow-hidden">
         <div className="relative z-[20] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div 
+            <motion.div
+              ref={refTitlu}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              animate={stareTitlu}
               variants={textVariants}
               className="text-center max-w-3xl mx-auto mb-16 transform-gpu"
             >
@@ -67,10 +74,10 @@ export default function RobotSeries() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8" style={{ perspective: 2000 }}>
                 {/* Unitree H1 */}
-                <motion.div 
+                <motion.div
+                  ref={refH1}
                   initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: false, amount: 0.15 }}
+                  animate={stareH1}
                   variants={cardLeftVariants}
                   className="h-full min-h-[520px] transform-gpu"
                   style={{ perspective: 1500 }}
@@ -146,10 +153,10 @@ export default function RobotSeries() {
                 </motion.div>
 
                 {/* Unitree G1 */}
-                <motion.div 
+                <motion.div
+                  ref={refG1}
                   initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: false, amount: 0.15 }}
+                  animate={stareG1}
                   variants={cardRightVariants}
                   className="h-full min-h-[520px] transform-gpu"
                   style={{ perspective: 1500 }}

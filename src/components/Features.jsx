@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion'
+import { useReveal } from '../hooks/useReveal'
 
 export default function Features() {
+  // Același prag ca înainte, fără bucla care producea tremuratul la margine.
+  const [ref, stare] = useReveal({ margin: '-30% 0px -15% 0px' })
   const features = [
     {
       title: 'Locomoție Dinamică',
@@ -73,9 +76,9 @@ export default function Features() {
         <motion.div 
             className="relative z-[20] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
             style={{ perspective: 1500 }}
+            ref={ref}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, margin: "-30% 0px -15% 0px" }}
+            animate={stare}
             variants={containerVariants}
         >
             <motion.div variants={textVariants} className="mb-16">
