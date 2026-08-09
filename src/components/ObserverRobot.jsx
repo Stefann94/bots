@@ -1,5 +1,6 @@
 import { useRef, useEffect, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
+import { RoundedBox } from '@react-three/drei'
 import * as THREE from 'three'
 
 export default function ObserverRobot() {
@@ -10,14 +11,32 @@ export default function ObserverRobot() {
   const rightArmRef = useRef()
   const chestRef = useRef()
   const buttonRef = useRef()
-  const arrowRef = useRef()
+  const eyesRef = useRef()
   
   const flyTrigger = useRef(false)
   const flyStartTime = useRef(null)
   
-  const target = new THREE.Vector3()
-  const raycaster = useMemo(() => new THREE.Raycaster(), [])
-  const { viewport, camera } = useThree()
+  // Materialele care se aprind la hover. Le mutăm direct, fără state React:
+  // un setState pe pointermove ar re-randa arborele la fiecare mișcare.
+  const discMatRef = useRef()
+  const bezelMatRef = useRef()
+  const hovering = useRef(false)
+
+  // Toate obiectele three.js sunt alocate o singură dată. Înainte se creau
+  // un Vector3 la fiecare render si încă unul plus patru Quaternion-uri
+  // în FIECARE cadru - 300+ obiecte pe secundă date la garbage collector,
+  // exact ce produce micro-blocaje.
+  const tmp = useMemo(() => ({
+    target: new THREE.Vector3(),
+    mouse: new THREE.Vector3(),
+    dir: new THREE.Vector3(),
+    qFrom: new THREE.Quaternion(),
+    qTo: new THREE.Quaternion(),
+    hitC: new THREE.Vector3(),
+    hitX: new THREE.Vector3(),
+    hitY: new THREE.Vector3(),
+  }), [])
+  const { viewport } = useThree()
 
   const isMobile = viewport.width < 5
   
@@ -39,26 +58,21 @@ export default function ObserverRobot() {
       pointer.current.y = -(e.clientY / window.innerHeight) * 2 + 1
     }
     
+    // Folosim exact starea calculată în useFrame: altfel butonul s-ar putea
+    // aprinde după o regulă și accepta click-ul după alta.
     const handleClick = () => {
-      if (isMobile) return
-      
-      raycaster.setFromCamera(pointer.current, camera)
-      if (buttonRef.current) {
-        const intersects = raycaster.intersectObject(buttonRef.current, true)
-        if (intersects.length > 0) {
-          flyTrigger.current = true
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        }
-      }
+      if (isMobile || !hovering.current) return
+      flyTrigger.current = true
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
-    
+
     window.addEventListener('pointermove', handlePointerMove)
     window.addEventListener('click', handleClick)
     return () => {
       window.removeEventListener('pointermove', handlePointerMove)
       window.removeEventListener('click', handleClick)
     }
-  }, [camera, isMobile, raycaster])
+  }, [isMobile])
 
   useFrame((state) => {
     if (isMobile) return
@@ -107,7 +121,10 @@ export default function ObserverRobot() {
 
     // 2. Extinderea pieptului (Respirație)
     if (chestRef.current) {
-      chestRef.current.scale.z = 1 + Math.sin(t * 2.5) * 0.05
+      // Amplitudine Z redusă de la 0.05: suprafața pieptului se mișca destul
+      // cât să înghită și să scoată la loc butonul și fantele, ceea ce citea
+      // ca o animație pe piept.
+      chestRef.current.scale.z = 1 + Math.sin(t * 2.5) * 0.02
       chestRef.current.scale.x = 1 + Math.sin(t * 2.5) * 0.02
     }
 
@@ -123,9 +140,9 @@ export default function ObserverRobot() {
 
     // 4. Tracking Cursor pentru Cap (Sistem geometric precis - Intersecție Raycast)
     // Calculăm vectorul de direcție de la cameră prin poziția mouse-ului
-    const mousePos = new THREE.Vector3(pointer.current.x, pointer.current.y, 0.5)
-    mousePos.unproject(state.camera)
-    const dir = mousePos.sub(state.camera.position).normalize()
+    const { target, mouse, dir, qFrom, qTo } = tmp
+    mouse.set(pointer.current.x, pointer.current.y, 0.5).unproject(state.camera)
+    dir.copy(mouse).sub(state.camera.position).normalize()
 
     // Găsim intersecția razei cu un plan virtual foarte apropiat de el (Z = 1.0)
     // Aducând planul mai aproape, unghiurile devin mult mai abrupte/sensibile
@@ -141,59 +158,113 @@ export default function ObserverRobot() {
       target.x = posX + (target.x - posX) * 1.5 // Foarte sensibil în stânga
     }
 
+    // Acelasi rezultat ca înainte, dar fără .clone(): reutilizăm două
+    // quaternion-uri preallocate.
     if (headRef.current) {
-      const currentQuat = headRef.current.quaternion.clone()
+      qFrom.copy(headRef.current.quaternion)
       headRef.current.lookAt(target)
-      const targetQuat = headRef.current.quaternion.clone()
-      headRef.current.quaternion.copy(currentQuat)
-      headRef.current.quaternion.slerp(targetQuat, 0.4) // Reflexe fulgerătoare
+      qTo.copy(headRef.current.quaternion)
+      headRef.current.quaternion.copy(qFrom).slerp(qTo, 0.4) // Reflexe fulgerătoare
     }
 
     if (neckRef.current) {
-      const currentQuat = neckRef.current.quaternion.clone()
+      qFrom.copy(neckRef.current.quaternion)
       neckRef.current.lookAt(target)
-      const targetQuat = neckRef.current.quaternion.clone()
-      neckRef.current.quaternion.copy(currentQuat)
-      neckRef.current.quaternion.slerp(targetQuat, 0.2) // Reflexe fulgerătoare
+      qTo.copy(neckRef.current.quaternion)
+      neckRef.current.quaternion.copy(qFrom).slerp(qTo, 0.2) // Reflexe fulgerătoare
     }
     
-    // 5. Animația săgeții (marire/micsorare la 3 secunde)
-    if (arrowRef.current) {
-      const cycle = t % 3
-      let scaleAnim = 1
-      if (cycle < 0.3) {
-        scaleAnim = 1 + Math.sin((cycle / 0.3) * Math.PI) * 0.3
+    // 5. Butonul se aprinde la hover, în loc să pulseze singur la 3 secunde.
+    // Mutăm direct emissiveIntensity pe material: fără state, fără re-render.
+    if (discMatRef.current) {
+      const tinta = hovering.current ? 2.8 : 0.55
+      const cur = discMatRef.current.emissiveIntensity
+      if (Math.abs(cur - tinta) > 0.005) {
+        discMatRef.current.emissiveIntensity = cur + (tinta - cur) * 0.18
+        if (bezelMatRef.current) {
+          bezelMatRef.current.emissiveIntensity = discMatRef.current.emissiveIntensity * 0.42
+        }
       }
-      arrowRef.current.scale.set(scaleAnim, scaleAnim, 0.1 * scaleAnim)
     }
     
-    // 6. Hover state folosind raycaster manual
+    // 5b. Clipit: scurt, rar, cu o a doua clipire ocazională - static, ochii
+    // aprinși continuu citesc ca un ecran, nu ca o privire.
+    if (eyesRef.current) {
+      const cycle = t % 4.2
+      let deschidere = 1
+      if (cycle < 0.13) deschidere = Math.abs(Math.cos((cycle / 0.13) * Math.PI))
+      else if (cycle > 0.24 && cycle < 0.37) deschidere = Math.abs(Math.cos(((cycle - 0.24) / 0.13) * Math.PI))
+      eyesRef.current.scale.y = Math.max(0.06, deschidere)
+    }
+
+    // 6. Hover fără raycast: proiectăm centrul butonului pe ecran și comparăm
+    // distanța până la cursor. Trei proiecții de vector pe cadru, față de o
+    // traversare completă de geometrie.
+    // Rulează în FIECARE cadru intenționat: robotul respiră, deci butonul
+    // urcă și coboară singur. Dacă am verifica doar la mișcarea mouse-ului,
+    // starea ar rămâne veche când butonul ajunge sub un cursor nemișcat.
     if (buttonRef.current) {
-      raycaster.setFromCamera(pointer.current, state.camera)
-      const intersects = raycaster.intersectObject(buttonRef.current, true)
-      if (intersects.length > 0) {
-        document.body.style.cursor = 'pointer'
-        buttonRef.current.hovered = true
-      } else if (buttonRef.current.hovered) {
-        document.body.style.cursor = ''
-        buttonRef.current.hovered = false
+      const { hitC, hitX, hitY } = tmp
+      buttonRef.current.getWorldPosition(hitC)
+      // Puțin peste bizou: butonul desenat are ~28px pe ecran, prea puțin
+      // pentru o țintă de click confortabilă.
+      const raza = 0.27 * scale
+      hitX.set(hitC.x + raza, hitC.y, hitC.z)
+      hitY.set(hitC.x, hitC.y + raza, hitC.z)
+      hitC.project(state.camera)
+      hitX.project(state.camera)
+      hitY.project(state.camera)
+
+      // Raze separate pe X și Y: ecranul e mai lat decât înalt, deci un cerc
+      // în lume devine elipsă în coordonate normalizate.
+      const rx = Math.abs(hitX.x - hitC.x)
+      const ry = Math.abs(hitY.y - hitC.y)
+      const dx = (pointer.current.x - hitC.x) / (rx || 1)
+      const dy = (pointer.current.y - hitC.y) / (ry || 1)
+      const peButon = dx * dx + dy * dy <= 1
+
+      if (peButon !== hovering.current) {
+        hovering.current = peButon
+        // Scriem în DOM doar la schimbarea stării, nu continuu.
+        document.body.style.cursor = peButon ? 'pointer' : ''
       }
     }
   })
 
-  // Materiale
-  const glossyWhite = {
-    color: '#ffffff',
-    metalness: 0.8,
-    roughness: 0.1,
+  // Materiale.
+  // Carcasa albă e plastic lăcuit, nu metal: un robot alb real (Ameca, EVE)
+  // e dielectric. metalness mare pe alb dădea un gri mat, nu luciu.
+  // clearcoat cere meshPhysicalMaterial - pe meshStandardMaterial era ignorat.
+  const shellWhite = {
+    color: '#eef2f7',
+    metalness: 0.05,
+    roughness: 0.25,
     clearcoat: 1.0,
-    clearcoatRoughness: 0.1
+    clearcoatRoughness: 0.05,
+    envMapIntensity: 1.15,
+  }
+
+  // Panouri interioare, în umbră: aceeași vopsea, dar fără luciu direct
+  const shellShade = {
+    color: '#c4cedb',
+    metalness: 0.05,
+    roughness: 0.55,
   }
 
   const darkJoint = {
-    color: '#111111',
-    metalness: 0.9,
-    roughness: 0.4
+    color: '#2b3138',
+    metalness: 0.6,
+    roughness: 0.35,
+  }
+
+  // Sticla ecranului: aproape neagră, foarte lucioasă
+  const glassDark = {
+    color: '#05070b',
+    metalness: 0.15,
+    roughness: 0.04,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.02,
+    envMapIntensity: 1.6,
   }
 
   const cyanGlow = {
@@ -208,128 +279,269 @@ export default function ObserverRobot() {
       
       {/* --- TRUNCHI --- */}
       <group position={[0, -1.2, 0]}>
-        {/* Baza abdomenului */}
-        <mesh position={[0, -0.4, 0]}>
-          <cylinderGeometry args={[0.6, 0.5, 0.8, 32]} />
+        {/* Structura interioară închisă, vizibilă la îmbinări. Dă impresia
+            de carcasă montată pe schelet, nu de bloc turnat. */}
+        <RoundedBox args={[1.28, 1.5, 0.72]} radius={0.16} smoothness={3} position={[0, 0.3, 0.04]}>
+          <meshStandardMaterial {...darkJoint} />
+        </RoundedBox>
+
+        {/* Guler întunecat în jurul bazei gâtului. Cilindru cu ax vertical:
+            înconjoară gâtul, nu îl taie. */}
+        <mesh position={[0, 1.0, 0.04]}>
+          <cylinderGeometry args={[0.34, 0.4, 0.18, 32]} />
           <meshStandardMaterial {...darkJoint} />
         </mesh>
-        
+
         {/* Piept (Respiră) */}
-        <mesh ref={chestRef} position={[0, 0.4, 0.1]}>
-          <boxGeometry args={[1.5, 1.2, 0.9]} />
-          <meshStandardMaterial {...glossyWhite} />
-        </mesh>
-        
-        {/* Buton Go To Top (Fosta inimă) */}
-        <group 
-          ref={buttonRef}
-          position={[0, 0.2, 0.60]}
+        <RoundedBox
+          ref={chestRef}
+          args={[1.42, 1.16, 0.82]}
+          radius={0.26}
+          smoothness={4}
+          position={[0, 0.42, 0.06]}
         >
-          {/* Fundalul butonului (solid cyan) */}
-          <mesh>
-            <circleGeometry args={[0.15, 32]} />
-            <meshStandardMaterial color="#00f0ff" roughness={0.4} metalness={0.2} />
+          <meshPhysicalMaterial {...shellWhite} />
+        </RoundedBox>
+
+        {/* Grilă de ventilație încastrată, în locul plăcii pectorale plate:
+            o tăblie albă suprapusă citea ca o bavetă. Fantele adâncite dau
+            senzația de carcasă frezată. */}
+        {/* Pieptul respiră: fața lui oscilează între z=0.462 și z=0.478.
+            Detaliile stau în fața maximului, ca să rămână vizibile permanent -
+            la 0.462 carcasa le înghițea la fiecare inspirație. */}
+        {[0, 1, 2].map((k) => (
+          <RoundedBox
+            key={k}
+            args={[0.36, 0.05, 0.035]}
+            radius={0.016}
+            smoothness={3}
+            position={[0, 0.8 - k * 0.1, 0.492]}
+          >
+            <meshStandardMaterial {...darkJoint} />
+          </RoundedBox>
+        ))}
+
+        {/* Cusături verticale care despart panoul central de flancuri */}
+        <RoundedBox args={[0.028, 0.66, 0.028]} radius={0.011} smoothness={3} position={[-0.42, 0.48, 0.487]}>
+          <meshStandardMaterial {...shellShade} />
+        </RoundedBox>
+        <RoundedBox args={[0.028, 0.66, 0.028]} radius={0.011} smoothness={3} position={[0.42, 0.48, 0.487]}>
+          <meshStandardMaterial {...shellShade} />
+        </RoundedBox>
+
+        {/* Flancuri laterale mai închise, ca niște panouri demontabile */}
+        <RoundedBox args={[0.14, 0.9, 0.5]} radius={0.06} smoothness={3} position={[-0.68, 0.42, 0.06]}>
+          <meshStandardMaterial {...shellShade} />
+        </RoundedBox>
+        <RoundedBox args={[0.14, 0.9, 0.5]} radius={0.06} smoothness={3} position={[0.68, 0.42, 0.06]}>
+          <meshStandardMaterial {...shellShade} />
+        </RoundedBox>
+
+        {/* Talie: articulație închisă, mai îngustă decât pieptul */}
+        <mesh position={[0, -0.32, 0.04]}>
+          <cylinderGeometry args={[0.44, 0.46, 0.58, 32]} />
+          <meshStandardMaterial {...darkJoint} />
+        </mesh>
+
+        {/* Bazin, revine la carcasa albă */}
+        <RoundedBox args={[1.1, 0.5, 0.72]} radius={0.2} smoothness={3} position={[0, -0.72, 0.04]}>
+          <meshPhysicalMaterial {...shellWhite} />
+        </RoundedBox>
+
+        {/* Buton Go To Top (Fosta inimă) */}
+        {/* z=0.50: discul ajunge la 0.52, mereu în fața pieptului care
+            respiră până la 0.478. Înainte, la 0.44, butonul dispărea complet
+            sub carcasă la fiecare inspirație. */}
+        <group
+          ref={buttonRef}
+          position={[0, 0.2, 0.5]}
+        >
+          {/* Locaș încastrat, ca butonul să pară montat în carcasă */}
+          <mesh position={[0, 0, -0.02]} rotation={[Math.PI / 2, 0, 0]}>
+            <cylinderGeometry args={[0.21, 0.21, 0.07, 40]} />
+            <meshStandardMaterial {...darkJoint} />
           </mesh>
-          
-          {/* Săgeata neagră 3D aplatizată cu animație */}
-          <group ref={arrowRef} position={[0, 0, 0.01]} scale={[1, 1, 0.1]}>
-            <mesh position={[0, 0.03, 0]}>
-              <coneGeometry args={[0.05, 0.08, 16]} />
-              <meshBasicMaterial color="#000000" />
+
+          {/* Inel de bizou în jurul feței cyan. Torusul stă implicit în planul
+              XY, deci privește deja spre +Z: fără rotație. Se aprinde slab
+              odată cu discul, ca lumina să pară că vine din locaș. */}
+          <mesh position={[0, 0, 0.015]}>
+            <torusGeometry args={[0.168, 0.022, 10, 28]} />
+            <meshStandardMaterial
+              ref={bezelMatRef}
+              color="#e8eef5"
+              emissive="#00f0ff"
+              emissiveIntensity={0.23}
+              metalness={0.1}
+              roughness={0.25}
+            />
+          </mesh>
+
+          {/* Fața butonului. emissiveIntensity urcă la hover, din useFrame */}
+          <mesh position={[0, 0, 0.02]}>
+            <circleGeometry args={[0.155, 32]} />
+            <meshStandardMaterial
+              ref={discMatRef}
+              color="#00f0ff"
+              emissive="#00f0ff"
+              emissiveIntensity={0.55}
+              roughness={0.3}
+              metalness={0.1}
+              toneMapped={false}
+            />
+          </mesh>
+
+          {/* Săgeata, statică */}
+          <group position={[0, 0, 0.032]} scale={[1, 1, 0.1]}>
+            <mesh position={[0, 0.035, 0]}>
+              <coneGeometry args={[0.058, 0.075, 16]} />
+              <meshBasicMaterial color="#04222a" />
             </mesh>
-            <mesh position={[0, -0.03, 0]}>
-              <boxGeometry args={[0.04, 0.06, 0.1]} />
-              <meshBasicMaterial color="#000000" />
+            <mesh position={[0, -0.032, 0]}>
+              <boxGeometry args={[0.038, 0.062, 0.1]} />
+              <meshBasicMaterial color="#04222a" />
             </mesh>
           </group>
         </group>
       </group>
 
-      {/* --- BRAȚE --- */}
-      {/* Brațul Stâng */}
-      <group ref={leftArmRef} position={[-0.9, -0.6, 0]}>
-        {/* Umăr (Articulație) */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[0.35, 32, 32]} />
-          <meshStandardMaterial {...darkJoint} />
-        </mesh>
-        {/* Carcasa Umărului (Armor) */}
-        <mesh position={[-0.1, 0.1, 0]}>
-          <boxGeometry args={[0.5, 0.6, 0.6]} />
-          <meshStandardMaterial {...glossyWhite} />
-        </mesh>
-        {/* Braț superior */}
-        <mesh position={[-0.1, -0.6, 0]}>
-          <capsuleGeometry args={[0.18, 0.7, 16, 16]} />
-          <meshStandardMaterial {...glossyWhite} />
-        </mesh>
-        {/* Antebraț (Ușor flexat în față) */}
-        <mesh position={[-0.1, -1.4, 0.2]} rotation={[-0.2, 0, 0]}>
-          <capsuleGeometry args={[0.15, 0.8, 16, 16]} />
-          <meshStandardMaterial {...glossyWhite} />
-        </mesh>
-      </group>
+      {/* --- BRAȚE ---
+          Fiecare braț: umăr sferic închis, pauldron alb rotunjit peste el,
+          braț, cot vizibil ca articulație, antebraț și mână. Cotul era
+          absent, iar brațul părea o singură bucată de plastic. */}
+      {[-1, 1].map((lat) => (
+        <group
+          key={lat}
+          ref={lat === -1 ? leftArmRef : rightArmRef}
+          position={[lat * 0.86, -0.6, 0]}
+        >
+          {/* Umăr (Articulație) */}
+          <mesh>
+            {/* Robotul se randează la ~150px pe ecran: 32x32 segmente pe o
+                sferă aproape complet acoperită de pauldron erau irosite. */}
+            <sphereGeometry args={[0.24, 14, 10]} />
+            <meshStandardMaterial {...darkJoint} />
+          </mesh>
 
-      {/* Brațul Drept */}
-      <group ref={rightArmRef} position={[0.9, -0.6, 0]}>
-        {/* Umăr (Articulație) */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[0.35, 32, 32]} />
-          <meshStandardMaterial {...darkJoint} />
-        </mesh>
-        {/* Carcasa Umărului (Armor) */}
-        <mesh position={[0.1, 0.1, 0]}>
-          <boxGeometry args={[0.5, 0.6, 0.6]} />
-          <meshStandardMaterial {...glossyWhite} />
-        </mesh>
-        {/* Braț superior */}
-        <mesh position={[0.1, -0.6, 0]}>
-          <capsuleGeometry args={[0.18, 0.7, 16, 16]} />
-          <meshStandardMaterial {...glossyWhite} />
-        </mesh>
-        {/* Antebraț (Ușor flexat în față) */}
-        <mesh position={[0.1, -1.4, 0.2]} rotation={[-0.2, 0, 0]}>
-          <capsuleGeometry args={[0.15, 0.8, 16, 16]} />
-          <meshStandardMaterial {...glossyWhite} />
-        </mesh>
-      </group>
+          {/* Pauldron: carcasă care îmbracă umărul. Raza de rotunjire era
+              aproape jumătate din lățime, deci ieșea o bilă, nu un panou. */}
+          <RoundedBox args={[0.44, 0.46, 0.54]} radius={0.11} smoothness={4} position={[lat * 0.05, 0.12, 0]}>
+            <meshPhysicalMaterial {...shellWhite} />
+          </RoundedBox>
+
+          {/* Prelungire spre tors, ca să nu rămână gol între umăr și piept */}
+          <RoundedBox args={[0.26, 0.36, 0.46]} radius={0.1} smoothness={3} position={[lat * -0.13, 0.16, 0]}>
+            <meshPhysicalMaterial {...shellWhite} />
+          </RoundedBox>
+
+          {/* Braț superior */}
+          <mesh position={[lat * 0.09, -0.56, 0]}>
+            <capsuleGeometry args={[0.155, 0.62, 5, 14]} />
+            <meshPhysicalMaterial {...shellWhite} />
+          </mesh>
+
+          {/* Cot: inel închis care marchează articulația */}
+          <mesh position={[lat * 0.09, -0.97, 0.02]} rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.155, 0.155, 0.12, 24]} />
+            <meshStandardMaterial {...darkJoint} />
+          </mesh>
+
+          {/* Antebraț (Ușor flexat în față) */}
+          <mesh position={[lat * 0.09, -1.36, 0.14]} rotation={[-0.22, 0, 0]}>
+            <capsuleGeometry args={[0.13, 0.6, 5, 14]} />
+            <meshPhysicalMaterial {...shellWhite} />
+          </mesh>
+
+          {/* Încheietură */}
+          <mesh position={[lat * 0.09, -1.71, 0.22]} rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.105, 0.105, 0.1, 20]} />
+            <meshStandardMaterial {...darkJoint} />
+          </mesh>
+
+          {/* Mână: lipsea complet, iar brațul se termina brusc în aer */}
+          <RoundedBox
+            args={[0.19, 0.26, 0.15]}
+            radius={0.065}
+            smoothness={3}
+            position={[lat * 0.09, -1.92, 0.24]}
+            rotation={[-0.22, 0, 0]}
+          >
+            <meshPhysicalMaterial {...shellWhite} />
+          </RoundedBox>
+
+          {/* Degetul mare, ca mâna să aibă o orientare citibilă */}
+          <mesh position={[lat * 0.02, -1.9, 0.3]} rotation={[-0.22, 0, lat * 0.5]}>
+            <capsuleGeometry args={[0.035, 0.08, 3, 8]} />
+            <meshPhysicalMaterial {...shellWhite} />
+          </mesh>
+        </group>
+      ))}
 
       {/* --- GÂT & CAP --- */}
       <group position={[0, 0, 0]} ref={neckRef}>
-        <mesh position={[0, -0.1, 0]}>
-          <cylinderGeometry args={[0.15, 0.2, 0.5, 16]} />
+        <mesh position={[0, -0.08, 0]}>
+          <cylinderGeometry args={[0.14, 0.19, 0.46, 24]} />
           <meshStandardMaterial {...darkJoint} />
+        </mesh>
+        {/* Inel de actuator pe gât */}
+        <mesh position={[0, 0.06, 0]}>
+          <cylinderGeometry args={[0.17, 0.17, 0.07, 24]} />
+          <meshStandardMaterial {...shellShade} />
         </mesh>
       </group>
 
-      <group position={[0, 0.4, 0]} ref={headRef}>
-        <mesh position={[0, 0, -0.1]}>
-          <boxGeometry args={[0.8, 0.9, 1.0]} />
-          <meshStandardMaterial {...glossyWhite} />
-        </mesh>
-        
-        <mesh position={[0, 0, 0.41]}>
-          <planeGeometry args={[0.65, 0.55]} />
-          <meshStandardMaterial color="#050505" roughness={0.1} metalness={0.9} />
-        </mesh>
+      {/* Capul privește pe +Z: lookAt orientează axa +Z spre țintă. */}
+      <group position={[0, 0.38, 0]} ref={headRef}>
+        {/* Cască rotunjită, în locul cutiei cu muchii ascuțite */}
+        <RoundedBox args={[0.84, 0.76, 0.8]} radius={0.24} smoothness={4} position={[0, 0.02, -0.06]}>
+          <meshPhysicalMaterial {...shellWhite} />
+        </RoundedBox>
 
-        <mesh position={[-0.2, 0.1, 0.42]}>
-          <capsuleGeometry args={[0.03, 0.12, 8, 8]} rotation={[0, 0, Math.PI / 2]} />
+        {/* Fără piesă pe creștet: orice placă plată peste o cască rotunjită
+            iese în afară la margini și citește ca o pălărie. Casca rămâne o
+            singură suprafață continuă. */}
+
+        {/* Locașul ecranului, încastrat în cască */}
+        <RoundedBox args={[0.68, 0.54, 0.1]} radius={0.11} smoothness={4} position={[0, 0.0, 0.3]}>
+          <meshStandardMaterial {...darkJoint} />
+        </RoundedBox>
+
+        {/* Sticla ecranului, ușor proeminentă și foarte lucioasă */}
+        <RoundedBox args={[0.62, 0.48, 0.06]} radius={0.1} smoothness={4} position={[0, 0.0, 0.35]}>
+          <meshPhysicalMaterial {...glassDark} />
+        </RoundedBox>
+
+        {/* Ochii: bare rotunjite care clipesc */}
+        <group ref={eyesRef} position={[0, 0.04, 0.385]}>
+          <RoundedBox args={[0.15, 0.055, 0.02]} radius={0.024} smoothness={3} position={[-0.14, 0, 0]}>
+            <meshStandardMaterial {...cyanGlow} />
+          </RoundedBox>
+          <RoundedBox args={[0.15, 0.055, 0.02]} radius={0.024} smoothness={3} position={[0.14, 0, 0]}>
+            <meshStandardMaterial {...cyanGlow} />
+          </RoundedBox>
+        </group>
+
+        {/* Indicator sub ecran, ca un microfon/status */}
+        <mesh position={[0, -0.15, 0.383]}>
+          <circleGeometry args={[0.022, 20]} />
           <meshStandardMaterial {...cyanGlow} />
         </mesh>
-        <mesh position={[0.2, 0.1, 0.42]}>
-          <capsuleGeometry args={[0.03, 0.12, 8, 8]} rotation={[0, 0, Math.PI / 2]} />
-          <meshStandardMaterial {...cyanGlow} />
-        </mesh>
 
-        <mesh position={[-0.43, 0, 0]}>
-          <cylinderGeometry args={[0.1, 0.1, 0.2]} rotation={[0, 0, Math.PI / 2]} />
-          <meshStandardMaterial {...darkJoint} />
-        </mesh>
-        <mesh position={[0.43, 0, 0]}>
-          <cylinderGeometry args={[0.1, 0.1, 0.2]} rotation={[0, 0, Math.PI / 2]} />
-          <meshStandardMaterial {...darkJoint} />
-        </mesh>
+        {/* „Urechi”: discuri laterale. Cilindrul are ax Y, deci rotim mesh-ul
+            pe Z ca discul să privească în lateral - rotația pusă pe geometrie
+            nu avea niciun efect. */}
+        {[-1, 1].map((lat) => (
+          <group key={lat}>
+            <mesh position={[lat * 0.43, 0.02, -0.06]} rotation={[0, 0, Math.PI / 2]}>
+              <cylinderGeometry args={[0.13, 0.13, 0.08, 28]} />
+              <meshStandardMaterial {...darkJoint} />
+            </mesh>
+            <mesh position={[lat * 0.47, 0.02, -0.06]} rotation={[0, 0, Math.PI / 2]}>
+              <cylinderGeometry args={[0.07, 0.07, 0.03, 20]} />
+              <meshStandardMaterial {...shellShade} />
+            </mesh>
+          </group>
+        ))}
       </group>
     </group>
   )
