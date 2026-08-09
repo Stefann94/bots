@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useReveal } from '../hooks/useReveal'
 
 function CustomSelect({ options, value, onChange, placeholder }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -60,6 +61,9 @@ function CustomSelect({ options, value, onChange, placeholder }) {
 }
 
 export default function Contact() {
+  // Același prag ca înainte, fără bucla care producea tremuratul la margine.
+  const [refCard, stareCard] = useReveal({ margin: '-15% 0px -15% 0px' })
+
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [model, setModel] = useState('Unitree H1 Bipedal')
@@ -125,9 +129,9 @@ export default function Contact() {
           <div className="relative z-[20] max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div 
                 variants={cardVariants}
+                ref={refCard}
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, margin: "-15% 0px -15% 0px" }}
+                animate={stareCard}
                 className="glass-card rounded-3xl p-8 sm:p-12 border border-cyber-cyan/40 shadow-2xl relative overflow-hidden"
               >
                   <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-cyber-cyan/10 rounded-full blur-3xl pointer-events-none"></div>

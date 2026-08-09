@@ -4,7 +4,11 @@ import RobotCanvas from './RobotCanvas'
 import CustomVideoPlayer from './CustomVideoPlayer'
 import { Link } from 'react-router-dom'
 import NetworkBackground from './NetworkBackground'
+import { useReveal } from '../hooks/useReveal'
 export default function Hero() {
+  // Același prag ca înainte, fără bucla care producea tremuratul la margine.
+  const [refHero, stareHero] = useReveal({ amount: 0.2 })
+
   const [robotColor, setRobotColor] = useState('#ffffff')
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
   const [isColorMenuOpen, setIsColorMenuOpen] = useState(false)
@@ -91,9 +95,9 @@ export default function Hero() {
                 <motion.div 
                   className="relative w-full lg:col-span-6 flex flex-col justify-center gap-6 lg:gap-8 text-center lg:text-left z-10 pt-6 lg:pt-0"
                   variants={containerVariants}
+                  ref={refHero}
                   initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: false, amount: 0.2 }}
+                  animate={stareHero}
                 >
                   {/* Floating ambient blur OVER the text (Top Left constrained) */}
                   <motion.div 
