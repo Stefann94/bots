@@ -1,12 +1,9 @@
-import { useEffect } from 'react'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
-import { useReveal } from '../hooks/useReveal'
+import { useEffect, useRef } from 'react'
+import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion'
 
 function Counter({ to, duration }) {
-  // Cu useInView simplu, la marginea de declanșare numărătoarea repornea la
-  // nesfârșit. Histerezisul o pornește o dată și o oprește abia când
-  // elementul chiar a ieșit din ecran.
-  const [ref, , isInView] = useReveal({ margin: '-20% 0px -20% 0px' })
+  const ref = useRef(null)
+  const isInView = useInView(ref, { margin: "-20% 0px -20% 0px", once: false })
   const count = useMotionValue(0)
   const rounded = useTransform(count, Math.round)
 
@@ -26,9 +23,6 @@ function Counter({ to, duration }) {
 }
 
 export default function Specs() {
-  // Același prag ca înainte, fără bucla care producea tremuratul la margine.
-  const [refSectiune, stareSectiune] = useReveal({ margin: '-20% 0px -20% 0px' })
-
   const specs = [
     {
       icon: 'fa-robot',
@@ -89,8 +83,8 @@ export default function Specs() {
         <div className="relative z-[20] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial="hidden"
-              ref={refSectiune}
-              animate={stareSectiune}
+              whileInView="visible"
+              viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
               variants={containerVariants}
               className="glass-card rounded-3xl p-10 border border-cyber-cyan/30 radial-glow-center relative z-10 shadow-2xl shadow-cyan-900/10"
             >

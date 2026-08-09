@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useReveal } from '../hooks/useReveal'
 
 export default function Applications() {
-  // Același prag ca înainte, fără bucla care producea tremuratul la margine.
-  const [refSectiune, stareSectiune] = useReveal({ margin: '-20% 0px -20% 0px' })
-
   const [activeTab, setActiveTab] = useState('manufacturing')
   const [isHovered, setIsHovered] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -125,8 +121,8 @@ export default function Applications() {
         <motion.div 
             className="relative z-[20] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
             initial="hidden"
-            ref={refSectiune}
-            animate={stareSectiune}
+            whileInView="visible"
+            viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
             variants={sectionVariants}
         >
             <motion.div variants={titleScanner} className="text-center max-w-3xl mx-auto mb-12">

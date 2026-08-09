@@ -1,10 +1,6 @@
 import { motion } from 'framer-motion'
-import { useReveal } from '../hooks/useReveal'
 
 export default function AgiBotSeries() {
-  // Același prag ca înainte, fără bucla care producea tremuratul la margine.
-  const [refSectiune, stareSectiune] = useReveal({ amount: 0.2 })
-
   const containerVariants = {
     hidden: {},
     visible: {
@@ -50,8 +46,8 @@ export default function AgiBotSeries() {
         <div className="relative z-[20] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ perspective: 2000 }}>
             <motion.div 
               initial="hidden"
-              ref={refSectiune}
-              animate={stareSectiune}
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }}
               variants={containerVariants}
               className="glass-card rounded-3xl overflow-hidden border border-cyber-cyan/30 grid grid-cols-1 lg:grid-cols-12 shadow-2xl transform-gpu"
             >

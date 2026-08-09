@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useReveal } from '../hooks/useReveal'
+import { AnimatePresence, motion, useInView } from 'framer-motion'
 
 // Cât stă aprins fiecare oraș înainte să treacă la următorul
 const CYCLE_MS = 4000
@@ -73,16 +72,14 @@ export default function ContactRadar() {
 
   const listRef = useRef(null)
   const itemRefs = useRef([])
+  const rootRef = useRef(null)
   // `amount` = cât din card trebuie să fie vizibil ca să pornească secvența.
   // Prag pe procent, nu pe pixeli: se comportă la fel și la coborâre, și la
   // urcare, fără margini separate sus/jos. La 30% ai trecut de prima parte a
   // chenarului, deci mai ai de derulat cât rulează animația.
-  // Secvența se reia de fiecare dată când revii la secțiune, din orice direcție.
-  //
-  // useReveal, nu useInView direct: cardul animează y de la 40 la 0 și e chiar
-  // elementul observat, deci se putea auto-declanșa. Când se oprea exact pe
-  // prag, mișcarea îl scotea din zonă și pornea un tremurat de ~10px.
-  const [rootRef, , inView] = useReveal({ amount: 0.3 })
+  // `once` lipsește intenționat (implicit false): secvența se reia de fiecare
+  // dată când revii la secțiune, din orice direcție.
+  const inView = useInView(rootRef, { amount: 0.3 })
 
   useEffect(() => {
     const id = setInterval(() => setState(getBucharestState()), 1000)
