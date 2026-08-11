@@ -48,7 +48,7 @@ export default function Navbar() {
 
             <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
                 <button onClick={() => handleNav('/', null)} className={`hover:text-cyber-cyan transition-colors ${location.pathname === '/' ? 'text-cyber-cyan' : ''}`}>Acasă</button>
-                <button onClick={() => handleNav('/modele-3d', null)} className={`hover:text-cyber-cyan transition-colors ${location.pathname === '/modele-3d' ? 'text-cyber-cyan' : ''}`}>Modele 3D</button>
+                <button onClick={() => handleNav('/modele-3d', null)} className={`hover:text-cyber-cyan transition-colors ${location.pathname === '/modele-3d' ? 'text-cyber-cyan' : ''}`}>Roboți &amp; AI</button>
                 <button onClick={() => handleNav('/', 'technology')} className="hover:text-cyber-cyan transition-colors">Inovație</button>
                 <button onClick={() => handleNav('/', 'applications')} className="hover:text-cyber-cyan transition-colors">Aplicații</button>
                 <button onClick={() => handleNav('/contact', null)} className={`hover:text-cyber-cyan transition-colors ${location.pathname === '/contact' ? 'text-cyber-cyan' : ''}`}>Contact</button>
@@ -74,7 +74,7 @@ export default function Navbar() {
               className="md:hidden glass-card border-t border-slate-800/80 px-6 py-4 space-y-3 overflow-hidden"
             >
                 <button onClick={() => handleNav('/', null)} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Acasă</button>
-                <a href="/modele-3d" onClick={() => setMenuOpen(false)} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Modele 3D</a>
+                <a href="/modele-3d" onClick={() => setMenuOpen(false)} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Roboți &amp; AI</a>
                 <button onClick={() => handleNav('/', 'technology')} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Inovație</button>
                 <button onClick={() => handleNav('/', 'applications')} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Aplicații</button>
                 <button onClick={() => handleNav('/contact', null)} className="w-full text-left block text-slate-300 hover:text-cyber-cyan py-1 text-sm">Contact</button>
