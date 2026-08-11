@@ -26,7 +26,7 @@ export default function HumanoidsPage() {
         
         {/* Buton Înapoi */}
         <div className="absolute top-24 left-4 z-50">
-          <a href="/modele-3d" className="text-slate-400 hover:text-white transition-colors flex items-center gap-2 font-mono text-sm bg-black/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
+          <a href="/modele-3d" className="text-slate-400 hover:text-white transition-colors flex items-center gap-2 font-mono text-sm bg-black/50 px-4 py-3 md:py-2 rounded-full border border-white/10 backdrop-blur-md">
             <i className="fa-solid fa-arrow-left"></i> Înapoi la Modele 3D
           </a>
         </div>
@@ -40,7 +40,7 @@ export default function HumanoidsPage() {
           <motion.h2 variants={fadeUpVariant} className="text-cyber-cyan font-mono text-sm md:text-base tracking-[0.3em] uppercase mb-4">
             Unitree G1
           </motion.h2>
-          <motion.h1 variants={fadeUpVariant} className="text-6xl md:text-8xl font-black tracking-tight mb-6">
+          <motion.h1 variants={fadeUpVariant} className="text-4xl sm:text-5xl md:text-8xl font-black tracking-tight mb-6">
             Viitorul este <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-300 to-slate-500">Biped.</span>
           </motion.h1>
           <motion.p variants={fadeUpVariant} className="text-slate-400 max-w-lg text-lg md:text-xl font-light">
@@ -79,17 +79,17 @@ export default function HumanoidsPage() {
         >
           
           {/* Card 1: Viteză (Col-span-2) */}
-          <motion.div variants={fadeUpVariant} className="md:col-span-2 bg-white/[0.02] border border-white/10 rounded-[32px] p-10 hover:bg-white/[0.04] transition-colors relative overflow-hidden group">
+          <motion.div variants={fadeUpVariant} className="md:col-span-2 bg-white/[0.02] border border-white/10 rounded-[32px] p-6 md:p-10 hover:bg-white/[0.04] transition-colors relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                <i className="fa-solid fa-bolt text-8xl text-cyber-cyan"></i>
             </div>
-            <h3 className="text-5xl font-black mb-2">3.3 m/s</h3>
+            <h3 className="text-4xl md:text-5xl font-black mb-2">3.3 m/s</h3>
             <p className="text-slate-400 font-mono text-sm tracking-widest uppercase mb-6">Viteză de deplasare</p>
             <p className="text-slate-300 font-light max-w-md">Echipat cu actuatoare ultra-performante ce permit alergare, sărituri și recuperare instantanee a echilibrului în orice condiții.</p>
           </motion.div>
 
           {/* Card 2: Baterie */}
-          <motion.div variants={fadeUpVariant} className="bg-white/[0.02] border border-white/10 rounded-[32px] p-10 hover:bg-white/[0.04] transition-colors flex flex-col justify-between">
+          <motion.div variants={fadeUpVariant} className="bg-white/[0.02] border border-white/10 rounded-[32px] p-6 md:p-10 hover:bg-white/[0.04] transition-colors flex flex-col justify-between">
             <div>
               <i className="fa-solid fa-battery-full text-cyber-cyan text-3xl mb-4"></i>
               <h3 className="text-3xl font-bold mb-2">Schimbare Rapidă</h3>
@@ -98,15 +98,15 @@ export default function HumanoidsPage() {
           </motion.div>
 
           {/* Card 3: LiDAR */}
-          <motion.div variants={fadeUpVariant} className="bg-white/[0.02] border border-white/10 rounded-[32px] p-10 hover:bg-white/[0.04] transition-colors">
+          <motion.div variants={fadeUpVariant} className="bg-white/[0.02] border border-white/10 rounded-[32px] p-6 md:p-10 hover:bg-white/[0.04] transition-colors">
              <i className="fa-solid fa-radar text-cyber-cyan text-3xl mb-4"></i>
              <h3 className="text-2xl font-bold mb-2">LiDAR 360°</h3>
              <p className="text-slate-400 text-sm font-light">Cartografierea precisă a spațiului cu senzori Mid-360 integrați direct în craniu.</p>
           </motion.div>
 
           {/* Card 4: Maini Dextere (Col-span-2) */}
-          <motion.div variants={fadeUpVariant} className="md:col-span-2 bg-gradient-to-br from-cyber-cyan/10 to-transparent border border-cyber-cyan/20 rounded-[32px] p-10 relative overflow-hidden">
-             <h3 className="text-4xl font-black mb-2 text-cyber-cyan">Dexteritate Extremă</h3>
+          <motion.div variants={fadeUpVariant} className="md:col-span-2 bg-gradient-to-br from-cyber-cyan/10 to-transparent border border-cyber-cyan/20 rounded-[32px] p-6 md:p-10 relative overflow-hidden">
+             <h3 className="text-3xl md:text-4xl font-black mb-2 text-cyber-cyan">Dexteritate Extremă</h3>
              <p className="text-slate-300 font-light max-w-sm">Mâini capabile să manevreze un ou fără să-l spargă, sau să spargă o nucă cu precizie chirurgicală.</p>
              
              {/* Abstract Hand Placeholder */}
@@ -126,7 +126,7 @@ export default function HumanoidsPage() {
          <div className="max-w-7xl mx-auto flex flex-col md:flex-row relative">
             
             {/* Partea stângă: Imaginea Sticky */}
-            <div className="w-full md:w-1/2 h-screen sticky top-0 flex items-center justify-center p-12">
+            <div className="w-full md:w-1/2 h-screen sticky top-0 flex items-center justify-center p-6 md:p-12">
                <div className="w-full h-full max-h-[600px] bg-white/[0.03] border border-white/5 rounded-3xl overflow-hidden relative flex items-center justify-center">
                   <span className="text-white/20 font-mono text-sm uppercase tracking-widest absolute top-4 left-4">Sistem Central</span>
                   <i className="fa-solid fa-microchip text-9xl text-slate-700"></i>
@@ -207,7 +207,7 @@ export default function HumanoidsPage() {
 
          {/* Abstract H1 Background Element */}
          <div className="absolute inset-0 flex flex-col items-center justify-end pointer-events-none opacity-20">
-            <div className="w-[400px] h-[600px] border-t border-x border-red-500/30 rounded-t-[100px] flex items-center justify-center bg-red-500/5 backdrop-blur-3xl">
+            <div className="w-[300px] md:w-[400px] h-[480px] md:h-[600px] border-t border-x border-red-500/30 rounded-t-[100px] flex items-center justify-center bg-red-500/5 backdrop-blur-3xl">
                <i className="fa-solid fa-robot text-9xl text-red-500/20"></i>
             </div>
          </div>

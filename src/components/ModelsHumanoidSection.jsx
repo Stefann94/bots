@@ -191,7 +191,7 @@ const DualCoreAccordion = () => {
                 </motion.div>
              </div>
 
-             <div className="max-w-7xl mx-auto h-[600px] flex flex-col md:flex-row gap-6 px-4 sm:px-6 relative z-20">
+             <div className="max-w-7xl mx-auto h-auto md:h-[600px] flex flex-col md:flex-row gap-6 px-4 sm:px-6 relative z-20">
                  {panels.map((panel, index) => {
                      const isHovered = hoveredIndex === index;
                      const isOtherHovered = hoveredIndex !== null && hoveredIndex !== index;
@@ -210,23 +210,23 @@ const DualCoreAccordion = () => {
                              <div className="absolute inset-0">
                                  <img src={panel.image} alt={panel.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                                  {/* Gradienți dubli pentru lizibilitatea textului, negru jos, mix-blend la culoare */}
-                                 <div className={`absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/80 to-transparent`}></div>
+                                 <div className={`absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/80 to-[#020617]/60 md:to-transparent`}></div>
                                  <div className={`absolute inset-0 mix-blend-overlay opacity-30 ${panel.overlayColor}`}></div>
                              </div>
 
                              {/* Conținut Flex */}
-                             <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end z-10">
+                             <div className="relative md:absolute md:inset-0 p-6 md:p-10 flex flex-col justify-end z-10">
                                  
                                  {/* Titlu și Iconiță (Mereu Vizibile) */}
                                  <div className="flex items-center gap-4 mb-2">
                                      <div className={`w-14 h-14 rounded-2xl border ${panel.borderColor} bg-[#060D1F]/50 backdrop-blur flex items-center justify-center shrink-0 shadow-lg`}>
                                          <i className={`fa-solid ${panel.icon} text-2xl ${panel.textColor}`}></i>
                                      </div>
-                                     <div className="overflow-hidden min-w-[200px]">
+                                     <div className="overflow-hidden min-w-0 md:min-w-[200px]">
                                          <div className={`text-xs font-mono tracking-widest uppercase mb-1 ${panel.textColor}`}>
                                             {panel.subtitle}
                                          </div>
-                                         <h3 className="text-2xl md:text-3xl font-black text-white whitespace-nowrap">
+                                         <h3 className="text-2xl md:text-3xl font-black text-white md:whitespace-nowrap">
                                             {panel.title}
                                          </h3>
                                      </div>
@@ -305,27 +305,27 @@ export default function ModelsHumanoidSection() {
                  whileInView={{ opacity: 1, scale: 1 }}
                  viewport={{ once: false, amount: 0.25 }}
                  transition={{ duration: 0.6 }}
-                 className="md:col-span-8 h-[500px] glass-card rounded-[32px] p-2 relative overflow-hidden group shadow-[0_0_30px_rgba(0,0,0,0.5)] border-emerald-500/20 hover:border-emerald-500/50 transition-colors duration-500 bg-[#132247]/40"
+                 className="md:col-span-8 h-auto md:h-[500px] glass-card rounded-[32px] p-2 relative overflow-hidden group shadow-[0_0_30px_rgba(0,0,0,0.5)] border-emerald-500/20 hover:border-emerald-500/50 transition-colors duration-500 bg-[#132247]/40"
                >
                    <KinematicGrid />
                    <div className="absolute inset-0 bg-gradient-to-t from-[#060D1F] via-transparent to-transparent z-10"></div>
-                   
+
                    {/* Background Image */}
-                   <div className="w-full h-full rounded-[24px] overflow-hidden relative">
+                   <div className="w-full h-56 md:h-full rounded-[24px] overflow-hidden relative">
                        <div className="absolute inset-0 bg-[url('/images/humanoid_real_1.webp')] bg-cover bg-top group-hover:scale-105 transition-transform duration-[2s] ease-out"></div>
                        <div className="absolute inset-0 bg-emerald-900/10 mix-blend-overlay"></div>
                    </div>
 
-                   <div className="absolute top-8 left-8 z-20 flex flex-col gap-3">
+                   <div className="absolute top-6 left-6 md:top-8 md:left-8 z-20 flex flex-col gap-3">
                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#060D1F]/80 border border-emerald-500/40 backdrop-blur-md">
                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                            <span className="text-xs font-mono text-emerald-400 tracking-widest uppercase">Sistem Kinematic Bionic</span>
                        </div>
                    </div>
 
-                   <div className="absolute bottom-8 left-8 right-8 z-20">
-                       <h3 className="text-5xl md:text-6xl font-black text-white mb-4 drop-shadow-2xl">Echilibru Dinamic Absolut.</h3>
-                       <p className="text-slate-300 text-lg max-w-xl font-light drop-shadow-md leading-relaxed bg-[#060D1F]/60 p-4 rounded-xl border border-emerald-500/10 backdrop-blur-sm">
+                   <div className="relative px-4 pt-5 pb-4 md:p-0 md:absolute md:bottom-8 md:left-8 md:right-8 z-20">
+                       <h3 className="text-3xl md:text-6xl font-black text-white mb-4 drop-shadow-2xl">Echilibru Dinamic Absolut.</h3>
+                       <p className="text-slate-300 text-base md:text-lg max-w-xl font-light drop-shadow-md leading-relaxed bg-[#060D1F]/60 p-4 rounded-xl border border-emerald-500/10 backdrop-blur-sm">
                            Capacitatea de a rezista la impacturi laterale severe, de a naviga scări abrupte și de a se redresa autonom. Propulsați de motoare in-house cu densitate de cuplu ultra-înaltă, humanoizii sfidează limitele gravitației și terenului accidentat.
                        </p>
                    </div>
@@ -337,11 +337,11 @@ export default function ModelsHumanoidSection() {
                  whileInView={{ opacity: 1, x: 0 }}
                  viewport={{ once: false, amount: 0.25 }}
                  transition={{ duration: 0.6, delay: 0.2 }}
-                 className="md:col-span-4 h-[500px] glass-card rounded-[32px] p-4 relative overflow-hidden group border-purple-500/20 hover:border-purple-500/50 bg-[#132247]/40 flex flex-col"
+                 className="md:col-span-4 h-auto md:h-[500px] glass-card rounded-[32px] p-4 relative overflow-hidden group border-purple-500/20 hover:border-purple-500/50 bg-[#132247]/40 flex flex-col"
                >
                    <HolographicRings />
-                   
-                   <div className="w-full h-[45%] rounded-[24px] overflow-hidden relative border border-purple-500/10 shrink-0 mb-4 z-10">
+
+                   <div className="w-full h-48 md:h-[45%] rounded-[24px] overflow-hidden relative border border-purple-500/10 shrink-0 mb-4 z-10">
                        <div className="absolute inset-0 bg-[url('/images/humanoid_real_2.webp')] bg-cover bg-center group-hover:scale-110 transition-transform duration-[2s]"></div>
                    </div>
                    
@@ -378,7 +378,7 @@ export default function ModelsHumanoidSection() {
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: false, amount: 0.25 }}
                  transition={{ duration: 0.6, delay: 0.1 }}
-                 className="md:col-span-5 h-[350px] glass-card rounded-[32px] p-8 relative overflow-hidden group border-cyber-cyan/20 hover:border-cyber-cyan/50 flex flex-col bg-[#132247]/40"
+                 className="md:col-span-5 h-auto md:h-[350px] glass-card rounded-[32px] p-6 md:p-8 relative overflow-hidden group border-cyber-cyan/20 hover:border-cyber-cyan/50 flex flex-col bg-[#132247]/40"
                >
                    <div className="relative z-20">
                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-cyber-cyan/10 border border-cyber-cyan/30 text-cyber-cyan text-xs font-mono uppercase tracking-widest mb-4">
@@ -399,7 +399,7 @@ export default function ModelsHumanoidSection() {
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: false, amount: 0.25 }}
                  transition={{ duration: 0.6, delay: 0.3 }}
-                 className="md:col-span-7 h-[350px] glass-card rounded-[32px] p-2 relative overflow-hidden group border-blue-500/20 hover:border-blue-500/50 flex flex-col md:flex-row bg-[#132247]/40"
+                 className="md:col-span-7 h-auto md:h-[350px] glass-card rounded-[32px] p-2 relative overflow-hidden group border-blue-500/20 hover:border-blue-500/50 flex flex-col md:flex-row bg-[#132247]/40"
                >
                    <PowerFlow />
                    
@@ -408,7 +408,7 @@ export default function ModelsHumanoidSection() {
                        <div className="absolute inset-0 bg-blue-900/20 mix-blend-overlay"></div>
                    </div>
                    
-                   <div className="w-full md:w-7/12 p-8 flex flex-col justify-center relative z-10">
+                   <div className="w-full md:w-7/12 p-6 md:p-8 flex flex-col justify-center relative z-10">
                        <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center mb-6 relative group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all">
                            <i className="fa-solid fa-bolt text-blue-400 text-xl animate-pulse"></i>
                        </div>

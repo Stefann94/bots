@@ -15,40 +15,40 @@ export default function Footer() {
                         Distribuitor Autorizat Global Enterprise & Platformă de Integrare pentru Sistemele Humanoide Unitree Robotics și AgiBot.
                     </p>
                     <div className="flex space-x-4 text-base">
-                        <a href="#" className="hover:text-cyber-cyan transition-colors" aria-label="LinkedIn"><i className="fa-brands fa-linkedin"></i></a>
-                        <a href="#" className="hover:text-cyber-cyan transition-colors" aria-label="Twitter"><i className="fa-brands fa-twitter"></i></a>
-                        <a href="#" className="hover:text-cyber-cyan transition-colors" aria-label="YouTube"><i className="fa-brands fa-youtube"></i></a>
-                        <a href="#" className="hover:text-cyber-cyan transition-colors" aria-label="GitHub"><i className="fa-brands fa-github"></i></a>
+                        <a href="#" className="p-2.5 md:p-0 hover:text-cyber-cyan transition-colors" aria-label="LinkedIn"><i className="fa-brands fa-linkedin"></i></a>
+                        <a href="#" className="p-2.5 md:p-0 hover:text-cyber-cyan transition-colors" aria-label="Twitter"><i className="fa-brands fa-twitter"></i></a>
+                        <a href="#" className="p-2.5 md:p-0 hover:text-cyber-cyan transition-colors" aria-label="YouTube"><i className="fa-brands fa-youtube"></i></a>
+                        <a href="#" className="p-2.5 md:p-0 hover:text-cyber-cyan transition-colors" aria-label="GitHub"><i className="fa-brands fa-github"></i></a>
                     </div>
                 </div>
 
                 <div>
                     <h4 className="text-white font-bold mb-4 uppercase font-mono tracking-widest text-[10px]">Produse</h4>
                     <ul className="space-y-2">
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">Unitree H1</a></li>
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">Unitree G1</a></li>
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">AgiBot A2</a></li>
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">AgiBot Raise</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">Unitree H1</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">Unitree G1</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">AgiBot A2</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">AgiBot Raise</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 className="text-white font-bold mb-4 uppercase font-mono tracking-widest text-[10px]">Dezvoltatori</h4>
                     <ul className="space-y-2">
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">API Docs & SDK</a></li>
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">Simulare Isaac Gym</a></li>
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">Pachete ROS2</a></li>
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">Portal Suport</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">API Docs & SDK</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">Simulare Isaac Gym</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">Pachete ROS2</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">Portal Suport</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 className="text-white font-bold mb-4 uppercase font-mono tracking-widest text-[10px]">Companie</h4>
                     <ul className="space-y-2">
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">Despre Noi</a></li>
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">Cariere</a></li>
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">Contact Press</a></li>
-                        <li><a href="#" className="hover:text-cyber-cyan transition-colors">Termeni Legali</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">Despre Noi</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">Cariere</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">Contact Press</a></li>
+                        <li><a href="#" className="block py-3 md:inline md:py-0 hover:text-cyber-cyan transition-colors">Termeni Legali</a></li>
                     </ul>
                 </div>
             </div>

@@ -94,7 +94,7 @@ export default function Specs() {
               variants={containerVariants}
               className="glass-card rounded-3xl p-10 border border-cyber-cyan/30 radial-glow-center relative z-10 shadow-2xl shadow-cyan-900/10"
             >
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 text-center">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
                     {specs.map((spec, index) => (
                       <motion.div variants={itemVariants} key={index} className="flex flex-col items-center justify-center space-y-3 group">
                           <i className={`fa-solid ${spec.icon} text-cyber-cyan/40 text-3xl mb-2 group-hover:text-cyber-cyan transition-colors duration-300`}></i>

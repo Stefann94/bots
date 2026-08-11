@@ -138,12 +138,12 @@ export default function Applications() {
                 </p>
             </motion.div>
 
-            <motion.div variants={tabsFade} className="flex justify-center overflow-x-auto gap-2 mb-8 pb-2">
+            <motion.div variants={tabsFade} className="flex justify-start md:justify-center overflow-x-auto gap-2 mb-8 pb-2 px-4 md:px-0">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => handleTabClick(tab.id)}
-                    className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all border ${
+                    className={`shrink-0 md:shrink px-5 py-3 md:py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all border ${
                       activeTab === tab.id 
                         ? 'bg-cyber-cyan text-navy-950 font-bold border-cyber-cyan shadow-[0_0_15px_rgba(0,240,255,0.3)]' 
                         : 'bg-slate-900 text-slate-300 hover:text-white border-slate-800'

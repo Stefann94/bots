@@ -35,7 +35,7 @@ function CustomSelect({ options, value, onChange, placeholder }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 right-0 mt-2 bg-navy-900 border border-slate-700/80 rounded-xl overflow-hidden z-50 shadow-2xl shadow-cyan-900/20"
+            className="absolute top-full left-0 right-0 mt-2 bg-navy-900 border border-slate-700/80 rounded-xl overflow-hidden max-h-[55vh] overflow-y-auto md:max-h-none md:overflow-hidden z-50 shadow-2xl shadow-cyan-900/20"
           >
             {options.map((option, idx) => (
               <div 
